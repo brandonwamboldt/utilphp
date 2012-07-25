@@ -162,7 +162,7 @@
                     <p>
                         <span class="header">var_dump</span>
                         <code>
-                            <span class="util_class">util::</span><span class="func_name">var_dump</span>(mixed <span class="param">$var</span>)
+                            <span class="util_class">util::</span><span class="func_name">var_dump</span>(mixed <span class="param">$var</span>[, bool <span class="param">$return</span> = FALSE])
                         </code>
                     </p>
 
@@ -307,9 +307,9 @@ util::array_get($_POST, ['action', 'do'], 'index');
 
                     <p><strong>Usage:</strong></p>
 
-                    <pre>util::array_map_deep('htmlentities', $_POST);
+                    <pre>util::array_map_deep($_POST, 'htmlentities');
 =&gt; Recursively escapes each scalar value in $_POST
-util::array_map_deep('htmlentities', $_POST, TRUE);
+util::array_map_deep($_POST, 'htmlentities', TRUE);
 =&gt; Recursively escapes each value in $_POST regardless of it's type</pre>
                 </article>
 
@@ -331,7 +331,7 @@ util::array_map_deep('htmlentities', $_POST, TRUE);
 
                     <pre>util::array_pluck([['val' => 1], ['val' => 2], ['val' => 3]], 'val');
 =&gt; Returns [1, 2, 3]
-util::array_pluck([$users, 'email');
+util::array_pluck($users, 'email');
 =&gt; Returns an array of email addresses for each user</pre>
                 </article>
 
