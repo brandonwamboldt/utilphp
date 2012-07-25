@@ -1,8 +1,8 @@
 # What is UtilityPHP? #
 
-[UtilityPHP](http://brandonwamboldt.github.com/utilphp/) (Aka util.php) is a 
-collection of useful functions and snippets that you need or could use every 
-day. It's implemented as a class with static methods, to avoid conflicts with 
+[UtilityPHP](http://brandonwamboldt.github.com/utilphp/) (Aka util.php) is a
+collection of useful functions and snippets that you need or could use every
+day. It's implemented as a class with static methods, to avoid conflicts with
 your existing code-base. Just drop it in and start using it immediately.
 
 Included are 40-odd functions that provide you with the ability to do common
@@ -120,15 +120,15 @@ could even alias git commit to use the -s flag so you don’t have to think abou
 it.
 
 By signing your work in this manner, you certify to a "Developer's Certificate
-or Origin". The current version of this certificate is in the 
+or Origin". The current version of this certificate is in the
 [DCO.txt](https://github.com/brandonwamboldt/utilphp/blob/master/DCO.txt) file in
 the root of this repository.
 
 ## License
 
-UtilityPHP is licensed under the 
-[MIT license](https://github.com/brandonwamboldt/utilphp/blob/master/LICENSE.md). 
-Please feel free to do whatever you'd like with the project. Include it in open 
+UtilityPHP is licensed under the
+[GPL v3](https://github.com/brandonwamboldt/utilphp/blob/master/LICENSE.txt).
+Please feel free to do whatever you'd like with the project. Include it in open
 source or commercial projects. I'd prefer if you gave me credit of course :)
 
 ## Resources
