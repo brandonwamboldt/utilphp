@@ -1667,7 +1667,7 @@ if ( ! class_exists( 'util' ) ) {
          */
         public static function get_gravatar( $email, $size = 32 )
         {
-            return 'http://www.gravatar.com/avatar/' . md5( $email ) . '?s=' . absint( $size );
+            return 'http://www.gravatar.com/avatar/' . md5( $email ) . '?s=' . self::absint( $size );
         }
 
         /**
