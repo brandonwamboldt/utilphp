@@ -1,0 +1,1098 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
+    <meta name="viewport" content="width=device-width" />
+
+    <link rel="canonical" href="http://includephp.brandonwamboldt.ca/" />
+    <link rel="shortcut icon" href="favicon.png" type="image/png" />
+
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic" />
+    <link rel="stylesheet" href="css/docs.css" />
+
+    <title>util.php - The PHP programmers best friend - UtilityPHP</title>
+</head>
+
+<body>
+    <div id="sidebar" class="interface">
+        <a class="toc_title" href="#">util.php <span class="version">(1.0.000)</span></a>
+
+        <a class="toc_title" href="#debug_functions">Debugging</a>
+
+        <ul class="toc_section">
+            <li>- <a href="#var_dump">var_dump</a></li>
+        </ul>
+
+        <a class="toc_title" href="#arrays">Arrays &amp; Objects</a>
+
+        <ul class="toc_section">
+            <li>- <a href="#array_first">array_first</a></li>
+            <li>- <a href="#array_first_key">array_first_key</a></li>
+            <li>- <a href="#array_flatten">array_flatten</a></li>
+            <li>- <a href="#array_get">array_get</a></li>
+            <li>- <a href="#array_last">array_last</a></li>
+            <li>- <a href="#array_last_key">array_last_key</a></li>
+            <li>- <a href="#array_map_deep">array_map_deep</a></li>
+            <li>- <a href="#array_pluck">array_pluck</a></li>
+            <li>- <a href="#array_search_deep">array_search_deep</a></li>
+        </ul>
+
+        <a class="toc_title" href="#superglobals">Superglobals</a>
+
+        <ul class="toc_section">
+            <li>- <a href="#cookie_var">cookie_var</a></li>
+            <li>- <a href="#get_var">get_var</a></li>
+            <li>- <a href="#post_var">post_var</a></li>
+            <li>- <a href="#request_var">request_var</a></li>
+            <li>- <a href="#session_var">session_var</a></li>
+        </ul>
+
+        <a class="toc_title" href="#urls">URLs</a>
+
+        <ul class="toc_section">
+            <li>- <a href="#add_query_arg">add_query_arg</a></li>
+            <li>- <a href="#get_current_url">get_current_url</a></li>
+            <li>- <a href="#is_https">is_https</a></li>
+            <li>- <a href="#remove_query_arg">remove_query_arg</a></li>
+            <li>- <a href="#slugify">slugify</a></li>
+        </ul>
+
+        <a class="toc_title" href="#strings">Strings</a>
+
+        <ul class="toc_section">
+            <li>- <a href="#htmlentities">htmlentities</a></li>
+            <li>- <a href="#htmlspecialchars">htmlspecialchars</a></li>
+            <li>- <a href="#linkify">linkify</a></li>
+            <li>- <a href="#random_string">random_string</a></li>
+            <li>- <a href="#number_to_word">number_to_word</a></li>
+            <li>- <a href="#ordinal">ordinal</a></li>
+            <li>- <a href="#remove_accents">remove_accents</a></li>
+            <li>- <a href="#seems_utf8">seems_utf8</a></li>
+            <li>- <a href="#safe_truncate">safe_truncate</a></li>
+            <li>- <a href="#size_format">size_format</a></li>
+            <li>- <a href="#str_to_bool">str_to_bool</a></li>
+            <li>- <a href="#str_to_utf8">str_to_utf8</a></li>
+            <li>- <a href="#zero_pad">zero_pad</a></li>
+        </ul>
+
+        <a class="toc_title" href="#other">Other</a>
+
+        <ul class="toc_section">
+            <li>- <a href="#absint">absint</a></li>
+            <li>- <a href="#force_download">force_download</a></li>
+            <li>- <a href="#full_permissions">full_permissions</a></li>
+            <li>- <a href="#get_client_ip">get_client_ip</a></li>
+            <li>- <a href="#get_gravatar">get_gravatar</a></li>
+            <li>- <a href="#human_time_diff">human_time_diff</a></li>
+            <li>- <a href="#is_empty">is_empty</a></li>
+            <li>- <a href="#is_isset">is_isset</a></li>
+            <li>- <a href="#is_serialized">is_serialized</a></li>
+            <li>- <a href="#maybe_serialize">maybe_serialize</a></li>
+            <li>- <a href="#maybe_unserialize">maybe_unserialize</a></li>
+            <li>- <a href="#nocache_headers">nocache_headers</a></li>
+            <li>- <a href="#utf8_headers">utf8_headers</a></li>
+            <li>- <a href="#validate_email">validate_email</a></li>
+        </ul>
+
+        <a class="toc_title" href="#constants">Constants</a>
+
+        <ul class="toc_section">
+            <li>- <a href="#SECONDS_IN_A_MINUTE">SECONDS_IN_A_MINUTE</a></li>
+            <li>- <a href="#SECONDS_IN_AN_HOUR">SECONDS_IN_AN_HOUR</a></li>
+            <li>- <a href="#SECONDS_IN_A_DAY">SECONDS_IN_A_DAY</a></li>
+            <li>- <a href="#SECONDS_IN_A_WEEK">SECONDS_IN_A_WEEK</a></li>
+            <li>- <a href="#SECONDS_IN_A_MONTH">SECONDS_IN_A_MONTH</a></li>
+            <li>- <a href="#SECONDS_IN_A_YEAR">SECONDS_IN_A_YEAR</a></li>
+        </ul>
+
+        <a class="toc_title" href="#changelog">Change Log</a>
+    </div>
+
+    <div class="container">
+        <p id="introduction">
+            <img id="logo" src="images/utility_logo.png" alt="Util.php" />
+        </p>
+
+        <p>
+            <a href="http://github.com/brandonwamboldt/utilphp/">util.php</a> is a collection of useful functions and snippets
+            that you need or could use every day. It's implemented as a class with static methods, to avoid conflicts with your
+            existing code-base. Just drop it in and start using it immediately.
+        </p>
+
+        <p>
+            Included are 40-odd functions that provide you with the ability to do common tasks much easier and more efficiently,
+            without having to find that one comment on php.net where you know it's been done already. Access superglobals
+            without checking to see if certain indexes are set first and pass default values, use a nicely formatted var dump,
+            validate emails, generate random strings, flatten an array, pull a single column out of a multidimensional array
+            and much more.
+        </p>
+
+        <p>
+            Although it's implemented as one giant class, util.php has extensive documentation and a full suite of unit tests
+            to avoid breaking backwards-compatibility unintentionally.
+        </p>
+
+        <p>
+            The project is <a href="http://github.com/brandonwamboldt/utilphp/">hosted on GitHub</a>.
+            You can report bugs and discuss features on the
+            <a href="http://github.com/brandonwamboldt/utilphp">issues page</a>,
+            or send tweets to <a href="http://twitter.com/brandonwamboldt">@brandonwamboldt</a>.
+        </p>
+
+        <h2>Downloads <i style="padding-left: 12px; font-size:12px;">(Right-click, and use "Save As")</i></h2>
+
+        <table>
+            <tbody>
+                <tr>
+                    <td><a href="#">Stable Version (1.0.000)</a></td>
+                    <td><i style="font-size: 14px;">2202 lines of code, 47 functions</i></td>
+                </tr>
+
+                <tr>
+                    <td><a href="#">Nightly Version (1.0.000)</a></td>
+                    <td><i style="font-size: 14px;">2202 lines of code, 47 functions</i></td>
+                </tr>
+            </tbody>
+        </table><br />
+
+        <div id="documentation">
+            <h2 id="debug_functions">Debugging Functions</h2>
+
+            <section>
+                <article id="var_dump">
+                    <p>
+                        <span class="header">var_dump</span>
+                        <code>
+                            <span class="util_class">util::</span><span class="func_name">var_dump</span>(mixed <span class="param">$var</span>)
+                        </code>
+                    </p>
+
+                    <p>
+                        Nicely prints out the contents of a passed variable. Booleans are properly displayed as 'true' or 'false',
+                        null values are shown as 'NULL', variable types are displayed, and arrays and objects are displayed as a
+                        collapsible tree powered by JavaScript.
+                    </p>
+
+                    <p><strong>Usage:</strong></p>
+
+                    <pre class="usage-example">util::var_dump($var);</pre>
+
+                    <img src="images/awesome_var_dump.jpg" style="border: 1px solid #ccc;" />
+                </article>
+            </section>
+
+            <h2 id="arrays">Array/Object Functions</h2>
+
+            <section>
+                <article id="array_first">
+                    <p>
+                        <span class="header">array_first</span>
+                        <code>
+                            <span class="util_class">util::</span><span class="func_name">array_first</span>(array <span class="param">$array</span>)
+                        </code>
+                    </p>
+
+                    <p>
+                        Retrieve the first value from an array. Can be run on function callbacks, and it will not modify the pointer
+                        of the source array unlike most other methods of doing this.
+                    </p>
+
+                    <p><strong>Usage:</strong></p>
+
+                    <pre>util::array_first( ['a', 'b', 'c'] );<br />=&gt; Returns 'a'</pre>
+                </article>
+
+                <article id="array_first_key">
+                    <p>
+                        <span class="header">array_first_key</span>
+                        <code>
+                            <span class="util_class">util::</span><span class="func_name">array_first_key</span>(array <span class="param">$array</span>)
+                        </code>
+                    </p>
+
+                    <p>
+                        Retrieve the first key from an array. Can be run on function callbacks, and it will not modify the pointer of
+                        the source array unlike most other methods of doing this.
+                    </p>
+
+                    <p><strong>Usage:</strong></p>
+
+                    <pre>util::array_first_key( $users );<br />=&gt; Returns 'brandon'</pre>
+                </article>
+
+                <article id="array_flatten">
+                    <p>
+                        <span class="header">array_flatten</span>
+                        <code>
+                            <span class="util_class">util::</span><span class="func_name">array_flatten</span>(array <span class="param">$array</span>[, bool <span class="param">$preserve_keys</span> = TRUE])
+                        </code>
+                    </p>
+
+                    <p>Flattens a multi-dimensional array into a one dimensional array</p>
+
+                    <p><strong>Usage:</strong></p>
+
+                    <pre>util::array_flatten( [ 'a', 'b', [ 'c', 'd', 'e', [ 'f', 'g', [ [ [ [ 'h', 'i', 'j' ] ] ] ] ] ] ] );
+=&gt; Returns [ 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j' ]</pre>
+                </article>
+
+                <article id="array_get">
+                    <p>
+                        <span class="header">array_get</span>
+                        <code>
+                            <span class="util_class">util::</span><span class="func_name">array_get</span>(array <span class="param">$array</span>, string|array <span class="param">$fields</span>[, mixed <span class="param">$default</span> = NULL])
+                        </code>
+                    </p>
+
+                    <p>Retrieve a possibly nested value from an array, or return a given default if the index isn't set</p>
+
+                    <p><strong>Usage:</strong></p>
+
+                    <pre>util::array_get($_POST, 'action', 'index');
+=&gt; If $_POST['action'] is set, returns it's value, otherwise returns 'index'
+util::array_get($_POST, ['action', 'do'], 'index');
+=&gt; Returns the value of $_POST['action']['do'] or 'index'</pre>
+                </article>
+
+                <article id="array_last">
+                    <p>
+                        <span class="header">array_last</span>
+                        <code>
+                            <span class="util_class">util::</span><span class="func_name">array_last</span>(array <span class="param">$array</span>)
+                        </code>
+                    </p>
+
+                    <p>
+                        Retrieve the last value from an array. Can be run on function callbacks, and it will not modify the pointer
+                        of the source array unlike most other methods of doing this.
+                    </p>
+
+                    <p><strong>Usage:</strong></p>
+
+                    <pre>util::array_last( [ 'a', 'b', 'c'] );
+=&gt; Returns 'c'</pre>
+                </article>
+
+                <article id="array_last_key">
+                    <p>
+                        <span class="header">array_last_key</span>
+                        <code>
+                            <span class="util_class">util::</span><span class="func_name">array_last_key</span>(array <span class="param">$array</span>)
+                        </code>
+                    </p>
+
+                    <p>
+                        Retrieve the last key from an array. Can be run on function callbacks, and it will not modify the pointer of
+                        the source array unlike most other methods of doing this.
+                    </p>
+
+                    <p><strong>Usage:</strong></p>
+
+                    <pre>util::array_first_key( $users );
+=&gt; Returns 'zane'</pre>
+                </article>
+
+                <article id="array_map_deep">
+                    <p>
+                        <span class="header">array_map_deep</span>
+                        <code>
+                            <span class="util_class">util::</span><span class="func_name">array_map_deep</span>(array <span class="param">$array</span>, callable <span class="param">$callback</span>[, bool <span class="param">$on_nonscalar</span> = FALSE])
+                        </code>
+                    </p>
+
+                    <p>
+                        Returns an array containing all the elements of $array after applying the callback function to each one recursively.
+                        Particularly useful for avoiding errors when calling functions that only accept scalar values on an array that could
+                        contain nested arrays, such as $_GET or $_POST.
+                    </p>
+
+                    <p><strong>Usage:</strong></p>
+
+                    <pre>util::array_map_deep('htmlentities', $_POST);
+=&gt; Recursively escapes each scalar value in $_POST
+util::array_map_deep('htmlentities', $_POST, TRUE);
+=&gt; Recursively escapes each value in $_POST regardless of it's type</pre>
+                </article>
+
+                <article id="array_pluck">
+                    <p>
+                        <span class="header">array_pluck</span>
+                        <code>
+                            <span class="util_class">util::</span><span class="func_name">array_pluck</span>(array <span class="param">$array</span>, string <span class="param">$field</span>[, bool <span class="param">$preserve_keys</span>, bool <span class="param">$remove_nomatches</span>])
+                        </code>
+                    </p>
+
+                    <p>
+                        Replaces each value in an array with the specified field of the array or object that used to be the value. Very
+                        useful when you have an array of objects or arrays from a database, and you only want one specific field. For
+                        example, you want an array of emails from an array of users.
+                    </p>
+
+                    <p><strong>Usage:</strong></p>
+
+                    <pre>util::array_pluck([['val' => 1], ['val' => 2], ['val' => 3]], 'val');
+=&gt; Returns [1, 2, 3]
+util::array_pluck([$users, 'email');
+=&gt; Returns an array of email addresses for each user</pre>
+                </article>
+
+                <article id="array_search_deep">
+                    <p>
+                        <span class="header">array_search_deep</span>
+                        <code>
+                            <span class="util_class">util::</span><span class="func_name">array_search_deep</span>(array <span class="param">$array</span>, mixed <span class="param">$search</span>[, string <span class="param">$field</span> = FALSE])
+                        </code>
+                    </p>
+
+                    <p>
+                        Allows you to search for a value in an array of arrays or an array of objects, and return the key of the value
+                        that matches the search criteria. If $field is unspecified, the entire array/object is searched.
+                    </p>
+
+                    <p><strong>Usage:</strong></p>
+
+                    <pre>util::array_search_deep('delete_post', $_POST);
+=&gt; Might return 'do' if $_POST['do']['action'] = 'delete_post'
+util::array_search_deep('rogue_coder', $users, 'username');
+=&gt; Might return 5 if $users[5]->username = 'rogue_coder'</pre>
+                </article>
+            </section>
+
+            <h2 id="superglobals">Superglobal Helpers</h2>
+
+            <section>
+                <article id="cookie_var">
+                    <p>
+                        <span class="header">cookie_var</span>
+                        <code>
+                            <span class="util_class">util::</span><span class="func_name">cookie_var</span>(array|string <span class="param">$fields</span>[, mixed <span class="param">$default</span> = NULL])
+                        </code>
+                    </p>
+
+                    <p>Retrieve a possibly nested value from $_COOKIE, or return a given default if the index isn't set</p>
+
+                    <p><strong>Usage:</strong></p>
+
+                    <pre>util::cookie_var('action', 'index');
+=&gt; If $_COOKIE['action'] is set, returns it's value, otherwise returns 'index'
+util::cookie_var(['action', 'do'], 'index');
+=&gt; Returns the value of $_COOKIE['action']['do'] or 'index'</pre>
+                </article>
+
+                <article id="get_var">
+                    <p>
+                        <span class="header">get_var</span>
+                        <code>
+                            <span class="util_class">util::</span><span class="func_name">get_var</span>(array|string <span class="param">$fields</span>[, mixed <span class="param">$default</span> = NULL])
+                        </code>
+                    </p>
+
+                    <p>Retrieve a possibly nested value from $_GET, or return a given default if the index isn't set</p>
+
+                    <p><strong>Usage:</strong></p>
+
+                    <pre>util::get_var('action', 'index');
+=&gt; If $_GET['action'] is set, returns it's value, otherwise returns 'index'
+util::get_var(['action', 'do'], 'index');
+=&gt; Returns the value of $_GET['action']['do'] or 'index'</pre>
+                </article>
+
+                <article id="post_var">
+                    <p>
+                        <span class="header">post_var</span>
+                        <code>
+                            <span class="util_class">util::</span><span class="func_name">post_var</span>(array|string <span class="param">$fields</span>[, mixed <span class="param">$default</span> = NULL])
+                        </code>
+                    </p>
+
+                    <p>Retrieve a possibly nested value from $_POST, or return a given default if the index isn't set</p>
+
+                    <p><strong>Usage:</strong></p>
+
+                    <pre>util::post_var('action', 'index');
+=&gt; If $_POST['action'] is set, returns it's value, otherwise returns 'index'
+util::post_var(['action', 'do'], 'index');
+=&gt; Returns the value of $_POST['action']['do'] or 'index'</pre>
+                </article>
+
+                <article id="request_var">
+                    <p>
+                        <span class="header">request_var</span>
+                        <code>
+                            <span class="util_class">util::</span><span class="func_name">request_var</span>(array|string <span class="param">$fields</span>[, mixed <span class="param">$default</span> = NULL])
+                        </code>
+                    </p>
+
+                    <p>Retrieve a possibly nested value from $_REQUEST, or return a given default if the index isn't set</p>
+
+                    <p><strong>Usage:</strong></p>
+
+                    <pre>util::request_var('action', 'index');
+=&gt; If $_REQUEST['action'] is set, returns it's value, otherwise returns 'index'
+util::request_var(['action', 'do'], 'index');
+=&gt; Returns the value of $_REQUEST['action']['do'] or 'index'</pre>
+                </article>
+
+                <article id="session_var">
+                    <p>
+                        <span class="header">session_var</span>
+                        <code>
+                            <span class="util_class">util::</span><span class="func_name">session_var</span>(array|string <span class="param">$fields</span>[, mixed <span class="param">$default</span> = NULL])
+                        </code>
+                    </p>
+
+                    <p>Retrieve a possibly nested value from $_SESSION, or return a given default if the index isn't set</p>
+
+                    <p><strong>Usage:</strong></p>
+
+                    <pre>util::session_var('action', 'index');
+=&gt; If $_SESSION['action'] is set, returns it's value, otherwise returns 'index'
+util::session_var(['action', 'do'], 'index');
+=&gt; Returns the value of $_SESSION['action']['do'] or 'index'</pre>
+                </article>
+            </section>
+
+            <h2 id="urls">URL Functions</h2>
+
+            <section>
+                <article id="add_query_arg">
+                    <p>
+                        <span class="header">add_query_arg</span>
+                        <code>
+                            <span class="util_class">util::</span><span class="func_name">add_query_arg</span>()
+                        </code>
+                    </p>
+
+                    <p>Adds one ore more query args to the query string of the current URL or a given URL</p>
+
+                    <p><strong>Usage:</strong></p>
+
+                    <pre>util::add_query_arg( 'user', '5', '/admin/users?action=edit' );
+=&gt; Returns '/admin/users?action=edit&amp;user=5'
+util::add_query_arg( [ 'user' => 5, 'action' => 'edit' ], '/admin/users' );
+=&gt; Returns '/admin/users?user=5&amp;action=edit'</pre>
+                </article>
+
+                <article id="get_current_url">
+                    <p>
+                        <span class="header">get_current_url</span>
+                        <code>
+                            <span class="util_class">util::</span><span class="func_name">get_current_url</span>()
+                        </code>
+                    </p>
+
+                    <p>Returns the current URL with hostname</p>
+
+                    <p><strong>Usage:</strong></p>
+
+                    <pre>util::get_current_url();
+=&gt; Returns 'http://brandonwamboldt.ca/utilphp/'</pre>
+                </article>
+
+                <article id="is_https">
+                    <p>
+                        <span class="header">is_https</span>
+                        <code>
+                            <span class="util_class">util::</span><span class="func_name">is_https</span>()
+                        </code>
+                    </p>
+
+                    <p>Returns true if the current page is being loaded over https, false if it isn't</p>
+
+                    <p><strong>Usage:</strong></p>
+
+                    <pre>util::is_https();
+=&gt; Returns false</pre>
+                </article>
+
+                <article id="remove_query_arg">
+                    <p>
+                        <span class="header">remove_query_arg</span>
+                        <code>
+                            <span class="util_class">util::</span><span class="func_name">remove_query_arg</span>( array|string <span class="param">$query_args</span>[, string <span class="param">$url</span>])
+                        </code>
+                    </p>
+
+                    <p>Removes one ore more query args from the query string of the current URL or a given URL</p>
+
+                    <p><strong>Usage:</strong></p>
+
+                    <pre>util::remove_query_arg( 'action', '/admin/users?action=edit&amp;user=5' );
+=&gt; Returns '/admin/users?user=5'
+util::remove_query_arg( [ 'user', 'action'], '/admin/users?action=edit&amp;user=5' );
+=&gt; Returns '/admin/users'</pre>
+                </article>
+
+                <article id="slugify">
+                    <p>
+                        <span class="header">slugify</span>
+                        <code>
+                            <span class="util_class">util::</span><span class="func_name">slugify</span>(string <span class="param">$string</span>[, bool <span class="param">$css_mode</span> = FALSE])
+                        </code>
+                    </p>
+
+                    <p>
+                        Generate a string safe for use in URLs from any given string.  Converts any accent characters
+                        to their equivalent normal characters and converts any other non-alphanumeric characters to
+                        dashes, then converts any sequence of two or more dashes to a single dash. This function
+                        generates slugs safe for use as URLs, and if you pass TRUE as the second parameter, it will
+                        create strings safe for use as CSS classes or IDs.
+                    </p>
+
+                    <p><strong>Usage:</strong></p>
+
+                    <pre>util::slugify('This is a random --string with an Ãccent');
+=&gt; Returns 'this-is-a-random-string-with-an-accent'</pre>
+                </article>
+            </section>
+
+            <h2 id="strings">String Functions</h2>
+
+            <section>
+                <article id="htmlentities">
+                    <p>
+                        <span class="header">htmlentities</span>
+                        <code>
+                            <span class="util_class">util::</span><span class="func_name">htmlentities</span>(string <span class="param">$string</span>[, bool <span class="param">$preserve_encoded_entities</span> = FALSE])
+                        </code>
+                    </p>
+
+                    <p>
+                        Executes htmlentities with ENT_QUOTES set by default. However, if you pass TRUE as
+                        the second parameter, it will not re-encode entities that are already encoded.
+                    </p>
+
+                    <p><strong>Usage:</strong></p>
+
+                    <pre>util::htmlentities('this string &lt; this string', TRUE);
+=&gt; Returns 'this string &lt; this string'</pre>
+                </article>
+
+                <article id="htmlspecialchars">
+                    <p>
+                        <span class="header">htmlspecialchars</span>
+                        <code>
+                            <span class="util_class">util::</span><span class="func_name">htmlspecialchars</span>(string <span class="param">$string</span>[, bool <span class="param">$preserve_encoded_entities</span> = FALSE])
+                        </code>
+                    </p>
+
+                    <p>
+                        Executes htmlspecialchars with ENT_QUOTES set by default. However, if you pass TRUE as
+                        the second parameter, it will not re-encode entities that are already encoded.
+                    </p>
+
+                    <p><strong>Usage:</strong></p>
+
+                    <pre>util::htmlspecialchars('this string &lt; this string', TRUE);
+=&gt; Returns 'this string &lt; this string'</pre>
+                </article>
+
+                <article id="linkify">
+                    <p>
+                        <span class="header">linkify</span>
+                        <code>
+                            <span class="util_class">util::</span><span class="func_name">linkify</span>(string <span class="param">$text</span>)
+                        </code>
+                    </p>
+
+                    <p>Find's any URLs in the specified text and wraps them with HTML anchor tags</p>
+
+                    <p><strong>Usage:</strong></p>
+
+                    <pre>util::linkify('this string has a link to www.google.com');
+=&gt; Returns 'this string has a link to &lt;a href="http://wwww.google.com/"&gt;www.google.com&lt;/a&gt;'</pre>
+                </article>
+
+                <article id="random_string">
+                    <p>
+                        <span class="header">random_string</span>
+                        <code>
+                            <span class="util_class">util::</span><span class="func_name">random_string</span>(int <span class="param">$length</span>[, bool <span class="param">$human_friendly</span> = TRUE, bool <span class="param">$include_symbols</span> = FALSE, bool <span class="param">$no_duplicate_chars</span> = FALSE])
+                        </code>
+                    </p>
+
+                    <p>
+                        Generates a random string of the specified length. Human friendly mode
+                        will exclude characters that can be confused with other characters, such
+                        as 0 (zero) and O (capital o), 1 (one) and l (lowercase L). Useful for
+                        generating passwords.
+                    </p>
+
+                    <p><strong>Usage:</strong></p>
+
+                    <pre>util::random_string(8);
+=&gt; Returns 'a6BiF4UW'</pre>
+                </article>
+
+                <article id="number_to_word">
+                    <p>
+                        <span class="header">number_to_word</span>
+                        <code>
+                            <span class="util_class">util::</span><span class="func_name">number_to_word</span>(int|float <span class="param">$number</span>)
+                        </code>
+                    </p>
+
+                    <p>Converts a number into it's text equivalent. For example, 56 becomes fifty-six.</p>
+
+                    <pre>util::number_to_word(512.5);
+=&gt; Returns 'five hundred and twelve point five'</pre>
+                </article>
+
+                <article id="ordinal">
+                    <p>
+                        <span class="header">ordinal</span>
+                        <code>
+                            <span class="util_class">util::</span><span class="func_name">ordinal</span>(int <span class="param">$number</span>)
+                        </code>
+                    </p>
+
+                    <p>Returns the ordinal version of a number (appends th, st, nd, rd)</p>
+
+                    <p><strong>Usage:</strong></p>
+
+                    <pre>util::ordinal(22);
+=&gt; Returns '22nd'</pre>
+                </article>
+
+                <article id="remove_accents">
+                    <p>
+                        <span class="header">remove_accents</span>
+                        <code>
+                            <span class="util_class">util::</span><span class="func_name">remove_accents</span>(string <span class="param">$string</span>)
+                        </code>
+                    </p>
+
+                    <p>Converts all accent characters to their ASCII equivalents</p>
+
+                    <p><strong>Usage:</strong></p>
+
+                    <pre>util::remove_accents('&#192;ccent');
+=&gt; Returns 'Accent'</pre>
+                </article>
+
+                <article id="seems_utf8">
+                    <p>
+                        <span class="header">seems_utf8</span>
+                        <code>
+                            <span class="util_class">util::</span><span class="func_name">seems_utf8</span>(string <span class="param">$string</span>)
+                        </code>
+                    </p>
+
+                    <p>Checks to see if a given string is UTF-8 encoded/safe</p>
+
+                    <p><strong>Usage:</strong></p>
+
+                    <pre>util::seems_utf8('This is some random string user input');
+=&gt; Returns true</pre>
+                </article>
+
+                <article id="safe_truncate">
+                    <p>
+                        <span class="header">safe_truncate</span>
+                        <code>
+                            <span class="util_class">util::</span><span class="func_name">safe_truncate</span>(string <span class="param">$string</span>, int <span class="param">$length</span>[, string <span class="param">$append</span> = '...'])
+                        </code>
+                    </p>
+
+                    <p>Truncate a string to a specified length without cutting a word off</p>
+
+                    <p><strong>Usage:</strong></p>
+
+                    <pre>util::safe_truncate('The quick brown fox jumps over the lazy dog', 24);
+=&gt; Returns 'The quick brown fox...'</pre>
+                </article>
+
+                <article id="size_format">
+                    <p>
+                        <span class="header">size_format</span>
+                        <code>
+                            <span class="util_class">util::</span><span class="func_name">size_format</span>(int <span class="param">$bytes</span>[, int <span class="param">$decimals</span> = 0])
+                        </code>
+                    </p>
+
+                    <p>Formats an integer as a human friendly size string, such as 4 KiB.</p>
+
+                    <p><strong>Usage:</strong></p>
+
+                    <pre>util::size_format( 25151251, 2 );
+=&gt; Returns '23.99 MiB'</pre>
+                </article>
+
+                <article id="str_to_bool">
+                    <p>
+                        <span class="header">str_to_bool</span>
+                        <code>
+                            <span class="util_class">util::</span><span class="func_name">str_to_bool</span>(string <span class="param">$string</span>)
+                        </code>
+                    </p>
+
+                    <p>Converts a string to boolean, looking for yes/no words like 'yes', 'no', 'true', 'false', 'y', 'n', etc</p>
+
+                    <p><strong>Usage:</strong></p>
+
+                    <pre>util::str_to_bool('yes');
+=&gt; Returns true</pre>
+                </article>
+
+                <article id="str_to_utf8">
+                    <p>
+                        <span class="header">str_to_utf8</span>
+                        <code>
+                            <span class="util_class">util::</span><span class="func_name">str_to_utf8</span>(string <span class="param">$string</span>)
+                        </code>
+                    </p>
+
+                    <p>
+                        Converts a string to UTF-8 without the need to specify the source encoding. Invalid
+                        characters that cannot be mapped to UTF-8 will be removed.
+                    </p>
+
+                    <p><strong>Usage:</strong></p>
+
+                    <pre>util::str_to_utf8('This is some random string user input');
+=&gt; Returns 'This is some random string user input'</pre>
+                </article>
+
+                <article id="zero_pad">
+                    <p>
+                        <span class="header">zero_pad</span>
+                        <code>
+                            <span class="util_class">util::</span><span class="func_name">zero_pad</span>(int <span class="param">$number</span>, int <span class="param">$length</span>)
+                        </code>
+                    </p>
+
+                    <p>Pads a given number with zeroes on the left</p>
+
+                    <p><strong>Usage:</strong></p>
+
+                    <pre>util::zero_pad(341, 8);
+=&gt; Returns '00000341'</pre>
+                </article>
+            </section>
+
+            <h2 id="other">Other</h2>
+
+            <section>
+                <article id="absint">
+                    <p>
+                        <span class="header">absint</span>
+                        <code>
+                            <span class="util_class">util::</span><span class="func_name">absint</span>(mixed <span class="param">$maybeint</span>)
+                        </code>
+                    </p>
+
+                    <p>Return the absolute integer value of a given variable</p>
+
+                    <p><strong>Usage:</strong></p>
+
+                    <pre>util::absint(-151.2);
+=&gt; Returns 151</pre>
+                </article>
+
+                <article id="force_download">
+                    <p>
+                        <span class="header">force_download</span>
+                        <code>
+                            <span class="util_class">util::</span><span class="func_name">force_download</span>(string <span class="param">$filename</span>, string <span class="param">$content</span> = FALSE)
+                        </code>
+                    </p>
+
+                    <p>
+                        Transmit headers that force a browser to display the download file dialog. Cross
+                        browser compatible. Only fires if headers have not already been sent.
+                    </p>
+
+                    <p><strong>Usage:</strong></p>
+
+                    <pre>util::force_download( 'export.csv', file_get_contents( 'securefile.csv' ) );
+=&gt; The user will be prompted to download the file</pre>
+                </article>
+
+                <article id="full_permissions">
+                    <p>
+                        <span class="header">full_permissions</span>
+                        <code>
+                            <span class="util_class">util::</span><span class="func_name">full_permissions</span>(string <span class="param">$file</span>)
+                        </code>
+                    </p>
+
+                    <p>Returns the file permissions as a nice string, like -rw-r--r--</p>
+
+                    <p><strong>Usage:</strong></p>
+
+                    <pre>util::full_permissions('/etc/passwd');
+=&gt; Returns '-rw-r--r--'</pre>
+                </article>
+
+                <article id="get_client_ip">
+                    <p>
+                        <span class="header">get_client_ip</span>
+                        <code>
+                            <span class="util_class">util::</span><span class="func_name">get_client_ip</span>()
+                        </code>
+                    </p>
+
+                    <p>Returns the IP address of the client</p>
+
+                    <p><strong>Usage:</strong></p>
+
+                    <pre>util::get_client_ip();
+=&gt; Returns '12.123.12.100'</pre>
+                </article>
+
+                <article id="get_gravatar">
+                    <p>
+                        <span class="header">get_gravatar</span>
+                        <code>
+                            <span class="util_class">util::</span><span class="func_name">get_gravatar</span>(string <span class="param">$email</span>, int <span class="param">$size</span> = 32)
+                        </code>
+                    </p>
+
+                    <p>Return the URL to a user's gravatar</p>
+
+                    <p><strong>Usage:</strong></p>
+
+                    <pre>util::get_gravatar('brandon.wamboldt@gmail.com');
+=&gt; Returns 'http://www.gravatar.com/avatar/46679faeb6780ecb1ea57527fdc66eb3?s=32'</pre>
+                </article>
+
+                <article id="human_time_diff">
+                    <p>
+                        <span class="header">human_time_diff</span>
+                        <code>
+                            <span class="util_class">util::</span><span class="func_name">human_time_diff</span>(int <span class="param">$from</span>, int <span class="param">$to</span> = '', int <span class="param">$as_text</span> = FALSE, string <span class="param">$suffix</span> = ' ago')
+                        </code>
+                    </p>
+
+                    <p>Converts a unix timestamp to a relative time string, such as "3 days ago" or "2 weeks ago"</p>
+
+                    <p><strong>Usage:</strong></p>
+
+                    <pre>util::human_time_diff(time() - 7400);
+=&gt; Returns '2 hours ago'
+util::human_time_diff(time() - 7400, '', TRUE);
+=&gt; Returns 'two hours ago'</pre>
+                </article>
+
+                <article id="is_empty">
+                    <p>
+                        <span class="header">is_empty</span>
+                        <code>
+                            <span class="util_class">util::</span><span class="func_name">is_empty</span>(mixed <span class="param">$var</span>)
+                        </code>
+                    </p>
+
+                    <p>Wrapper function for empty() that can accept function returns</p>
+
+                    <p><strong>Usage:</strong></p>
+
+                    <pre>util::is_empty( util::request_var( 'blah' ) );
+=&gt; Returns false</pre>
+                </article>
+
+                <article id="is_empty">
+                    <p>
+                        <span class="header">is_isset</span>
+                        <code>
+                            <span class="util_class">util::</span><span class="func_name">is_isset</span>(mixed <span class="param">$var</span>)
+                        </code>
+                    </p>
+
+                    <p>Wrapper function for isset() that can accept function returns</p>
+
+                    <p><strong>Usage:</strong></p>
+
+                    <pre>util::is_isset( $_REQUEST['action'] );
+=&gt; Returns true</pre>
+                </article>
+
+                <article id="is_serialized">
+                    <p>
+                        <span class="header">is_serialized</span>
+                        <code>
+                            <span class="util_class">util::</span><span class="func_name">is_serialized</span>(mixed <span class="param">$data</span>)
+                        </code>
+                    </p>
+
+                    <p>Checks to see if a given variable is a seralized data structure</p>
+
+                    <p><strong>Usage:</strong></p>
+
+                    <pre>util::is_serialized( 'a:0:{}' );
+=&gt; Returns true</pre>
+                </article>
+
+                <article id="maybe_serialize">
+                    <p>
+                        <span class="header">maybe_serialize</span>
+                        <code>
+                            <span class="util_class">util::</span><span class="func_name">maybe_serialize</span>(mixed <span class="param">$data</span>)
+                        </code>
+                    </p>
+
+                    <p>Serialize data, if needed to store in plaintext (Arrays or objects)</p>
+
+                    <p><strong>Usage:</strong></p>
+
+                    <pre>util::maybe_serialize( 5 );
+=&gt; Returns 5
+util::maybe_serialize( array() );
+=&gt; Returns 'a:0:{}'</pre>
+                </article>
+
+                <article id="maybe_unserialize">
+                    <p>
+                        <span class="header">maybe_unserialize</span>
+                        <code>
+                            <span class="util_class">util::</span><span class="func_name">maybe_unserialize</span>(mixed <span class="param">$data</span>)
+                        </code>
+                    </p>
+
+                    <p>Unserialize data, if it's a serialized string</p>
+
+                    <p><strong>Usage:</strong></p>
+
+                    <pre>util::maybe_unserialize( 5 );
+=&gt; Returns 5
+util::maybe_unserialize( a:0:{} );
+=&gt; Returns array()</pre>
+                </article>
+
+                <article id="nocache_headers">
+                    <p>
+                        <span class="header">nocache_headers</span>
+                        <code>
+                            <span class="util_class">util::</span><span class="func_name">nocache_headers</span>(mixed <span class="param">$data</span>)
+                        </code>
+                    </p>
+
+                    <p>Sets the headers to prevent caching for the different browsers</p>
+
+                    <p>
+                        Different browsers support different nocache headers, so several headers must be sent
+                        so that all of them get the point that no caching should occur
+                    </p>
+
+                    <p><strong>Usage:</strong></p>
+
+                    <pre>util::nocache_headers();</pre>
+                </article>
+
+                <article id="nocache_headers">
+                    <p>
+                        <span class="header">utf8_headers</span>
+                        <code>
+                            <span class="util_class">util::</span><span class="func_name">utf8_headers</span>(mixed <span class="param">$content_type</span> = 'text/html')
+                        </code>
+                    </p>
+
+                    <p>Transmit UTF-8 content headers if the headers haven't already been sent</p>
+
+                    <p><strong>Usage:</strong></p>
+
+                    <pre>util::utf8_headers();</pre>
+                </article>
+
+                <article id="validate_email">
+                    <p>
+                        <span class="header">validate_email</span>
+                        <code>
+                            <span class="util_class">util::</span><span class="func_name">validate_email</span>(string <span class="param">$possible_email</span>)
+                        </code>
+                    </p>
+
+                    <p>Validate an email address</p>
+
+                    <p><strong>Usage:</strong></p>
+
+                    <pre>util::validate_email( 'brandon.wamboldt@gmail.com' );
+=&gt; Returns true
+util::validate_email( 'not an email' );
+=&gt; Returns false</pre>
+                </article>
+            </section>
+
+            <h2 id="constants">Constants</h2>
+
+            <section>
+                <article id="SECONDS_IN_A_MINUTE">
+                    <p>
+                        <span class="header">SECONDS_IN_A_MINUTE</span>
+                        <code>
+                            <span class="util_class">util::</span><span class="func_name">SECONDS_IN_A_MINUTE</span>
+                        </code>
+                    </p>
+
+                    <p>The number of seconds in a minute, useful for making code more verbose</p>
+                </article>
+
+                <article id="SECONDS_IN_AN_HOUR">
+                    <p>
+                        <span class="header">SECONDS_IN_AN_HOUR</span>
+                        <code>
+                            <span class="util_class">util::</span><span class="func_name">SECONDS_IN_AN_HOUR</span>
+                        </code>
+                    </p>
+
+                    <p>The number of seconds in an hour, useful for making code more verbose</p>
+                </article>
+
+                <article id="SECONDS_IN_A_DAY">
+                    <p>
+                        <span class="header">SECONDS_IN_A_DAY</span>
+                        <code>
+                            <span class="util_class">util::</span><span class="func_name">SECONDS_IN_A_DAY</span>
+                        </code>
+                    </p>
+
+                    <p>The number of seconds in a day, useful for making code more verbose</p>
+                </article>
+
+                <article id="SECONDS_IN_A_WEEK">
+                    <p>
+                        <span class="header">SECONDS_IN_A_WEEK</span>
+                        <code>
+                            <span class="util_class">util::</span><span class="func_name">SECONDS_IN_A_WEEK</span>
+                        </code>
+                    </p>
+
+                    <p>The number of seconds in a week (7 days), useful for making code more verbose</p>
+                </article>
+
+                <article id="SECONDS_IN_A_MONTH">
+                    <p>
+                        <span class="header">SECONDS_IN_A_MONTH</span>
+                        <code>
+                            <span class="util_class">util::</span><span class="func_name">SECONDS_IN_A_MONTH</span>
+                        </code>
+                    </p>
+
+                    <p>The number of seconds in a month (30 days), useful for making code more verbose</p>
+                </article>
+
+                <article id="SECONDS_IN_A_YEAR">
+                    <p>
+                        <span class="header">SECONDS_IN_A_YEAR</span>
+                        <code>
+                            <span class="util_class">util::</span><span class="func_name">SECONDS_IN_A_YEAR</span>
+                        </code>
+                    </p>
+
+                    <p>The number of seconds in a year (365 days), useful for making code more verbose</p>
+                </article>
+            </section>
+
+            <h2 id="changelog">Change Log</h2>
+
+            <p>
+                <span class="header">1.0.000</span><br />
+                Initial release of util.php.
+            </p>
+        </div>
+    </div>
+</body>
+
+</html>
