@@ -1802,14 +1802,23 @@ if ( ! class_exists( 'util' ) ) {
         /**
          * Returns the IP address of the client
          *
+         * @param   bool  $trust_proxy_headers  Whether or not to trust the
+         *                                      proxy headers HTTP_CLIENT_IP
+         *                                      and HTTP_X_FORWARDED_FOR. ONLY
+         *                                      use if your server is behind a
+         *                                      proxy that sets these values
          * @return  string
          *
          * @access  public
          * @since   1.0.000
          * @static
          */
-        public static function get_client_ip()
+        public static function get_client_ip( $trust_proxy_headers = FALSE )
         {
+            if ( ! $trust_proxy_headers ) {
+                return $_SERVER['REMOTE_ADDR'];
+            }
+
             if ( ! empty( $_SERVER['HTTP_CLIENT_IP'] ) ) {
                 $ip = $_SERVER['HTTP_CLIENT_IP'];
             } else if ( ! empty( $_SERVER['HTTP_X_FORWARDED_FOR'] ) ) {
