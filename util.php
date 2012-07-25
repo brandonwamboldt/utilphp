@@ -10,7 +10,7 @@
  *
  * @author   Brandon Wamboldt
  * @link     http://github.com/brandonwamboldt/utilphp/ Official Documentation
- * @version  1.0.002
+ * @version  1.0.003
  */
 
 declare(encoding='UTF-8');
