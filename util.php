@@ -1207,36 +1207,38 @@ if ( ! class_exists( 'util' ) ) {
                 $to = time();
             }
 
-            $diff = $to - $from;
+            $from = new DateTime( date( 'Y-m-d H:i:s', $from ) );
+            $to   = new DateTime( date( 'Y-m-d H:i:s', $to ) );
+            $diff = $from->diff( $to );
 
-            if ( $diff <= 1 ) {
-                $text = '1 second';
-            } else if ( $diff <= self::SECONDS_IN_A_MINUTE ) {
-                $text = $diff . ' seconds';
-            } else if ( $diff < ( self::SECONDS_IN_A_MINUTE * 2 ) ) {
-                $text = '1 minute';
-            } else if ( $diff < self::SECONDS_IN_AN_HOUR ) {
-                $text = floor( $diff / self::SECONDS_IN_A_MINUTE ) . ' minutes';
-            } else if ( $diff < ( self::SECONDS_IN_AN_HOUR * 2 ) ) {
-                $text = '1 hour';
-            } else if ( $diff < self::SECONDS_IN_A_DAY ) {
-                $text = floor( $diff / self::SECONDS_IN_AN_HOUR ) . ' hours';
-            } else if ( $diff < ( self::SECONDS_IN_A_DAY * 2 ) ) {
-                $text = '1 day';
-            } else if ( $diff < self::SECONDS_IN_A_WEEK ) {
-                $text = floor( $diff / self::SECONDS_IN_A_DAY ) . ' days';
-            } else if ( $diff < ( self::SECONDS_IN_A_WEEK * 2 ) ) {
-                $text = '1 week';
-            } else if ( $diff < self::SECONDS_IN_A_MONTH ) {
-                $text = floor( $diff / self::SECONDS_IN_A_WEEK ) . ' weeks';
-            } else if ( $diff < ( self::SECONDS_IN_A_MONTH * 2 ) ) {
-                $text = '1 month';
-            } else if ( $diff < self::SECONDS_IN_A_YEAR ) {
-                $text = floor( $diff / self::SECONDS_IN_A_MONTH ) . ' months';
-            } else if ( $diff < ( self::SECONDS_IN_A_YEAR * 2 ) ) {
+            if ( $diff->y > 1 ) {
+                $text = $diff->y . ' years';
+            } else if ( $diff->y == 1 ) {
                 $text = '1 year';
+            } else if ( $diff->m > 1 ) {
+                $text = $diff->m . ' months';
+            } else if ( $diff->m == 1 ) {
+                $text = '1 month';
+            } else if ( $diff->d > 7 ) {
+                $text = ceil( $diff->d / 7 ) . ' weeks';
+            } else if ( $diff->d == 7 ) {
+                $text = '1 week';
+            } else if ( $diff->d > 1 ) {
+                $text = $diff->d . ' days';
+            } else if ( $diff->d == 1 ) {
+                $text = '1 day';
+            } else if ( $diff->h > 1 ) {
+                $text = $diff->h . ' hours';
+            } else if ( $diff->h == 1 ) {
+                $text = ' 1 hour';
+            } else if ( $diff->i > 1 ) {
+                $text = $diff->i . ' minutes';
+            } else if ( $diff->i == 1 ) {
+                $text = '1 minute';
+            } else if ( $diff->s > 1 ) {
+                $text = $diff->s . ' seconds';
             } else {
-                $text = floor( $diff / self::SECONDS_IN_A_YEAR ) . ' years';
+                $text = '1 second';
             }
 
             if ( $as_text ) {
@@ -1244,7 +1246,7 @@ if ( ! class_exists( 'util' ) ) {
                 $text = self::number_to_word( $text[0] ) . ' ' . $text[1];
             }
 
-            return $text . $suffix;
+            return trim( $text ) . $suffix;
         }
 
         /**
