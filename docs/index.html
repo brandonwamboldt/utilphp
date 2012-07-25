@@ -87,7 +87,6 @@
             <li>- <a href="#get_client_ip">get_client_ip</a></li>
             <li>- <a href="#get_gravatar">get_gravatar</a></li>
             <li>- <a href="#human_time_diff">human_time_diff</a></li>
-            <li>- <a href="#is_empty">is_empty</a></li>
             <li>- <a href="#is_serialized">is_serialized</a></li>
             <li>- <a href="#maybe_serialize">maybe_serialize</a></li>
             <li>- <a href="#maybe_unserialize">maybe_unserialize</a></li>
@@ -876,22 +875,6 @@ util::human_time_diff(time() - 7400, '', TRUE);
 =&gt; Returns 'two hours ago'</pre>
                 </article>
 
-                <article id="is_empty">
-                    <p>
-                        <span class="header">is_empty</span>
-                        <code>
-                            <span class="util_class">util::</span><span class="func_name">is_empty</span>(mixed <span class="param">$var</span>)
-                        </code>
-                    </p>
-
-                    <p>Wrapper function for empty() that can accept function returns</p>
-
-                    <p><strong>Usage:</strong></p>
-
-                    <pre>util::is_empty( util::request_var( 'blah' ) );
-=&gt; Returns false</pre>
-                </article>
-
                 <article id="is_serialized">
                     <p>
                         <span class="header">is_serialized</span>
@@ -1072,7 +1055,8 @@ util::validate_email( 'not an email' );
 
             <p>
                 <span class="header">1.0.001</span><br />
-                - Removed is_isset() as the function did not work as intended
+                - Removed is_isset() as the function did not work as intended<br />
+                - Removed is_empty() as it is redundant, use ! with function calls instead
             </p>
 
             <p>

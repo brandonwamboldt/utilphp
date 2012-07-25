@@ -1936,22 +1936,6 @@ if ( ! class_exists( 'util' ) ) {
         }
 
         /**
-         * Check if a variable is empty (Allows you to execute it on the return
-         * value of a function)
-         *
-         * @param   mixed  $var  The variable to see if it's empty
-         * @return  bool
-         *
-         * @access  public
-         * @since   1.0.000
-         * @static
-         */
-        public static function is_empty( $var )
-        {
-            return empty( $var );
-        }
-
-        /**
          * Returns the first element in an array
          *
          * @param   array  $array  The array
