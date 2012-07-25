@@ -87,8 +87,6 @@
             <li>- <a href="#get_client_ip">get_client_ip</a></li>
             <li>- <a href="#get_gravatar">get_gravatar</a></li>
             <li>- <a href="#human_time_diff">human_time_diff</a></li>
-            <li>- <a href="#is_empty">is_empty</a></li>
-            <li>- <a href="#is_isset">is_isset</a></li>
             <li>- <a href="#is_serialized">is_serialized</a></li>
             <li>- <a href="#maybe_serialize">maybe_serialize</a></li>
             <li>- <a href="#maybe_unserialize">maybe_unserialize</a></li>
@@ -138,7 +136,7 @@
         <p>
             The project is <a href="http://github.com/brandonwamboldt/utilphp/">hosted on GitHub</a>.
             You can report bugs and discuss features on the
-            <a href="http://github.com/brandonwamboldt/utilphp">issues page</a>,
+            <a href="https://github.com/brandonwamboldt/utilphp/issues">issues page</a>,
             or send tweets to <a href="http://twitter.com/brandonwamboldt">@brandonwamboldt</a>.
         </p>
 
@@ -147,13 +145,11 @@
         <table>
             <tbody>
                 <tr>
-                    <td><a href="#">Stable Version (1.0.000)</a></td>
-                    <td><i style="font-size: 14px;">2202 lines of code, 47 functions</i></td>
+                    <td><a href="https://github.com/brandonwamboldt/utilphp/zipball/master">Stable Version (1.0.001)</a></td>
                 </tr>
 
                 <tr>
-                    <td><a href="#">Nightly Version (1.0.000)</a></td>
-                    <td><i style="font-size: 14px;">2202 lines of code, 47 functions</i></td>
+                    <td><a href="https://github.com/brandonwamboldt/utilphp/zipball/develop">Nightly Version (1.0.002)</a></td>
                 </tr>
             </tbody>
         </table><br />
@@ -831,11 +827,14 @@ util::remove_query_arg( [ 'user', 'action'], '/admin/users?action=edit&amp;user=
                     <p>
                         <span class="header">get_client_ip</span>
                         <code>
-                            <span class="util_class">util::</span><span class="func_name">get_client_ip</span>()
+                            <span class="util_class">util::</span><span class="func_name">get_client_ip</span>(bool <span class="param">$trust_proxy_headers</span> = FALSE)
                         </code>
                     </p>
 
-                    <p>Returns the IP address of the client</p>
+                    <p>
+                        Returns the IP address of the client. Only enable $trust_proxy_headers if your server is behind a proxy
+                        that sets the HTTP_CLIENT_IP and HTTP_X_FORWARDED_FOR headers.
+                    </p>
 
                     <p><strong>Usage:</strong></p>
 
@@ -875,38 +874,6 @@ util::remove_query_arg( [ 'user', 'action'], '/admin/users?action=edit&amp;user=
 =&gt; Returns '2 hours ago'
 util::human_time_diff(time() - 7400, '', TRUE);
 =&gt; Returns 'two hours ago'</pre>
-                </article>
-
-                <article id="is_empty">
-                    <p>
-                        <span class="header">is_empty</span>
-                        <code>
-                            <span class="util_class">util::</span><span class="func_name">is_empty</span>(mixed <span class="param">$var</span>)
-                        </code>
-                    </p>
-
-                    <p>Wrapper function for empty() that can accept function returns</p>
-
-                    <p><strong>Usage:</strong></p>
-
-                    <pre>util::is_empty( util::request_var( 'blah' ) );
-=&gt; Returns false</pre>
-                </article>
-
-                <article id="is_empty">
-                    <p>
-                        <span class="header">is_isset</span>
-                        <code>
-                            <span class="util_class">util::</span><span class="func_name">is_isset</span>(mixed <span class="param">$var</span>)
-                        </code>
-                    </p>
-
-                    <p>Wrapper function for isset() that can accept function returns</p>
-
-                    <p><strong>Usage:</strong></p>
-
-                    <pre>util::is_isset( $_REQUEST['action'] );
-=&gt; Returns true</pre>
                 </article>
 
                 <article id="is_serialized">
@@ -1086,6 +1053,14 @@ util::validate_email( 'not an email' );
             </section>
 
             <h2 id="changelog">Change Log</h2>
+
+            <p>
+                <span class="header">1.0.001</span><br />
+                - Removed is_isset() as the function did not work as intended<br />
+                - Removed is_empty() as it is redundant, use ! with function calls instead<br />
+                - Added the $trust_proxy_headers parameter to get_client_ip()<br />
+                - Fixed a bug with get_gravatar()
+            </p>
 
             <p>
                 <span class="header">1.0.000</span><br />
