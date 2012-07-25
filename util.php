@@ -8,9 +8,9 @@
  * contained within a single file and hosts no dependencies. The library is
  * designed to avoid any possible conflicts.
  *
- * @author  Brandon Wamboldt
- * @link    http://github.com/brandonwamboldt/utilphp/ Official Documentation
- * @version 1.0.000
+ * @author   Brandon Wamboldt
+ * @link     http://github.com/brandonwamboldt/utilphp/ Official Documentation
+ * @version  1.0.001
  */
 
 declare(encoding='UTF-8');
