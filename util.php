@@ -934,7 +934,7 @@ if ( ! class_exists( 'util' ) ) {
          */
         public static function str_to_bool( $string, $default = FALSE )
         {
-            $yes_words = 'affirmative|all right|aye|indubitably|most assuredly|of course|okay|sure thing|y|yes|yea|yep|sure|yeah|true|t';
+            $yes_words = 'affirmative|all right|aye|indubitably|most assuredly|ok|of course|okay|sure thing|y|yes|yea|yep|sure|yeah|true|t';
             $no_words = 'no|no way|nope|nah|na|noo|nooo|never|absolutely not|by no means|negative|never ever|false|f';
 
             if ( preg_match( '/^(' . $yes_words . ')$/i', $string ) ) {
