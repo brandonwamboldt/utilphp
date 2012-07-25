@@ -778,8 +778,6 @@ if ( ! class_exists( 'util' ) ) {
         {
             if ( isset( $_SERVER['HTTPS'] ) && ! empty( $_SERVER['HTTPS'] ) && $_SERVER['HTTPS'] != 'off' ) {
                 return TRUE;
-            } else if ( isset( $_SERVER['SERVER_PORT'] ) && $_SERVER['SERVER_PORT'] == 443 ) {
-                return TRUE;
             } else {
                 return FALSE;
             }
