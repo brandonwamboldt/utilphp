@@ -829,11 +829,14 @@ util::remove_query_arg( [ 'user', 'action'], '/admin/users?action=edit&amp;user=
                     <p>
                         <span class="header">get_client_ip</span>
                         <code>
-                            <span class="util_class">util::</span><span class="func_name">get_client_ip</span>()
+                            <span class="util_class">util::</span><span class="func_name">get_client_ip</span>(bool <span class="param">$trust_proxy_headers</span> = FALSE)
                         </code>
                     </p>
 
-                    <p>Returns the IP address of the client</p>
+                    <p>
+                        Returns the IP address of the client. Only enable $trust_proxy_headers if your server is behind a proxy
+                        that sets the HTTP_CLIENT_IP and HTTP_X_FORWARDED_FOR headers.
+                    </p>
 
                     <p><strong>Usage:</strong></p>
 
@@ -1056,7 +1059,8 @@ util::validate_email( 'not an email' );
             <p>
                 <span class="header">1.0.001</span><br />
                 - Removed is_isset() as the function did not work as intended<br />
-                - Removed is_empty() as it is redundant, use ! with function calls instead
+                - Removed is_empty() as it is redundant, use ! with function calls instead<br />
+                - Added the $trust_proxy_headers parameter to get_client_ip()
             </p>
 
             <p>
