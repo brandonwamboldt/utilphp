@@ -1792,11 +1792,51 @@ if ( ! class_exists( 'util' ) ) {
          */
         public static function get_current_url()
         {
+            $url = '';
+
+            // Check to see if it's over https
             if ( self::is_https() ) {
-                return 'https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+                $url .= 'https://';
             } else {
-                return 'http://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+                $url .= 'http://';
             }
+
+            // Was a username or password passed?
+            if ( isset( $_SERVER['PHP_AUTH_USER'] ) ) {
+                $url .= $_SERVER['PHP_AUTH_USER'];
+
+                if ( isset( $_SERVER['PHP_AUTH_PW'] ) ) {
+                    $url .= ':' . $_SERVER['PHP_AUTH_PW'];
+                }
+
+                $url .= '@';
+            }
+
+
+            // We want the user to stay on the same host they are currently on,
+            // but beware of security issues
+            // see http://shiflett.org/blog/2006/mar/server-name-versus-http-host
+            $url .= $_SERVER['HTTP_HOST'];
+
+            // Is it on a non standard port?
+            if ( $_SERVER['SERVER_PORT'] != 80 ) {
+                $url .= ':' . $_SERVER['SERVER_PORT'];
+            }
+
+            // Get the rest of the URL
+            if ( ! isset( $_SERVER['REQUEST_URI'] ) ) {
+
+                // Microsoft IIS doesn't set REQUEST_URI by default
+                $url .= substr( $_SERVER['PHP_SELF'], 1 );
+
+                if ( isset( $_SERVER['QUERY_STRING'] ) ) {
+                    $url .= '?' . $_SERVER['QUERY_STRING'];
+                }
+            } else {
+                $url .= $_SERVER['REQUEST_URI'];
+            }
+
+            return $url;
         }
 
         /**
