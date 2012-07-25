@@ -18,7 +18,7 @@
 
 <body>
     <div id="sidebar" class="interface">
-        <a class="toc_title" href="#">util.php <span class="version">(1.0.002)</span></a>
+        <a class="toc_title" href="#">util.php <span class="version">(1.0.003)</span></a>
 
         <a class="toc_title" href="#debug_functions">Debugging</a>
 
@@ -145,11 +145,11 @@
         <table>
             <tbody>
                 <tr>
-                    <td><a href="https://github.com/brandonwamboldt/utilphp/zipball/master">Stable Version (1.0.002)</a></td>
+                    <td><a href="https://github.com/brandonwamboldt/utilphp/zipball/master">Stable Version (1.0.003)</a></td>
                 </tr>
 
                 <tr>
-                    <td><a href="https://github.com/brandonwamboldt/utilphp/zipball/develop">Nightly Version (1.0.003)</a></td>
+                    <td><a href="https://github.com/brandonwamboldt/utilphp/zipball/develop">Nightly Version (1.0.004)</a></td>
                 </tr>
             </tbody>
         </table><br />
@@ -1053,6 +1053,14 @@ util::validate_email( 'not an email' );
             </section>
 
             <h2 id="changelog">Change Log</h2>
+
+            <p>
+                <span class="header">1.0.003</span><br />
+                - Added 'ok' to the list of yes words for str_to_bool<br />
+                - Changed validate_email to be wrapper for filter_var<br />
+                - Modified the regex for seems_utf8 to be more accurate<br />
+                - str_to_bool matches no followed by any number of 'o's
+            </p>
 
             <p>
                 <span class="header">1.0.002</span><br />
