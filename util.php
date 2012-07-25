@@ -618,13 +618,19 @@ if ( ! class_exists( 'util' ) ) {
                 return mb_check_encoding( $string, 'UTF-8' );
             }
 
-            $regex = "/^(" .
-                "[\x01-\x7F]+" .
-                "|([\xC2-\xDF][\x80-\xBF])" .
-                "|([\xE0-\xEF][\x80-\xBF][\x80-\xBF])" .
-                "|([\xF0-\xF4][\x80-\xBF][\x80-\xBF][\x80-\xBF]))*\$/";
+            $regex = '/(
+    | [\xF8-\xFF] # Invalid UTF-8 Bytes
+    | [\xC0-\xDF](?![\x80-\xBF]) # Invalid UTF-8 Sequence Start
+    | [\xE0-\xEF](?![\x80-\xBF]{2}) # Invalid UTF-8 Sequence Start
+    | [\xF0-\xF7](?![\x80-\xBF]{3}) # Invalid UTF-8 Sequence Start
+    | (?<=[\x0-\x7F\xF8-\xFF])[\x80-\xBF] # Invalid UTF-8 Sequence Middle
+    | (?<![\xC0-\xDF]|[\xE0-\xEF]|[\xE0-\xEF][\x80-\xBF]|[\xF0-\xF7]|[\xF0-\xF7][\x80-\xBF]|[\xF0-\xF7][\x80-\xBF]{2})[\x80-\xBF] # Overlong Sequence
+    | (?<=[\xE0-\xEF])[\x80-\xBF](?![\x80-\xBF]) # Short 3 byte sequence
+    | (?<=[\xF0-\xF7])[\x80-\xBF](?![\x80-\xBF]{2}) # Short 4 byte sequence
+    | (?<=[\xF0-\xF7][\x80-\xBF])[\x80-\xBF](?![\x80-\xBF]) # Short 4 byte sequence (2)
+)/x';
 
-            return preg_match( $regex, $string );
+            return ! preg_match( $regex, $string );
         }
 
         /**
