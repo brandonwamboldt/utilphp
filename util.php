@@ -1270,6 +1270,7 @@ if ( ! class_exists( 'util' ) ) {
             if ( strpos( $number, '.' ) !== FALSE ) {
                 list( $number, $decimal ) = explode( '.', $number );
             } else {
+                $number = $number;
                 $decimal = FALSE;
             }
 
@@ -1948,22 +1949,6 @@ if ( ! class_exists( 'util' ) ) {
         public static function is_empty( $var )
         {
             return empty( $var );
-        }
-
-        /**
-         * Check if a variable is set (Allows you to execute it on the return
-         * value of a function)
-         *
-         * @param   mixed  $var  The variable to see if it's empty
-         * @return  bool
-         *
-         * @access  public
-         * @since   1.0.000
-         * @static
-         */
-        public static function is_isset( $var )
-        {
-            return isset( $var );
         }
 
         /**
