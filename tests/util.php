@@ -481,6 +481,26 @@ class UtilityPHPTest extends PHPUnit_TestCase
 
         $this->assertEquals( $expect, util::array_flatten( $input ) );
     }
+
+	public function test_validate_form_entries(){
+		$form_data = array(
+			"lname"=>array("value"=>"","verbose_name"=>"Last Name","checks"=>array("empty")),
+			"fname"=>array("value"=>"A first name","verbose_name"=>"First Name","checks"=>array("empty")),
+			"height"=>array("value"=>"100","verbose_name"=>"Height","checks"=>array("empty","numeric")),
+			"weight"=>array("value"=>"75","verbose_name"=>"Weight","checks"=>array("empty","numeric")),
+			"email"=>array("value"=>"an_email_address@gmail.com","verbose_name"=>"Email address","checks"=>array("empty","email")),
+			"phone"=>array("value"=>"+1234567890","verbose_name"=>"Phone","checks"=>array("empty","phone")),
+			"alt_phone"=>array("value"=>"","verbose_name"=>"Alternative Phone","checks"=>array("phone_optional")),
+			"addy"=>array("value"=>"An address somewhere","verbose_name"=>"Residential Address","checks"=>array("empty")),
+			"city"=>array("value"=>"A city name","verbose_name"=>"Residential City","checks"=>array("empty")),
+			"country"=>array("value"=>"My Country","verbose_name"=>"Residential Country","checks"=>array("empty"))
+		);
+		//sets the input data
+		$expects = array(
+			"The Last Name cannot be empty!"
+		);
+		$this->assertEquals($expects, util::validateFormEntries($form_data));
+	}
 }
 
 $suite  = new PHPUnit_TestSuite( 'UtilityPHPTest' );
