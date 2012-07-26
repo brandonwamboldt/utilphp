@@ -485,15 +485,15 @@ class UtilityPHPTest extends PHPUnit_TestCase
 	public function test_validate_form_entries(){
 		$form_data = array(
 			"lname"=>array("value"=>"","verbose_name"=>"Last Name","checks"=>array("empty")),
-			"fname"=>array("value"=>"Emmanuel","verbose_name"=>"First Name","checks"=>array("empty")),
+			"fname"=>array("value"=>"A first name","verbose_name"=>"First Name","checks"=>array("empty")),
 			"height"=>array("value"=>"100","verbose_name"=>"Height","checks"=>array("empty","numeric")),
 			"weight"=>array("value"=>"75","verbose_name"=>"Weight","checks"=>array("empty","numeric")),
-			"email"=>array("value"=>"emmanix2002@gmail.com","verbose_name"=>"Email address","checks"=>array("empty","email")),
-			"phone"=>array("value"=>"+2348136680801","verbose_name"=>"Phone","checks"=>array("empty","phone")),
+			"email"=>array("value"=>"an_email_address@gmail.com","verbose_name"=>"Email address","checks"=>array("empty","email")),
+			"phone"=>array("value"=>"+1234567890","verbose_name"=>"Phone","checks"=>array("empty","phone")),
 			"alt_phone"=>array("value"=>"","verbose_name"=>"Alternative Phone","checks"=>array("phone_optional")),
-			"addy"=>array("value"=>"Somewhere in Lagos, Nigeria","verbose_name"=>"Residential Address","checks"=>array("empty")),
-			"city"=>array("value"=>"Lagos","verbose_name"=>"Residential City","checks"=>array("empty")),
-			"country"=>array("value"=>"Nigeria","verbose_name"=>"Residential Country","checks"=>array("empty"))
+			"addy"=>array("value"=>"An address somewhere","verbose_name"=>"Residential Address","checks"=>array("empty")),
+			"city"=>array("value"=>"A city name","verbose_name"=>"Residential City","checks"=>array("empty")),
+			"country"=>array("value"=>"My Country","verbose_name"=>"Residential Country","checks"=>array("empty"))
 		);
 		//sets the input data
 		$expects = array(
