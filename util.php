@@ -532,8 +532,7 @@ if ( ! class_exists( 'util' ) ) {
          */
         public static function slugify( $string, $css_mode = FALSE )
         {
-            $slug = preg_replace( '/([^A-Za-z0-9\-]+)/', '-', strtolower( self::remove_accents( $string ) ) );
-            $slug = preg_replace( '/(\-+)/', '-', $slug );
+            $slug = preg_replace( '/([^a-z0-9]+)/', '-', strtolower( self::remove_accents( $string ) ) );
 
             if ( $css_mode ) {
                 $digits = array( 'zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine' );
