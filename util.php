@@ -2220,5 +2220,208 @@ if ( ! class_exists( 'util' ) ) {
 
             return $array;
         }
+		/**
+		 * This method can be used to validate the contents of a web form; if errors are found, it returns each error as an index in
+		 * an "ERRORS" array which can then be checked by the web user and presented in a pretty manner as feedback on the web form
+		 * There's a helper function library that can be used to convert such error messages(or generally string and arrays) to presentable
+		 * valid HTML
+		 *
+		 * @param array $form_data the contents of the form to be processed -- contains all tests that must be performed per entry
+		 *		it's format is basically something of the form:
+		 *		$form_data = array(
+		 *				"kinname"=>array("value"=>$kin_name,"verbose_name"=>"Next of Kin name","checks"=>array("empty")),
+		 *				"kin_email"=>array("value"=>$kin_email,"verbose_name"=>"Next of Kin email","checks"=>array("email_optional")),
+		 *				"kin_phone"=>array("value"=>$kin_phone,"verbose_name"=>"Next of Kin phone","checks"=>array("phone_optional")),
+		 *				"kin_rel"=>array("value"=>$kin_rel,"verbose_name"=>"Next of Kin relationship","checks"=>array(
+		 *					array("inarray_optional","array"=>array('sibling','parent','relative','others'))
+		 *				))
+		 *		);
+		 *		This is the variable passed into the function for processing
+		 *
+		 * @return array $errors array containing all errors based on the performed checks (could also be an empty array if all tests were passed)
+		 *
+		 * @access public
+		 * @static
+		 * @author Okeke Emmanuel<emmanix2002@gmail.com>
+		 * @link https://github.com/emmanix2002/PHP-Utility-Scripts/wiki/Form-Validation
+		 */
+		public static function validateFormEntries(array $form_data){
+			$errors = array();
+			//the errors container -- will contain error messages for each field that failed
+			//validation
+			if(is_array($form_data) and !empty($form_data)){
+				//continue -- it's a valid array object
+				foreach($form_data as $field_name=>$internals){
+					//loop through all the data that was sent in via the $form_data parameter
+					if(isset($internals["value"]) and isset($internals["checks"])){
+						//if these two indices exists -- we can proceed
+						$verbose_name = (isset($internals["verbose_name"]))?
+							strval($internals["verbose_name"]):ucwords(str_replace("_"," ",$field_name));
+						//the verbose name to use to represent the field -- defaults to the (associative) index name
+						$field_value = $internals["value"];
+						//assign the value to a variable with a shorter name :D
+						foreach($internals["checks"] as $check){
+							//loop through all the checks for this field
+							$check_name = (is_string($check))? $check:$check[0];
+							//gets the check name -- it should either be a string or an array
+							$name_parts = explode("_",$check_name);
+							//split up the check name -- we're looking for modifiers
+							//only supported modifier is: optional
+							$is_optional = false;
+							//the only supported modifier for now
+							if(count($name_parts) > 1){
+								//modifier was added
+								if(strtolower($name_parts[1]) === "optional"){
+									$is_optional = true;
+								}
+							}
+							switch(strtolower($check_name)){
+								case "empty":
+									//checks that the string is empty -- do not use this on fields that have the _optional
+									//modifier
+									$trimmed = trim($field_value);
+									//trim it
+									if(empty($trimmed)){
+										$errors[] = "The $verbose_name cannot be empty!";
+									}
+									break;
+								case "length":
+								case "length_optional":
+									//checks that the string is up to a minimum length
+									$min_length = (isset($check["min_length"]) and intval($check["min_length"]) > 0)?
+										intval($check["min_length"]):0;
+									//get the length
+									$is_empty = empty($field_value);
+									if((!$is_optional) or ($is_optional and !$is_empty)){
+										//check only under these conditions
+										if(strlen($field_value) < $min_length){
+											//shorter than the minimum
+											$errors[] = "The $verbose_name should be at least $min_length characters long";
+										}
+									}
+									break;
+								case "email":
+								case "email_optional":
+									//checks that it's a valid email string
+									$is_empty = empty($field_value);
+									if((!$is_optional) or ($is_optional and !$is_empty)){
+										//check only under these conditions
+										if(!self::validate_email($field_value)){
+											//not a valid email
+											$errors[] = "It&#039;s either the $verbose_name is in the wrong format or it could
+											not be validated. Please check it and correct it (if needed)";
+										}
+									}
+									break;
+								case "phone":
+								case "phone_optional":
+									//checks that the string ,atches a Phone number
+									$mask = "+0123456789-()";
+									$verbose_mask = "0-9, +, - , ( and )";
+									//sets up the masks
+									$is_empty = empty($field_value);
+									if((!$is_optional) or ($is_optional and !$is_empty)){
+										//check only under these conditions
+										if($is_empty or strspn($field_value,$mask) != strlen($field_value)){
+											$errors[] = "The $verbose_name is invalid. It can only contain the following
+											characters: $verbose_mask";
+										}
+									}
+									break;
+								case "numeric":
+								case "numeric_optional":
+									//checks that the string value is numeric -- supports FLOAT values as well
+									$is_empty = empty($field_value);
+									if((!$is_optional) or ($is_optional and !$is_empty)){
+										//check only under these conditions
+										if(!ctype_digit($field_value)){
+											$errors[] = "The $verbose_name must contain only numbers i.e. 0-9";
+										}
+									}
+									break;
+								case "alpha":
+								case "alpha_optional":
+									//checks that the string contains only alphabets
+									$is_empty = empty($field_value);
+									if((!$is_optional) or ($is_optional and !$is_empty)){
+										//check only under these conditions
+										if(!ctype_alpha($field_value)){
+											$errors[] = "The $verbose_name can only contain alphabets i.e. a-z and A-Z";
+										}
+									}
+									break;
+								case "alnum":
+								case "alnum_optional":
+									//checks that the string contains only alpha numeric characters
+									$is_empty = empty($field_value);
+									if((!$is_optional) or ($is_optional and !$is_empty)){
+										//check only under these conditions
+										if(!ctype_alnum($field_value)){
+											$errors[] = "The $verbose_name can only contain digits and alphabets i.e. 0-9, a-z
+											and A-Z";
+										}
+									}
+									break;
+								case "mask":
+								case "mask_optional":
+									//check that the string value contains only a particular set of characters
+									$mask = (isset($check["mask"]))? $check["mask"]:"";
+									$verbose_mask = (isset($check["vmask"]))? $check["vmask"]:$mask;
+									//pulls up the mask data
+									$is_empty = empty($field_value);
+									if((!$is_optional) or ($is_optional and !$is_empty)){
+										//check only under these conditions
+										if($mask){
+											//its not empty
+											if($is_empty or strspn($field_value,$mask) != strlen($field_value)){
+												$errors[] = "The $verbose_name is invalid. It can only contain the following
+												characters: $verbose_mask";
+											}
+										}
+									}
+									break;
+								case "inarray":
+								case "inarray_optional":
+									//check that the value exists in a set list of possible values
+									$array = (isset($check["array"]))? $check["array"]:array();
+									//sets up the check array
+									$is_empty = empty($field_value);
+									if((!$is_optional) or ($is_optional and !$is_empty)){
+										//check only under these conditions
+										if($array){
+											if(!in_array($field_value,$array)){
+												$errors[] = "An invalid input was received for the $verbose_name";
+											}
+										}
+									}
+									break;
+								case "isarraykey":
+								case "isarraykey_optional":
+									//checks that the value exists as a key in the set array
+									$array = (isset($check["array"]))? $check["array"]:array();
+									//sets up the check array
+									$is_empty = empty($field_value);
+									if((!$is_optional) or ($is_optional and !$is_empty)){
+										//check only under these conditions
+										if($array){
+											if(!array_key_exists($field_value,$array)){
+												$errors[] = "An internal reference for the $verbose_name could not be found";
+											}
+										}
+									}
+									break;
+								case "checked":
+									//good for checking that an options was selected for a set of checkboxes
+									if(is_array($field_value) and empty($field_value)){
+										$errors[] = "Please you need to select at least one item for the $verbose_name options";
+									}
+									break;
+							}
+						}
+					}
+				}
+			}
+			return $errors;
+		}
     }
 }
