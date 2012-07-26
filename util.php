@@ -2334,7 +2334,7 @@ if ( ! class_exists( 'util' ) ) {
 									$is_empty = empty($field_value);
 									if((!$is_optional) or ($is_optional and !$is_empty)){
 										//check only under these conditions
-										if(!ctype_digit($field_value)){
+										if(!is_numeric($field_value)){
 											$errors[] = "The $verbose_name must contain only numbers i.e. 0-9";
 										}
 									}
