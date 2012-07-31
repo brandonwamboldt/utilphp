@@ -1672,7 +1672,12 @@ if ( ! class_exists( 'util' ) ) {
          */
         public static function get_gravatar( $email, $size = 32 )
         {
-            return 'http://www.gravatar.com/avatar/' . md5( $email ) . '?s=' . self::absint( $size );
+						if ( self::is_https() ) {
+							$url = 'https://secure.gravatar.com/';
+						} else {
+							$url = 'http://www.gravatar.com/';
+            $url .= 'avatar/' . md5( $email ) . '?s=' . self::absint( $size );
+						return $url;
         }
 
         /**
