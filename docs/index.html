@@ -18,7 +18,7 @@
 
 <body>
     <div id="sidebar" class="interface">
-        <a class="toc_title" href="#">util.php <span class="version">(1.0.003)</span></a>
+        <a class="toc_title" href="#">util.php <span class="version">(1.0.004)</span></a>
 
         <a class="toc_title" href="#debug_functions">Debugging</a>
 
@@ -70,7 +70,6 @@
         <a class="toc_title" href="#other">Other</a>
 
         <ul class="toc_section">
-            <li>- <a href="#absint">absint</a></li>
             <li>- <a href="#force_download">force_download</a></li>
             <li>- <a href="#full_permissions">full_permissions</a></li>
             <li>- <a href="#get_client_ip">get_client_ip</a></li>
@@ -134,11 +133,11 @@
         <table>
             <tbody>
                 <tr>
-                    <td><a href="https://github.com/brandonwamboldt/utilphp/zipball/master">Stable Version (1.0.003)</a></td>
+                    <td><a href="https://github.com/brandonwamboldt/utilphp/zipball/master">Stable Version (1.0.004)</a></td>
                 </tr>
 
                 <tr>
-                    <td><a href="https://github.com/brandonwamboldt/utilphp/zipball/develop">Nightly Version (1.0.004)</a></td>
+                    <td><a href="https://github.com/brandonwamboldt/utilphp/zipball/develop">Nightly Version (1.0.005)</a></td>
                 </tr>
             </tbody>
         </table><br />
@@ -228,17 +227,17 @@
                     <p>
                         <span class="header">array_get</span>
                         <code>
-                            <span class="util_class">util::</span><span class="func_name">array_get</span>(array <span class="param">$array</span>, string|array <span class="param">$fields</span>[, mixed <span class="param">$default</span> = NULL])
+                            <span class="util_class">util::</span><span class="func_name">array_get</span>(<span class="param">$var</span>[, mixed <span class="param">$default</span> = NULL])
                         </code>
                     </p>
 
-                    <p>Retrieve a possibly nested value from an array, or return a given default if the index isn't set</p>
+                    <p>Retrieve a value from an array, or return a given default if the index isn't set</p>
 
                     <p><strong>Usage:</strong></p>
 
-                    <pre>util::array_get($_POST, 'action', 'index');
+                    <pre>util::array_get($_POST['action'], 'index');
 =&gt; If $_POST['action'] is set, returns it's value, otherwise returns 'index'
-util::array_get($_POST, ['action', 'do'], 'index');
+util::array_get($_POST['action']['do'], 'index');
 =&gt; Returns the value of $_POST['action']['do'] or 'index'</pre>
                 </article>
 
@@ -343,100 +342,6 @@ util::array_pluck($users, 'email');
 =&gt; Might return 'do' if $_POST['do']['action'] = 'delete_post'
 util::array_search_deep('rogue_coder', $users, 'username');
 =&gt; Might return 5 if $users[5]->username = 'rogue_coder'</pre>
-                </article>
-            </section>
-
-            <h2 id="superglobals">Superglobal Helpers</h2>
-
-            <section>
-                <article id="cookie_var">
-                    <p>
-                        <span class="header">cookie_var</span>
-                        <code>
-                            <span class="util_class">util::</span><span class="func_name">cookie_var</span>(array|string <span class="param">$fields</span>[, mixed <span class="param">$default</span> = NULL])
-                        </code>
-                    </p>
-
-                    <p>Retrieve a possibly nested value from $_COOKIE, or return a given default if the index isn't set</p>
-
-                    <p><strong>Usage:</strong></p>
-
-                    <pre>util::cookie_var('action', 'index');
-=&gt; If $_COOKIE['action'] is set, returns it's value, otherwise returns 'index'
-util::cookie_var(['action', 'do'], 'index');
-=&gt; Returns the value of $_COOKIE['action']['do'] or 'index'</pre>
-                </article>
-
-                <article id="get_var">
-                    <p>
-                        <span class="header">get_var</span>
-                        <code>
-                            <span class="util_class">util::</span><span class="func_name">get_var</span>(array|string <span class="param">$fields</span>[, mixed <span class="param">$default</span> = NULL])
-                        </code>
-                    </p>
-
-                    <p>Retrieve a possibly nested value from $_GET, or return a given default if the index isn't set</p>
-
-                    <p><strong>Usage:</strong></p>
-
-                    <pre>util::get_var('action', 'index');
-=&gt; If $_GET['action'] is set, returns it's value, otherwise returns 'index'
-util::get_var(['action', 'do'], 'index');
-=&gt; Returns the value of $_GET['action']['do'] or 'index'</pre>
-                </article>
-
-                <article id="post_var">
-                    <p>
-                        <span class="header">post_var</span>
-                        <code>
-                            <span class="util_class">util::</span><span class="func_name">post_var</span>(array|string <span class="param">$fields</span>[, mixed <span class="param">$default</span> = NULL])
-                        </code>
-                    </p>
-
-                    <p>Retrieve a possibly nested value from $_POST, or return a given default if the index isn't set</p>
-
-                    <p><strong>Usage:</strong></p>
-
-                    <pre>util::post_var('action', 'index');
-=&gt; If $_POST['action'] is set, returns it's value, otherwise returns 'index'
-util::post_var(['action', 'do'], 'index');
-=&gt; Returns the value of $_POST['action']['do'] or 'index'</pre>
-                </article>
-
-                <article id="request_var">
-                    <p>
-                        <span class="header">request_var</span>
-                        <code>
-                            <span class="util_class">util::</span><span class="func_name">request_var</span>(array|string <span class="param">$fields</span>[, mixed <span class="param">$default</span> = NULL])
-                        </code>
-                    </p>
-
-                    <p>Retrieve a possibly nested value from $_REQUEST, or return a given default if the index isn't set</p>
-
-                    <p><strong>Usage:</strong></p>
-
-                    <pre>util::request_var('action', 'index');
-=&gt; If $_REQUEST['action'] is set, returns it's value, otherwise returns 'index'
-util::request_var(['action', 'do'], 'index');
-=&gt; Returns the value of $_REQUEST['action']['do'] or 'index'</pre>
-                </article>
-
-                <article id="session_var">
-                    <p>
-                        <span class="header">session_var</span>
-                        <code>
-                            <span class="util_class">util::</span><span class="func_name">session_var</span>(array|string <span class="param">$fields</span>[, mixed <span class="param">$default</span> = NULL])
-                        </code>
-                    </p>
-
-                    <p>Retrieve a possibly nested value from $_SESSION, or return a given default if the index isn't set</p>
-
-                    <p><strong>Usage:</strong></p>
-
-                    <pre>util::session_var('action', 'index');
-=&gt; If $_SESSION['action'] is set, returns it's value, otherwise returns 'index'
-util::session_var(['action', 'do'], 'index');
-=&gt; Returns the value of $_SESSION['action']['do'] or 'index'</pre>
                 </article>
             </section>
 
@@ -722,25 +627,6 @@ util::remove_query_arg( [ 'user', 'action'], '/admin/users?action=edit&amp;user=
 =&gt; Returns true</pre>
                 </article>
 
-                <article id="str_to_utf8">
-                    <p>
-                        <span class="header">str_to_utf8</span>
-                        <code>
-                            <span class="util_class">util::</span><span class="func_name">str_to_utf8</span>(string <span class="param">$string</span>)
-                        </code>
-                    </p>
-
-                    <p>
-                        Converts a string to UTF-8 without the need to specify the source encoding. Invalid
-                        characters that cannot be mapped to UTF-8 will be removed.
-                    </p>
-
-                    <p><strong>Usage:</strong></p>
-
-                    <pre>util::str_to_utf8('This is some random string user input');
-=&gt; Returns 'This is some random string user input'</pre>
-                </article>
-
                 <article id="zero_pad">
                     <p>
                         <span class="header">zero_pad</span>
@@ -761,22 +647,6 @@ util::remove_query_arg( [ 'user', 'action'], '/admin/users?action=edit&amp;user=
             <h2 id="other">Other</h2>
 
             <section>
-                <article id="absint">
-                    <p>
-                        <span class="header">absint</span>
-                        <code>
-                            <span class="util_class">util::</span><span class="func_name">absint</span>(mixed <span class="param">$maybeint</span>)
-                        </code>
-                    </p>
-
-                    <p>Return the absolute integer value of a given variable</p>
-
-                    <p><strong>Usage:</strong></p>
-
-                    <pre>util::absint(-151.2);
-=&gt; Returns 151</pre>
-                </article>
-
                 <article id="force_download">
                     <p>
                         <span class="header">force_download</span>
@@ -1044,27 +914,37 @@ util::validate_email( 'not an email' );
             <h2 id="changelog">Change Log</h2>
 
             <p>
+                <span class="header">1.0.004</span><br />
+                - <a href="https://github.com/brandonwamboldt/utilphp/issues/22">Issue #22</a> Removed all superglobal *_get functions, you can use the modified array_get now<br />
+                - <a href="https://github.com/brandonwamboldt/utilphp/issues/22">Issue #22</a> Modifed the behaviour of array_get, see documentation<br />
+                - <a href="https://github.com/brandonwamboldt/utilphp/pull/21">Pull Request #21</a> Added multibyte support to html* functions<br />
+                - <a href="https://github.com/brandonwamboldt/utilphp/issues/9">Issue #9</a> Removed the str_to_utf8 function<br />
+                - <a href="https://github.com/brandonwamboldt/utilphp/issues/3">Issue #3</a> Removed the absint function<br />
+                - Removed declare() from util.php to avoid errors<br />
+                - Updated PHPUnit tests to use PHPUnit 3.6
+            </p>
+
+            <p>
                 <span class="header">1.0.003</span><br />
+                - <a href="https://github.com/brandonwamboldt/utilphp/issues/16">Issue #16</a> Improved performance of slugify<br />
+                - <a href="https://github.com/brandonwamboldt/utilphp/issues/14">Issue #14</a> Modified the regex for seems_utf8 to be more accurate<br />
+                - <a href="https://github.com/brandonwamboldt/utilphp/issues/13">Issue #13</a> Changed validate_email to be wrapper for filter_var<br />
                 - Added 'ok' to the list of yes words for str_to_bool<br />
-                - Changed validate_email to be wrapper for filter_var<br />
-                - Modified the regex for seems_utf8 to be more accurate<br />
-                - str_to_bool matches no followed by any number of 'o's<br />
-                - Improved performance of slugify
+                - str_to_bool matches no followed by any number of 'o's
             </p>
 
             <p>
                 <span class="header">1.0.002</span><br />
-                - is_https() no longer checks the port as well<br />
-                - human_time_diff() now uses the DateTime functions<br />
-                - get_current_url() now includes the port and user/password if required
+                - <a href="https://github.com/brandonwamboldt/utilphp/issues/12">Issue #12</a> get_current_url() now includes the port and user/password if required<br />
+                - <a href="https://github.com/brandonwamboldt/utilphp/issues/11">Issue #11</a> human_time_diff() now uses the DateTime functions<br />
+                - <a href="https://github.com/brandonwamboldt/utilphp/issues/10">Issue #10</a> is_https() no longer checks the port as well
             </p>
-
 
             <p>
                 <span class="header">1.0.001</span><br />
-                - Removed is_isset() as the function did not work as intended<br />
-                - Removed is_empty() as it is redundant, use ! with function calls instead<br />
-                - Added the $trust_proxy_headers parameter to get_client_ip()<br />
+                - <a href="https://github.com/brandonwamboldt/utilphp/issues/7">Issue #7</a> Added the $trust_proxy_headers parameter to get_client_ip()<br />
+                - <a href="https://github.com/brandonwamboldt/utilphp/issues/6">Issue #6</a> Removed is_isset() as the function did not work as intended<br />
+                - <a href="https://github.com/brandonwamboldt/utilphp/issues/6">Issue #6</a> Removed is_empty() as it is redundant, use ! with function calls instead<br />
                 - Fixed a bug with get_gravatar()
             </p>
 
