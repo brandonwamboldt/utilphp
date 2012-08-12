@@ -94,143 +94,6 @@ if ( ! class_exists( 'util' ) ) {
         public static $icon_expand = 'iVBORw0KGgoAAAANSUhEUgAAAAkAAAAJCAMAAADXT/YiAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2RpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDo3MTlFRjQ2NkM5QzJFMTExOTA0MzkwRkI0M0ZCODY4RCIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDpFQzZERTJDNEMyQzkxMUUxODRCQzgyRUNDMzZEQkZFQiIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDpFQzZERTJDM0MyQzkxMUUxODRCQzgyRUNDMzZEQkZFQiIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M1IFdpbmRvd3MiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDo3MzlFRjQ2NkM5QzJFMTExOTA0MzkwRkI0M0ZCODY4RCIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDo3MTlFRjQ2NkM5QzJFMTExOTA0MzkwRkI0M0ZCODY4RCIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PkmDvWIAAABIUExURU9t2MzM/3iW7ubm59/f5urq85mZzOvr6////9ra38zMzObm5rfB8FZz5myJ4SNFrypMvjBStTNmzOvr+mSG7OXl8T9h5SRGq/OfqCEAAABKSURBVHjaFMlbEoAwCEPRULXF2jdW9r9T4czcyUdA4XWB0IgdNSybxU9amMzHzDlPKKu7Fd1e6+wY195jW0ARYZECxPq5Gn8BBgCr0gQmxpjKAwAAAABJRU5ErkJggg==';
 
         /**
-         * Retrieve a value from the $_POST array, or return a given default if
-         * the index isn't set
-         *
-         * The first n parameters represent the fields to retrieve, being a
-         * single index or an array of indexes to access multi-level arrays.
-         *
-         * Calling the function as util::post_var( ['tags', '1412'] ) is
-         * identical to using $_POST['tags']['1412'].
-         *
-         * @param   string  $fields   The name of the field to retrieve
-         * @param   mixed   $default  A default value to return if the
-         *                            requested variable isn't set
-         * @return  mixed
-         *
-         * @see     array_get()
-         *
-         * @access  public
-         * @since   1.0.000
-         * @static
-         */
-        public static function post_var( $fields, $default = NULL )
-        {
-            return self::array_get( $_POST, $fields, $default );
-        }
-
-        /**
-         * Retrieve a value from the $_GET array, or return a given default if
-         * the index isn't set
-         *
-         * The first n parameters represent the fields to retrieve, being a
-         * single index or an array of indexes to access multi-level arrays.
-         *
-         * Calling the function as util::get_var( ['tags', '1412'] ) is
-         * identical to using $_GET['tags']['1412'].
-         *
-         * @param   string  $fields   The name of the field to retrieve
-         * @param   mixed   $default  A default value to return if the
-         *                            requested variable isn't set
-         * @return  mixed
-         *
-         * @see     array_get()
-         *
-         * @access  public
-         * @since   1.0.000
-         * @static
-         */
-        public static function get_var( $fields, $default = NULL )
-        {
-            return self::array_get( $_GET, $fields, $default );
-        }
-
-        /**
-         * Retrieve a value from the $_GET or the $_POST array, or return a
-         * given default if the index isn't set. You may expect this function
-         * to check the $_REQUEST variable, but the desired behavior is often
-         * to check $_GET or $_POST. To avoid screwing stuff up if $_COOKIE is
-         * set, and to avoid relying on the user to set the request_order
-         * option, we just make that assumption for them.
-         *
-         * The first n parameters represent the fields to retrieve, being a
-         * single index or an array of indexes to access multi-level arrays.
-         *
-         * Calling the function as util::request_var( ['tags', '1412'] ) is
-         * identical to using $_REQUEST['tags']['1412'].
-         *
-         * @param   string  $fields   The name of the field to retrieve
-         * @param   mixed   $default  A default value to return if the requested variable isn't set
-         * @return  mixed
-         *
-         * @see     array_get()
-         *
-         * @access  public
-         * @since   1.0.000
-         * @static
-         */
-        public static function request_var( $fields, $default = NULL )
-        {
-            if ( strstr( ini_get( 'request_order' ), 'GP' ) ) {
-                return self::array_get( array_merge( $_POST, $_GET ), $fields, $default );
-            } else {
-                return self::array_get( array_merge( $_GET, $_POST ), $fields, $default );
-            }
-        }
-
-        /**
-         * Retrieve a value from the $_SESSION array, or return a given default
-         * if the index isn't set
-         *
-         * The first n parameters represent the fields to retrieve, being a
-         * single index or an array of indexes to access multi-level arrays.
-         *
-         * Calling the function as util::session_var( ['tags', '1412'] ) is
-         * identical to using $_SESSION['tags']['1412'].
-         *
-         * @param   string  $fields   The name of the field to retrieve
-         * @param   mixed   $default  A default value to return if the
-         *                            requested variable isn't set
-         * @return  mixed
-         *
-         * @see     array_get()
-         *
-         * @access  public
-         * @since   1.0.000
-         * @static
-         */
-        public static function session_var( $fields, $default = NULL )
-        {
-            return self::array_get( $_SESSION, $fields, $default );
-        }
-
-        /**
-         * Retrieve a value from the $_COOKIE array, or return a given default
-         * if the index isn't set
-         *
-         * The first n parameters represent the fields to retrieve, being a
-         * single index or an array of indexes to access multi-level arrays.
-         *
-         * Calling the function as util::cookie_var( ['tags', '1412'] ) is
-         * identical to using $_COOKIE['tags']['1412'].
-         *
-         * @param   string  $fields   The name of the field to retrieve
-         * @param   mixed   $default  A default value to return if the
-         *                            requested variable isn't set
-         * @return  mixed
-         *
-         * @see     array_get()
-         *
-         * @access  public
-         * @since   1.0.000
-         * @static
-         */
-        public static function cookie_var( $fields, $default = NULL )
-        {
-            return self::array_get( $_COOKIE, $fields, $default );
-        }
-
-        /**
          * Access an array index, retrieving the value stored there if it
          * exists or a default if it does not. This function allows you to
          * concisely access an index which may or may not exist without
@@ -246,39 +109,12 @@ if ( ! class_exists( 'util' ) ) {
          * @since   1.0.000
          * @static
          */
-        public static function array_get( array $array, $fields, $default = NULL )
+        public static function array_get( array & $var, $default = NULL )
         {
-            if ( ! is_array( $array ) ) {
-                return $default;
-            } else if ( ! is_array( $fields ) ) {
-                if ( isset( $array[$fields] ) ) {
-                    return $array[$fields];
-                } else {
-                    return $default;
-                }
+            if ( isset( $var ) ) {
+                return $var;
             } else {
-                foreach ( $fields as $field ) {
-                    $found_it = FALSE;
-
-                    if ( ! is_array( $array ) ) {
-                        break;
-                    }
-
-                    foreach ( $array as $key => $value ) {
-                        if ( $key == $field ) {
-                            $found_it = TRUE;
-                            $array = $value;
-
-                            break;
-                        }
-                    }
-                }
-
-                if ( $found_it ) {
-                    return $array;
-                } else {
-                    return $default;
-                }
+                return $default;
             }
         }
 

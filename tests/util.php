@@ -10,112 +10,20 @@ require_once '../util.php';
  */
 class UtilityPHPTest extends PHPUnit_Framework_TestCase
 {
-    public function test_get_var()
+    public function test_array_get()
     {
         $_GET = array();
         $_GET['abc'] = 'def';
         $_GET['nested'] = array( 'key1' => 'val1', 'key2' => 'val2', 'key3' => 'val3' );
 
-        // Looks for $_GET['abc']
-        $this->assertEquals( 'def', util::get_var( 'abc' ) );
-
-        // Looks for $_GET['nested']['key2']
-        $this->assertEquals( 'val2', util::get_var( array( 'nested', 'key2' ) ) );
-
-        // Looks for $_GET['doesnotexist']
-        $this->assertEquals( 'defaultval', util::get_var( 'doesnotexist', 'defaultval' ) );
-    }
-
-    public function test_post_var()
-    {
-        $_POST = array();
-        $_POST['abc'] = 'def';
-        $_POST['nested'] = array( 'key1' => 'val1', 'key2' => 'val2', 'key3' => 'val3' );
-
-        // Looks for $_POST['abc']
-        $this->assertEquals( 'def', util::post_var( 'abc' ) );
-
-        // Looks for $_POST['nested']['key2']
-        $this->assertEquals( 'val2', util::post_var( array( 'nested', 'key2' ) ) );
-
-        // Looks for $_POST['doesnotexist']
-        $this->assertEquals( 'defaultval', util::post_var( 'doesnotexist', 'defaultval' ) );
-    }
-
-    public function test_request_var()
-    {
-        $_GET            = array();
-        $_POST           = array();
-        $_POST['abc']    = 'def';
-        $_POST['nested'] = array( 'key1' => 'val1', 'key2' => 'val2', 'key3' => 'val3' );
-        $_GET['xyz']     = 'mno';
-        $_GET['nested']  = array( 'key1' => 'valA', 'key2' => 'valB' );
-
-        // Looks for $_POST['abc'] or $_GET['abc']
-        $this->assertEquals( 'def', util::request_var( 'abc' ) );
-
-        // Looks for $_POST['xyz'] or $_GET['xyz']
-        $this->assertEquals( 'mno', util::request_var( 'xyz' ) );
-
-        // Looks for $_POST['doesnotexist'] or $_GET['doesnotexist']
-        $this->assertEquals( 'defaultval', util::request_var( 'doesnotexist', 'defaultval' ) );
-
-        // Conflict test
-        if ( strstr( ini_get( 'request_order' ), 'GP' ) ) {
-            $this->assertEquals( 'valB', util::request_var( array( 'nested', 'key2' ) ) );
-        } else {
-            $this->assertEquals( 'val2', util::request_var( array( 'nested', 'key2' ) ) );
-        }
-    }
-
-    public function test_session_var()
-    {
-        // Unset all of the session variables.
-        $_SESSION = array();
-
-        $_SESSION['test_str'] = $test_str = md5( microtime() );
-        $_SESSION['nested']   = array( 'key1' => 'val1', 'key2' => 'val2', 'key3' => 'val3' );
-
-        // Looks for $_SESSION['test_str']
-        $this->assertEquals( $test_str, util::session_var( 'test_str' ) );
-
-        // Looks for $_SESSION['nested']['key2']
-        $this->assertEquals( 'val2', util::session_var( array( 'nested', 'key2' ) ) );
-
-        // Looks for $_SESSION['blah']
-        $this->assertEquals( 'mydefaultvalue', util::session_var( 'blah', 'mydefaultvalue' ) );
-    }
-
-    public function test_cookie_var()
-    {
-        $_COOKIE = array();
-        $_COOKIE['abc'] = 'def';
-        $_COOKIE['nested'] = array( 'key1' => 'val1', 'key2' => 'val2', 'key3' => 'val3' );
-
-        // Looks for $_COOKIE['abc']
-        $this->assertEquals( 'def', util::cookie_var( 'abc' ) );
-
-        // Looks for $_COOKIE['nested']['key2']
-        $this->assertEquals( 'val2', util::cookie_var( array( 'nested', 'key2' ) ) );
-
-        // Looks for $_COOKIE['doesnotexist']
-        $this->assertEquals( 'defaultval', util::cookie_var( 'doesnotexist', 'defaultval' ) );
-    }
-
-    public function test_array_get()
-    {
-        $array = array();
-        $array['abc'] = 'def';
-        $array['nested'] = array( 'key1' => 'val1', 'key2' => 'val2', 'key3' => 'val3' );
-
         // Looks for $array['abc']
-        $this->assertEquals( 'def', util::array_get( $array, 'abc' ) );
+        $this->assertEquals( 'def', util::array_get( $_GET['abc'] ) );
 
         // Looks for $array['nested']['key2']
-        $this->assertEquals( 'val2', util::array_get( $array, array( 'nested', 'key2' ) ) );
+        $this->assertEquals( 'val2', util::array_get( $_GET['nested']['key2'] ) );
 
         // Looks for $array['doesnotexist']
-        $this->assertEquals( 'defaultval', util::array_get( $array, 'doesnotexist', 'defaultval' ) );
+        $this->assertEquals( 'defaultval', util::array_get( $_GET['doesnotexist'], 'defaultval' ) );
     }
 
     public function test_slugify()
