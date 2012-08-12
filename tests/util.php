@@ -299,15 +299,6 @@ class UtilityPHPTest extends PHPUnit_Framework_TestCase
         $this->assertEquals( array( 'Bob', 'Fred', 'Jane', 'Brandon' ), util::array_pluck( $obj_array, 'name', FALSE ) );
     }
 
-    public function test_absint()
-    {
-        $this->assertEquals( 5, util::absint( 5 ) );
-        $this->assertEquals( 15, util::absint( 15 ) );
-        $this->assertEquals( 5, util::absint( -5 ) );
-        $this->assertEquals( 5, util::absint( 5.2 ) );
-        $this->assertEquals( 5, util::absint( -5.15 ) );
-    }
-
     public function test_htmlentities()
     {
         $this->assertEquals( 'One &amp; Two', util::htmlentities( 'One & Two' ) );

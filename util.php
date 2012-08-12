@@ -950,22 +950,6 @@ if ( ! class_exists( 'util' ) ) {
         }
 
         /**
-         * Return the absolute integer value of a given variable
-         *
-         * @param   mixed  $maybeint  A variable that could be a string,
-         *                            integer or other value
-         * @return  int
-         *
-         * @access  public
-         * @since   1.0.000
-         * @static
-         */
-        public static function absint( $maybeint )
-        {
-            return abs( intval( $maybeint ) );
-        }
-
-        /**
          * Convert entities, while preserving already-encoded entities
          *
          * @param   string  $string  The text to be converted
@@ -1674,7 +1658,7 @@ if ( ! class_exists( 'util' ) ) {
 							$url = 'https://secure.gravatar.com/';
 						} else {
 							$url = 'http://www.gravatar.com/';
-            $url .= 'avatar/' . md5( $email ) . '?s=' . self::absint( $size );
+            $url .= 'avatar/' . md5( $email ) . '?s=' . (int) abs( $size );
 						return $url;
         }
 
