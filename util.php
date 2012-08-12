@@ -109,7 +109,7 @@ if ( ! class_exists( 'util' ) ) {
          * @since   1.0.000
          * @static
          */
-        public static function array_get( array & $var, $default = NULL )
+        public static function array_get( & $var, $default = NULL )
         {
             if ( isset( $var ) ) {
                 return $var;
@@ -756,7 +756,7 @@ if ( ! class_exists( 'util' ) ) {
                 $translation_table[chr(38)] = '&';
                 return preg_replace( '/&(?![A-Za-z]{0,4}\w{2,3};|#[0-9]{2,3};)/', '&amp;', strtr( $string, $translation_table ) );
             } else {
-                return htmlentities( $string, ENT_QUOTESS, mb_internal_encoding() );
+                return htmlentities( $string, ENT_QUOTES, mb_internal_encoding() );
             }
         }
 
@@ -776,12 +776,12 @@ if ( ! class_exists( 'util' ) ) {
         public static function htmlspecialchars( $string, $preserve_encoded_entities = FALSE  )
         {
             if ( $preserve_encoded_entities ) {
-                $translation_table            = get_html_translation_table( HTML_SPECIALCHARS, ENT_QUOTESS, mb_internal_encoding() );
+                $translation_table            = get_html_translation_table( HTML_SPECIALCHARS, ENT_QUOTES, mb_internal_encoding() );
                 $translation_table[chr( 38 )] = '&';
 
                 return preg_replace( '/&(?![A-Za-z]{0,4}\w{2,3};|#[0-9]{2,3};)/', '&amp;', strtr( $string, $translation_table ) );
             } else {
-                return htmlentities( $string, ENT_QUOTESS, mb_internal_encoding() );
+                return htmlentities( $string, ENT_QUOTES, mb_internal_encoding() );
             }
         }
 
@@ -1426,7 +1426,7 @@ if ( ! class_exists( 'util' ) ) {
          */
         public static function validate_email( $possible_email )
         {
-            return filter_var( $possible_email, FILTER_VALIDATE_EMAIL );
+            return (bool) filter_var( $possible_email, FILTER_VALIDATE_EMAIL );
         }
 
         /**
@@ -1442,12 +1442,15 @@ if ( ! class_exists( 'util' ) ) {
          */
         public static function get_gravatar( $email, $size = 32 )
         {
-						if ( self::is_https() ) {
-							$url = 'https://secure.gravatar.com/';
-						} else {
-							$url = 'http://www.gravatar.com/';
+			if ( self::is_https() ) {
+				$url = 'https://secure.gravatar.com/';
+			} else {
+				$url = 'http://www.gravatar.com/';
+            }
+
             $url .= 'avatar/' . md5( $email ) . '?s=' . (int) abs( $size );
-						return $url;
+
+			return $url;
         }
 
         /**
