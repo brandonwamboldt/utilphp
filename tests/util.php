@@ -1,6 +1,5 @@
 <?php
 session_start();
-require_once 'PHPUnit.php';
 require_once '../util.php';
 
 /**
@@ -9,7 +8,7 @@ require_once '../util.php';
  * @author  Brandon Wamboldt <brandon.wamboldt@gmail.com>
  * @since   1.0.000
  */
-class UtilityPHPTest extends PHPUnit_TestCase
+class UtilityPHPTest extends PHPUnit_Framework_TestCase
 {
     public function test_get_var()
     {
@@ -482,8 +481,3 @@ class UtilityPHPTest extends PHPUnit_TestCase
         $this->assertEquals( $expect, util::array_flatten( $input ) );
     }
 }
-
-$suite  = new PHPUnit_TestSuite( 'UtilityPHPTest' );
-$result = PHPUnit::run( $suite );
-
-echo $result->toHTML();
