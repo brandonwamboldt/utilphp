@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once '../util.php';
+require_once dirname(__FILE__) . '/../util.php';
 
 /**
  * PHPUnit test case for the util.php library
@@ -287,7 +287,7 @@ class UtilityPHPTest extends PHPUnit_Framework_TestCase
     {
         // Make sure the generated string contains only human friendly characters and is 30 characters long
         $str = util::random_string( 30 );
-        $this->assertTrue( preg_match( '/^([ABCDEFGHJKLMNPQRSTUVWXYZabcdefhjkmnprstuvwxyz23456789]{30})$/', $str ) );
+        $this->assertTrue( (bool) preg_match( '/^([ABCDEFGHJKLMNPQRSTUVWXYZabcdefhjkmnprstuvwxyz23456789]{30})$/', $str ) );
 
         // Make sure the generated string is 120 characters long
         $str = util::random_string( 120 );
@@ -330,28 +330,28 @@ class UtilityPHPTest extends PHPUnit_Framework_TestCase
     {
         $test = array( 'a' => array( 'a', 'b', 'c' ) );
 
-        $this->assertEquals( 'a', util::array_first( util::array_get( $test, 'a' ) ) );
+        $this->assertEquals( 'a', util::array_first( util::array_get( $test['a'] ) ) );
     }
 
     public function test_array_first_key()
     {
         $test = array( 'a' => array( 'a' => 'b', 'c' => 'd' ) );
 
-        $this->assertEquals( 'a', util::array_first_key( util::array_get( $test, 'a' ) ) );
+        $this->assertEquals( 'a', util::array_first_key( util::array_get( $test['a'] ) ) );
     }
 
     public function test_array_last()
     {
         $test = array( 'a' => array( 'a', 'b', 'c' ) );
 
-        $this->assertEquals( 'c', util::array_last( util::array_get( $test, 'a' ) ) );
+        $this->assertEquals( 'c', util::array_last( util::array_get( $test['a'] ) ) );
     }
 
     public function test_array_last_key()
     {
         $test = array( 'a' => array( 'a' => 'b', 'c' => 'd' ) );
 
-        $this->assertEquals( 'c', util::array_last_key( util::array_get( $test, 'a' ) ) );
+        $this->assertEquals( 'c', util::array_last_key( util::array_get( $test['a'] ) ) );
     }
 
     public function test_array_flatten()
