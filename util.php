@@ -252,22 +252,22 @@ if ( ! class_exists( 'util' ) ) {
         {
             if ( ! is_array( $array ) ) {
                 return $default;
-            } else if ( ! is_array( $fields ) ) {
+            } elseif ( ! is_array( $fields ) ) {
                 if ( isset( $array[$fields] ) ) {
                     return $array[$fields];
                 } else {
                     return $default;
                 }
             } else {
-                foreach ( $fields as $field ) {
+                foreach ($fields as $field) {
                     $found_it = FALSE;
 
                     if ( ! is_array( $array ) ) {
                         break;
                     }
 
-                    foreach ( $array as $key => $value ) {
-                        if ( $key == $field ) {
+                    foreach ($array as $key => $value) {
+                        if ($key == $field) {
                             $found_it = TRUE;
                             $array = $value;
 
@@ -276,7 +276,7 @@ if ( ! class_exists( 'util' ) ) {
                     }
                 }
 
-                if ( $found_it ) {
+                if ($found_it) {
                     return $array;
                 } else {
                     return $default;
@@ -315,7 +315,7 @@ if ( ! class_exists( 'util' ) ) {
             $html .= self::var_dump_plain( $var );
             $html .= '</pre>';
 
-            if ( ! $return ) {
+            if (! $return) {
                 echo $html;
             } else {
                 return $html;
@@ -341,17 +341,17 @@ if ( ! class_exists( 'util' ) ) {
 
             if ( is_bool( $var ) ) {
                 $html .= '<span style="color:#588bff;">bool</span><span style="color:#999;">(</span><strong>' . ( ( $var ) ? 'true' : 'false' ) . '</strong><span style="color:#999;">)</span>';
-            } else if ( is_int( $var ) ) {
+            } elseif ( is_int( $var ) ) {
                 $html .= '<span style="color:#588bff;">int</span><span style="color:#999;">(</span><strong>' . $var . '</strong><span style="color:#999;">)</span>';
-            } else if ( is_float( $var ) ) {
+            } elseif ( is_float( $var ) ) {
                 $html .= '<span style="color:#588bff;">float</span><span style="color:#999;">(</span><strong>' . $var . '</strong><span style="color:#999;">)</span>';
-            } else if ( is_string( $var ) ) {
+            } elseif ( is_string( $var ) ) {
                 $html .= '<span style="color:#588bff;">string</span><span style="color:#999;">(</span>' . strlen( $var ) . '<span style="color:#999;">)</span> <strong>"' . self::htmlentities( $var ) . '"</strong>';
-            } else if ( is_null( $var ) ) {
+            } elseif ( is_null( $var ) ) {
                 $html .= '<strong>NULL</strong>';
-            } else if ( is_resource( $var ) ) {
+            } elseif ( is_resource( $var ) ) {
                 $html .= '<span style="color:#588bff;">resource</span>("' . get_resource_type( $var ) . '") <strong>"' . $var . '"</strong>';
-            } else if ( is_array( $var ) ) {
+            } elseif ( is_array( $var ) ) {
                 $uuid = 'include-php-' . uniqid();
 
                 $html .= '<span style="color:#588bff;">array</span>(' . count( $var ) . ')';
@@ -362,7 +362,7 @@ if ( ! class_exists( 'util' ) ) {
                     $indent = 4;
                     $longest_key = 0;
 
-                    foreach( $var as $key => $value ) {
+                    foreach ($var as $key => $value) {
                         if ( is_string( $key ) ) {
                             $longest_key = max( $longest_key, strlen( $key ) + 2 );
                         } else {
@@ -370,7 +370,7 @@ if ( ! class_exists( 'util' ) ) {
                         }
                     }
 
-                    foreach ( $var as $key => $value ) {
+                    foreach ($var as $key => $value) {
                         if ( is_numeric( $key ) ) {
                             $html .= str_repeat( ' ', $indent ) . str_pad( $key, $longest_key, ' ');
                         } else {
@@ -381,8 +381,8 @@ if ( ! class_exists( 'util' ) ) {
 
                         $value = explode( '<br />', self::var_dump_plain( $value ) );
 
-                        foreach ( $value as $line => $val ) {
-                            if ( $line != 0 ) {
+                        foreach ($value as $line => $val) {
+                            if ($line != 0) {
                                 $value[$line] = str_repeat( ' ', $indent * 2 ) . $val;
                             }
                         }
@@ -425,7 +425,7 @@ if ( ! class_exists( 'util' ) ) {
                     })();
                     </script>' );
                 }
-            } else if ( is_object( $var ) ) {
+            } elseif ( is_object( $var ) ) {
                 $uuid = 'include-php-' . uniqid();
 
                 $html .= '<span style="color:#588bff;">object</span>(' . get_class( $var ) . ') <img id="' . $uuid . '" data-expand="data:image/png;base64,' . self::$icon_expand . '" style="position:relative;left:-5px;top:-1px;cursor:pointer;" src="data:image/png;base64,' . self::$icon_collapse . '" /><br /><span id="' . $uuid . '-collapsable">[<br />';
@@ -436,12 +436,12 @@ if ( ! class_exists( 'util' ) ) {
                 $indent = 4;
                 $longest_key = 0;
 
-                foreach( $var as $key => $value ) {
+                foreach ($var as $key => $value) {
                     if ( substr( $key, 0, 2 ) == "\0*" ) {
                         unset( $var[$key] );
                         $key = 'protected:' . substr( $key, 2 );
                         $var[$key] = $value;
-                    } else if ( substr( $key, 0, 1 ) == "\0" ) {
+                    } elseif ( substr( $key, 0, 1 ) == "\0" ) {
                         unset( $var[$key] );
                         $key = 'private:' . substr( $key, 1, strpos( substr( $key, 1 ), "\0" ) ) . ':' . substr( $key, strpos( substr( $key, 1 ), "\0" ) + 1 );
                         $var[$key] = $value;
@@ -454,7 +454,7 @@ if ( ! class_exists( 'util' ) ) {
                     }
                 }
 
-                foreach ( $var as $key => $value ) {
+                foreach ($var as $key => $value) {
                     if ( is_numeric( $key ) ) {
                         $html .= str_repeat( ' ', $indent ) . str_pad( $key, $longest_key, ' ');
                     } else {
@@ -465,8 +465,8 @@ if ( ! class_exists( 'util' ) ) {
 
                     $value = explode( '<br />', self::var_dump_plain( $value ) );
 
-                    foreach ( $value as $line => $val ) {
-                        if ( $line != 0 ) {
+                    foreach ($value as $line => $val) {
+                        if ($line != 0) {
                             $value[$line] = str_repeat( ' ', $indent * 2 ) . $val;
                         }
                     }
@@ -532,9 +532,10 @@ if ( ! class_exists( 'util' ) ) {
          */
         public static function slugify( $string, $css_mode = FALSE )
         {
-            $slug = preg_replace( '/([^a-z0-9]+)/', '-', strtolower( self::remove_accents( $string ) ) );
+            $slug = preg_replace( '/([^A-Za-z0-9\-]+)/', '-', strtolower( self::remove_accents( $string ) ) );
+            $slug = preg_replace( '/(\-+)/', '-', $slug );
 
-            if ( $css_mode ) {
+            if ($css_mode) {
                 $digits = array( 'zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine' );
 
                 if ( is_numeric( substr( $slug, 0, 1 ) ) ) {
@@ -647,17 +648,17 @@ if ( ! class_exists( 'util' ) ) {
         {
             $bytes = floatval( $bytes );
 
-            if ( $bytes < 1024 ) {
+            if ($bytes < 1024) {
                 return $bytes . ' B';
-            } else if ( $bytes < pow( 1024, 2 ) ) {
+            } elseif ( $bytes < pow( 1024, 2 ) ) {
                 return number_format( $bytes / 1024, $decimals, '.', '' ) . ' KiB';
-            } else if ( $bytes < pow( 1024, 3 ) ) {
+            } elseif ( $bytes < pow( 1024, 3 ) ) {
                 return number_format( $bytes / pow( 1024, 2 ), $decimals, '.', '' ) . ' MiB';
-            } else if ( $bytes < pow( 1024, 4 ) ) {
+            } elseif ( $bytes < pow( 1024, 4 ) ) {
                 return number_format( $bytes / pow( 1024, 3 ), $decimals, '.', '' ) . ' GiB';
-            } else if ( $bytes < pow( 1024, 5 ) ) {
+            } elseif ( $bytes < pow( 1024, 5 ) ) {
                 return number_format( $bytes / pow( 1024, 4 ), $decimals, '.', '' ) . ' TiB';
-            } else if ( $bytes < pow( 1024, 6 ) ) {
+            } elseif ( $bytes < pow( 1024, 6 ) ) {
                 return number_format( $bytes / pow( 1024, 5 ), $decimals, '.', '' ) . ' PiB';
             } else {
                 return number_format( $bytes / pow( 1024, 5 ), $decimals, '.', '' ) . ' PiB';
@@ -731,31 +732,31 @@ if ( ! class_exists( 'util' ) ) {
 
             $data = trim( $data );
 
-            if ( 'N;' == $data ) {
+            if ('N;' == $data) {
                 return TRUE;
             }
 
             $length = strlen( $data );
 
-            if ( $length < 4 ) {
+            if ($length < 4) {
                 return FALSE;
             }
 
-            if ( ':' !== $data[1] ) {
+            if (':' !== $data[1]) {
                 return FALSE;
             }
 
             $lastc = $data[$length - 1];
 
-            if ( ';' !== $lastc && '}' !== $lastc ) {
+            if (';' !== $lastc && '}' !== $lastc) {
                 return FALSE;
             }
 
             $token = $data[0];
 
-            switch ( $token ) {
+            switch ($token) {
                 case 's' :
-                    if ( '"' !== $data[$length-2] ) {
+                    if ('"' !== $data[$length-2]) {
                         return FALSE;
                     }
                 case 'a' :
@@ -822,7 +823,7 @@ if ( ! class_exists( 'util' ) ) {
                 // Was the URL passed as an argument?
                 if ( func_num_args() == 2 && func_get_arg( 1 ) ) {
                     $uri = func_get_arg( 1 );
-                } else if ( func_num_args() == 3 && func_get_arg( 2 ) ) {
+                } elseif ( func_num_args() == 3 && func_get_arg( 2 ) ) {
                     $uri = func_get_arg( 2 );
                 } else {
                     $uri = $_SERVER['REQUEST_URI'];
@@ -863,7 +864,7 @@ if ( ! class_exists( 'util' ) ) {
                     $base  = $parts[0] . '?';
                     $query = $parts[1];
                 }
-            } else if ( ! empty( $protocol ) || strpos( $uri, '=' ) === FALSE ) {
+            } elseif ( ! empty( $protocol ) || strpos( $uri, '=' ) === FALSE ) {
                 $base  = $uri . '?';
                 $query = '';
             } else {
@@ -894,6 +895,7 @@ if ( ! class_exists( 'util' ) ) {
             $ret = preg_replace( '#=(&|$)#', '$1', $ret );
             $ret = $protocol . $base . $ret . $frag;
             $ret = rtrim( $ret, '?' );
+
             return $ret;
         }
 
@@ -913,7 +915,7 @@ if ( ! class_exists( 'util' ) ) {
         public static function remove_query_arg( $keys, $uri = FALSE )
         {
             if ( is_array( $keys ) ) {
-                foreach ( $keys as $key ) {
+                foreach ($keys as $key) {
                     $uri = self::add_query_arg( $key, FALSE, $uri );
                 }
 
@@ -944,7 +946,7 @@ if ( ! class_exists( 'util' ) ) {
 
             if ( preg_match( '/^(' . $yes_words . ')$/i', $string ) ) {
                 return TRUE;
-            } else if ( preg_match( '/^(' . $no_words . ')$/i', $string ) ) {
+            } elseif ( preg_match( '/^(' . $no_words . ')$/i', $string ) ) {
                 return FALSE;
             } else {
                 return $default;
@@ -981,9 +983,10 @@ if ( ! class_exists( 'util' ) ) {
          */
         public static function htmlentities( $string, $preserve_encoded_entities = FALSE )
         {
-            if ( $preserve_encoded_entities ) {
+            if ($preserve_encoded_entities) {
                 $translation_table = get_html_translation_table( HTML_ENTITIES, ENT_QUOTES );
                 $translation_table[chr(38)] = '&';
+
                 return preg_replace( '/&(?![A-Za-z]{0,4}\w{2,3};|#[0-9]{2,3};)/', '&amp;', strtr( $string, $translation_table ) );
             } else {
                 return htmlentities( $string, ENT_QUOTES );
@@ -1005,7 +1008,7 @@ if ( ! class_exists( 'util' ) ) {
          */
         public static function htmlspecialchars( $string, $preserve_encoded_entities = FALSE  )
         {
-            if ( $preserve_encoded_entities ) {
+            if ($preserve_encoded_entities) {
                 $translation_table            = get_html_translation_table( HTML_SPECIALCHARS, ENT_QUOTES );
                 $translation_table[chr( 38 )] = '&';
 
@@ -1208,7 +1211,7 @@ if ( ! class_exists( 'util' ) ) {
          */
         public static function human_time_diff( $from, $to = '', $as_text = FALSE, $suffix = ' ago' )
         {
-            if ( $to == '' ) {
+            if ($to == '') {
                 $to = time();
             }
 
@@ -1216,37 +1219,37 @@ if ( ! class_exists( 'util' ) ) {
             $to   = new DateTime( date( 'Y-m-d H:i:s', $to ) );
             $diff = $from->diff( $to );
 
-            if ( $diff->y > 1 ) {
+            if ($diff->y > 1) {
                 $text = $diff->y . ' years';
-            } else if ( $diff->y == 1 ) {
+            } elseif ($diff->y == 1) {
                 $text = '1 year';
-            } else if ( $diff->m > 1 ) {
+            } elseif ($diff->m > 1) {
                 $text = $diff->m . ' months';
-            } else if ( $diff->m == 1 ) {
+            } elseif ($diff->m == 1) {
                 $text = '1 month';
-            } else if ( $diff->d > 7 ) {
+            } elseif ($diff->d > 7) {
                 $text = ceil( $diff->d / 7 ) . ' weeks';
-            } else if ( $diff->d == 7 ) {
+            } elseif ($diff->d == 7) {
                 $text = '1 week';
-            } else if ( $diff->d > 1 ) {
+            } elseif ($diff->d > 1) {
                 $text = $diff->d . ' days';
-            } else if ( $diff->d == 1 ) {
+            } elseif ($diff->d == 1) {
                 $text = '1 day';
-            } else if ( $diff->h > 1 ) {
+            } elseif ($diff->h > 1) {
                 $text = $diff->h . ' hours';
-            } else if ( $diff->h == 1 ) {
+            } elseif ($diff->h == 1) {
                 $text = ' 1 hour';
-            } else if ( $diff->i > 1 ) {
+            } elseif ($diff->i > 1) {
                 $text = $diff->i . ' minutes';
-            } else if ( $diff->i == 1 ) {
+            } elseif ($diff->i == 1) {
                 $text = '1 minute';
-            } else if ( $diff->s > 1 ) {
+            } elseif ($diff->s > 1) {
                 $text = $diff->s . ' seconds';
             } else {
                 $text = '1 second';
             }
 
-            if ( $as_text ) {
+            if ($as_text) {
                 $text = explode( ' ', $text, 2 );
                 $text = self::number_to_word( $text[0] ) . ' ' . $text[1];
             }
@@ -1281,15 +1284,15 @@ if ( ! class_exists( 'util' ) ) {
 
             $output = '';
 
-            if ( $number[0] == '-' ) {
+            if ($number[0] == '-') {
                 $output = 'negative ';
                 $number = ltrim( $number, '-' );
-            } else if ( $number[0] == '+' ) {
+            } elseif ($number[0] == '+') {
                 $output = 'positive ';
                 $number = ltrim( $number, '+' );
             }
 
-            if ( $number[0] == '0' ) {
+            if ($number[0] == '0') {
                 $output .= 'zero';
             } else {
                 $number = str_pad( $number, 36, '0', STR_PAD_LEFT );
@@ -1298,12 +1301,12 @@ if ( ! class_exists( 'util' ) ) {
 
                 $groups2 = array();
 
-                foreach ( $groups as $group ) {
+                foreach ($groups as $group) {
                     $groups2[] = self::_number_to_word_three_digits( $group[0], $group[1], $group[2] );
                 }
 
                 for ( $z = 0; $z < count( $groups2 ); $z++ ) {
-                    if ( $groups2[$z] != '' ) {
+                    if ($groups2[$z] != '') {
                         $output .= $groups2[$z] . self::_number_to_word_convert_group( 11 - $z );
                         $output .= ( $z < 11 && ! array_search( '', array_slice( $groups2, $z + 1, -1 ) ) && $groups2[11] != '' && $groups[11][0] == '0' ? ' and ' : ', ' );
                     }
@@ -1312,7 +1315,7 @@ if ( ! class_exists( 'util' ) ) {
                 $output = rtrim( $output, ', ' );
             }
 
-            if ( $decimal > 0 ) {
+            if ($decimal > 0) {
                 $output .= ' point';
 
                 for ( $i = 0; $i < strlen( $decimal ); $i++ ) {
@@ -1325,7 +1328,7 @@ if ( ! class_exists( 'util' ) ) {
 
         protected static function _number_to_word_convert_group( $index )
         {
-            switch( $index ) {
+            switch ($index) {
                 case 11:
                     return ' decillion';
                 case 10:
@@ -1357,21 +1360,21 @@ if ( ! class_exists( 'util' ) ) {
         {
             $output = '';
 
-            if ( $digit1 == '0' && $digit2 == '0' && $digit3 == '0') {
+            if ($digit1 == '0' && $digit2 == '0' && $digit3 == '0') {
                 return '';
             }
 
-            if ( $digit1 != '0' ) {
+            if ($digit1 != '0') {
                 $output .= self::_number_to_word_convert_digit( $digit1 ) . ' hundred';
 
-                if ( $digit2 != '0' || $digit3 != '0' ) {
+                if ($digit2 != '0' || $digit3 != '0') {
                     $output .= ' and ';
                 }
             }
 
-            if ( $digit2 != '0') {
+            if ($digit2 != '0') {
                 $output .= self::_number_to_word_two_digits( $digit2, $digit3 );
-            } else if( $digit3 != '0' ) {
+            } elseif ($digit3 != '0') {
                 $output .= self::_number_to_word_convert_digit( $digit3 );
             }
 
@@ -1380,8 +1383,8 @@ if ( ! class_exists( 'util' ) ) {
 
         protected static function _number_to_word_two_digits( $digit1, $digit2 )
         {
-            if ( $digit2 == '0' ) {
-                switch ( $digit2 ) {
+            if ($digit2 == '0') {
+                switch ($digit2) {
                     case '1':
                         return 'ten';
                     case '2':
@@ -1401,8 +1404,8 @@ if ( ! class_exists( 'util' ) ) {
                     case '9':
                         return 'ninety';
                 }
-            } else if ( $digit1 == '1' ) {
-                switch ( $digit2 ) {
+            } elseif ($digit1 == '1') {
+                switch ($digit2) {
                     case '1':
                         return 'eleven';
                     case '2':
@@ -1425,7 +1428,7 @@ if ( ! class_exists( 'util' ) ) {
             } else {
                 $second_digit = self::_number_to_word_convert_digit( $digit2 );
 
-                switch ( $digit1 ) {
+                switch ($digit1) {
                     case '2':
                         return "twenty-{$second_digit}";
                     case '3':
@@ -1448,7 +1451,7 @@ if ( ! class_exists( 'util' ) ) {
 
         protected static function _number_to_word_convert_digit( $digit )
         {
-            switch ( $digit ) {
+            switch ($digit) {
                 case '0':
                     return 'zero';
                 case '1':
@@ -1532,14 +1535,14 @@ if ( ! class_exists( 'util' ) ) {
                 header( 'Content-Type: application/force-download' );
                 header( 'Content-Transfer-Encoding: binary' );
 
-                if ( $content ) {
+                if ($content) {
                    header( 'Content-Length: ' . strlen( $content ) );
                 }
 
                 ob_clean();
                 flush();
 
-                if ( $content ) {
+                if ($content) {
                     echo $content;
                 }
 
@@ -1610,12 +1613,12 @@ if ( ! class_exists( 'util' ) ) {
             $string     = '';
 
             // Determine the pool of available characters based on the given parameters
-            if ( $human_friendly ) {
+            if ($human_friendly) {
                 $pool = $nice_chars;
             } else {
                 $pool = $all_an;
 
-                if ( $include_symbols ) {
+                if ($include_symbols) {
                     $pool .= $symbols;
                 }
             }
@@ -1632,8 +1635,8 @@ if ( ! class_exists( 'util' ) ) {
             shuffle( $pool );
 
             // Generate our string
-            for ( $i = 0; $i < $length; $i++ ) {
-                if ( $no_duplicate_chars ) {
+            for ($i = 0; $i < $length; $i++) {
+                if ($no_duplicate_chars) {
                     $string .= array_shift( $pool );
                 } else {
                     $string .= $pool[0];
@@ -1762,6 +1765,7 @@ if ( ! class_exists( 'util' ) ) {
                 /imx';
 
             $url_replace = '$1$4$7$10$13<a href="$2$5$8$11$14">$2$5$8$11$14</a>$3$6$9$12';
+
             return preg_replace( $url_pattern, $url_replace, $text );
         }
 
@@ -1824,7 +1828,7 @@ if ( ! class_exists( 'util' ) ) {
             $url .= $_SERVER['HTTP_HOST'];
 
             // Is it on a non standard port?
-            if ( $_SERVER['SERVER_PORT'] != 80 ) {
+            if ($_SERVER['SERVER_PORT'] != 80) {
                 $url .= ':' . $_SERVER['SERVER_PORT'];
             }
 
@@ -1860,13 +1864,13 @@ if ( ! class_exists( 'util' ) ) {
          */
         public static function get_client_ip( $trust_proxy_headers = FALSE )
         {
-            if ( ! $trust_proxy_headers ) {
+            if (! $trust_proxy_headers) {
                 return $_SERVER['REMOTE_ADDR'];
             }
 
             if ( ! empty( $_SERVER['HTTP_CLIENT_IP'] ) ) {
                 $ip = $_SERVER['HTTP_CLIENT_IP'];
-            } else if ( ! empty( $_SERVER['HTTP_X_FORWARDED_FOR'] ) ) {
+            } elseif ( ! empty( $_SERVER['HTTP_X_FORWARDED_FOR'] ) ) {
                 $ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
             } else {
                 $ip = $_SERVER['REMOTE_ADDR'];
@@ -1893,11 +1897,11 @@ if ( ! class_exists( 'util' ) ) {
             $ret        = substr( $string, 0, $length );
             $last_space = strrpos( $ret, ' ' );
 
-            if ( $last_space !== FALSE && $string != $ret ) {
+            if ($last_space !== FALSE && $string != $ret) {
                 $ret     = substr( $ret, 0, $last_space );
             }
 
-            if ( $ret != $string ) {
+            if ($ret != $string) {
                 $ret .= $append;
             }
 
@@ -1942,22 +1946,22 @@ if ( ! class_exists( 'util' ) ) {
             if ( ( $perms & 0xC000 ) == 0xC000 ) {
                 // Socket
                 $info = 's';
-            } else if ( ( $perms & 0xA000 ) == 0xA000 ) {
+            } elseif ( ( $perms & 0xA000 ) == 0xA000 ) {
                 // Symbolic Link
                 $info = 'l';
-            } else if ( ( $perms & 0x8000 ) == 0x8000 ) {
+            } elseif ( ( $perms & 0x8000 ) == 0x8000 ) {
                 // Regular
                 $info = '-';
-            } else if ( ( $perms & 0x6000 ) == 0x6000 ) {
+            } elseif ( ( $perms & 0x6000 ) == 0x6000 ) {
                 // Block special
                 $info = 'b';
-            } else if ( ( $perms & 0x4000 ) == 0x4000 ) {
+            } elseif ( ( $perms & 0x4000 ) == 0x4000 ) {
                 // Directory
                 $info = 'd';
-            } else if ( ( $perms & 0x2000 ) == 0x2000 ) {
+            } elseif ( ( $perms & 0x2000 ) == 0x2000 ) {
                 // Character special
                 $info = 'c';
-            } else if ( ( $perms & 0x1000 ) == 0x1000 ) {
+            } elseif ( ( $perms & 0x1000 ) == 0x1000 ) {
                 // FIFO pipe
                 $info = 'p';
             } else {
@@ -2072,11 +2076,11 @@ if ( ! class_exists( 'util' ) ) {
         {
             $flattened = array();
 
-            foreach ( $array as $key => $value ) {
+            foreach ($array as $key => $value) {
                 if ( is_array( $value ) ) {
                     $flattened = array_merge( $flattened, self::array_flatten( $value, $preserve_keys ) );
                 } else {
-                    if ( $preserve_keys ) {
+                    if ($preserve_keys) {
                         $flattened[$key] = $value;
                     } else {
                         $flattened[] = $value;
@@ -2111,25 +2115,25 @@ if ( ! class_exists( 'util' ) ) {
         {
             $new_list = array();
 
-            foreach ( $array as $key => $value ) {
+            foreach ($array as $key => $value) {
                 if ( is_object( $value ) ) {
                     if ( isset( $value->{$field} ) ) {
-                        if ( $preserve_keys ) {
+                        if ($preserve_keys) {
                             $new_list[$key] = $value->{$field};
                         } else {
                             $new_list[] = $value->{$field};
                         }
-                    } else if ( ! $remove_nomatches ) {
+                    } elseif (! $remove_nomatches) {
                         $new_list[$key] = $value;
                     }
                 } else {
                     if ( isset( $value[$field] ) ) {
-                        if ( $preserve_keys ) {
+                        if ($preserve_keys) {
                             $new_list[$key] = $value[$field];
                         } else {
                             $new_list[] = $value[$field];
                         }
-                    } else if ( ! $remove_nomatches ) {
+                    } elseif (! $remove_nomatches) {
                         $new_list[$key] = $value;
                     }
                 }
@@ -2159,17 +2163,17 @@ if ( ! class_exists( 'util' ) ) {
             // *grumbles* stupid PHP type system
             $search = (string) $search;
 
-            foreach ( $array as $key => $elem ) {
+            foreach ($array as $key => $elem) {
 
                 // *grumbles* stupid PHP type system
                 $key = (string) $key;
 
-                if ( $field ) {
+                if ($field) {
                     if ( is_object( $elem ) && $elem->{$field} === $search ) {
                         return $key;
-                    } else if ( is_array( $elem ) && $elem[$field] === $search ) {
+                    } elseif ( is_array( $elem ) && $elem[$field] === $search ) {
                         return $key;
-                    } else if ( is_scalar( $elem ) && $elem === $search ) {
+                    } elseif ( is_scalar( $elem ) && $elem === $search ) {
                         return $key;
                     }
                 } else {
@@ -2179,9 +2183,9 @@ if ( ! class_exists( 'util' ) ) {
                         if ( in_array( $search, $elem ) ) {
                             return $key;
                         }
-                    } else if ( is_array( $elem ) && in_array( $search, $elem ) ) {
+                    } elseif ( is_array( $elem ) && in_array( $search, $elem ) ) {
                         return array_search( $search, $elem );
-                    } else if ( is_scalar( $elem ) && $elem === $search ) {
+                    } elseif ( is_scalar( $elem ) && $elem === $search ) {
                         return $key;
                     }
                 }
@@ -2209,11 +2213,11 @@ if ( ! class_exists( 'util' ) ) {
          */
         public static function array_map_deep( array $array, $callback, $on_nonscalar = FALSE )
         {
-            foreach ( $array as $key => $value ) {
+            foreach ($array as $key => $value) {
                 if ( is_array( $value ) ) {
                     $args = array( $value, $callback, $on_nonscalar );
                     $array[$key] = call_user_func_array( array( __CLASS__, __FUNCTION__ ), $args );
-                } else if ( is_scalar( $value ) || $on_nonscalar ) {
+                } elseif ( is_scalar( $value ) || $on_nonscalar ) {
                     $array[$key] = call_user_func( $callback, $value );
                 }
             }
