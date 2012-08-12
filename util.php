@@ -544,54 +544,6 @@ if ( ! class_exists( 'util' ) ) {
         }
 
         /**
-         * Converts a string to UTF-8 without the need to specify the source
-         * encoding
-         *
-         * @param   string  $string  A string that may or may not be UTF-8
-         * @return  string
-         *
-         * @link    https://github.com/facebook/libphutil/blob/master/src/utils/utf8.php
-         *
-         * @access  public
-         * @since   1.0.000
-         * @static
-         */
-        public static function str_to_utf8( $string )
-        {
-            // Don't re-encode a UTF-8 string since that will mess it up
-            if ( self::seems_utf8( $string ) ) {
-                return $string;
-            } else {
-                // There is no function to do this in iconv, mbstring or ICU to
-                // do this, so do it (very very slowly) in pure PHP.
-
-                $result = array();
-
-                $regex = "/([\x01-\x7F]" .
-                    "|[\xC2-\xDF][\x80-\xBF]" .
-                    "|[\xE0-\xEF][\x80-\xBF][\x80-\xBF]" .
-                    "|[\xF0-\xF4][\x80-\xBF][\x80-\xBF][\x80-\xBF])" .
-                    "|(.)/";
-
-                $offset  = 0;
-                $matches = NULL;
-
-                while ( preg_match( $regex, $string, $matches, 0, $offset ) ) {
-                    if ( ! isset( $matches[2] ) ) {
-                        $result[] = $matches[1];
-                    } else {
-                        // Unicode replacement character, U+FFFD.
-                        $result[] = "\xEF\xBF\xBD";
-                    }
-
-                    $offset += strlen( $matches[0] );
-                }
-
-                return implode( '', $result );
-            }
-        }
-
-        /**
          * Checks to see if a string is utf8 encoded.
          *
          * NOTE: This function checks for 5-Byte sequences, UTF8

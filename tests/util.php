@@ -126,24 +126,6 @@ class UtilityPHPTest extends PHPUnit_Framework_TestCase
         $this->assertEquals( 'one23-1251251', util::slugify( '123----1251251', TRUE ) );
     }
 
-    public function test_str_to_utf8()
-    {
-        // Make sure ASCII characters are ignored
-        $this->assertEquals( "this\x01 is a \x7f test string", util::str_to_utf8( "this\x01 is a \x7f test string" ) );
-
-        // Make sure UTF8 characters are ignored
-        $this->assertEquals( "\xc3\x9c \xc3\xbc \xe6\x9d\xb1!", util::str_to_utf8( "\xc3\x9c \xc3\xbc \xe6\x9d\xb1!" ) );
-
-        // Test long strings
-        #util::str_to_utf8( str_repeat( 'x', 1024 * 1024 ) );
-        $this->assertEquals( TRUE, TRUE );
-
-        // Test some invalid UTF8 to see if it is properly fixed
-        $input = "\xc3 this has \xe6\x9d some invalid utf8 \xe6";
-        $expect = "\xEF\xBF\xBD this has \xEF\xBF\xBD\xEF\xBF\xBD some invalid utf8 \xEF\xBF\xBD";
-        $this->assertEquals( $expect, util::str_to_utf8( $input ) );
-    }
-
     public function test_seems_utf8()
     {
         // Test a valid UTF-8 sequence
