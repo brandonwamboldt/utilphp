@@ -28,6 +28,7 @@ class UtilityPHPTest extends PHPUnit_Framework_TestCase
 
     public function test_slugify()
     {
+      
         $this->assertEquals( 'a-simple-title', util::slugify( 'A simple title' ) );
         $this->assertEquals( 'this-post-it-has-a-dash', util::slugify( 'This post -- it has a dash' ) );
         $this->assertEquals( '123-1251251', util::slugify( '123----1251251' ) );
@@ -361,4 +362,13 @@ class UtilityPHPTest extends PHPUnit_Framework_TestCase
 
         $this->assertEquals( $expect, util::array_flatten( $input ) );
     }
+    
+    public function test_array_mb_sort_alphabetically()
+    {
+        $input  = array( 'ab', 'd', 'áa', 'c');
+        $expect = array( 2 => 'áa', 0 => 'ab', 3 => 'c', 1 => 'd' );
+        
+        $this->assertEquals( $expect, util::array_mb_sort_alphabetically( $input ) );
+    }
+    
 }

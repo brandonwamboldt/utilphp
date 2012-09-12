@@ -1998,5 +1998,85 @@ if ( ! class_exists( 'util' ) ) {
 
             return $array;
         }
+        
+        
+        /**
+         * Sort array with specialchars alphabetically and maintain index 
+         * association.
+         * 
+         * Example:
+         * 
+         * $array = array('Barcelona', 'Madrid', 'Albacete', 'Álava', 'Bilbao');
+         * 
+         * asort($array);
+         * var_dump($array); 
+         *     => array('Albacete', 'Barcelona', 'Bilbao', 'Madrid', 'Álava')
+         * 
+         * $array = util::array_mb_sort($array);
+         * var_dump($array); 
+         *     => array('Álava', 'Albacete', 'Barcelona', 'Bilbao', 'Madrid')
+         *
+         * @param   array  $array   Array of elements to sort.
+         * 
+         * @return  array           Sorted array
+         *
+         * @access  public
+         * 
+         * @static
+         */
+        public static function array_mb_sort_alphabetically( array $array, $reverse = FALSE )
+        {            
+            if($reverse) {
+              usort($array, array( 'util', 'mb_string_compare' ));            
+            }
+            else {
+              uasort($array, array( 'util', 'mb_string_compare' ));            
+            }
+            
+            return $array;
+        }
+                        
+        /**
+         * Comparaison de chaines unicode. This method can come in handy when we
+         * want to use as a callback function on uasort & usort PHP functions to
+         * sort arrays when you have special characters for example accents.
+         *
+         * @param   string  $s1  First string to compare with
+         *
+         * @param   string  $s2  Second string to compare with
+         *
+         * @return  boolean
+         *
+         * @access  public
+         * @since   1.0.000
+         * @static
+         */
+        public static function mb_string_compare( $s1, $s2 )
+        {
+            return strcmp(
+              iconv( 'UTF-8', 'ISO-8859-1//TRANSLIT', util::decode_characters( $s1 )),
+              iconv( 'UTF-8', 'ISO-8859-1//TRANSLIT', util::decode_characters( $s2 )));
+        }
+      
+
+        /**
+         * Decode a string
+         *
+         * @param   string  $string   Encoded string
+         * 
+         * @return  string
+         *
+         * @access  public
+         * 
+         * @static
+         */
+        public static function decode_characters($string)
+        {
+           $string = mb_convert_encoding($string, "HTML-ENTITIES", "UTF-8");
+           $string = preg_replace('~^(&([a-zA-Z0-9]);)~', htmlentities('${1}'), $string);
+
+           return($string);
+        }
+        
     }
 }
