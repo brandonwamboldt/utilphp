@@ -1415,18 +1415,43 @@ if ( ! class_exists( 'util' ) ) {
         }
 
         /**
-         * Validate an email address
+         * Validate email address
          *
-         * @param   string  $possible_email  An email address to validate
+         * All these formats are accepted by PHP's mail function and thus are
+         * considered valid:
+         * @li foo@bar.com
+         * @li <foo@bar.com>
+         * @li foo bar foo@bar.com
+         * @li foo bar <foo@bar.com>
+         * 
+         * @see http://php.net/manual/en/function.mail.php
+         *
+         * @author Benjamin Delespierre <benjamin.delespierre@gmail.com>
+         * 
+         * @param   string  $email  An email address to validate
+         
          * @return  bool
          *
          * @access  public
          * @since   1.0.000
          * @static
          */
-        public static function validate_email( $possible_email )
+        public static function validate_email( $email )
         {
-            return (bool) filter_var( $possible_email, FILTER_VALIDATE_EMAIL );
+            $email = str_replace(array('<', '>'), '', $email);
+        
+            if ($offset = strrpos($email, ' ') !== false)
+                return self::validateEmail(substr($email, $offset));
+            
+            if (!filter_var($email, FILTER_VALIDATE_EMAIL))
+                return false;
+            
+            if (function_exists('checkdnsrr')) {
+                $host = substr($email, strpos($email, '@') + 1);
+                return checkdnsrr($host, 'MX');
+            }
+            
+            return true;            
         }
 
         /**
@@ -1997,6 +2022,238 @@ if ( ! class_exists( 'util' ) ) {
             }
 
             return $array;
+        }
+        
+        /**
+         * Calculate the cartesian production of many arrays, for example the 
+         * cartesian product of [1,2], [3,4] and [5] would be [1,3,5],[1,4,5]
+         * [2,3,5],[2,4,5]
+         *
+         * @author Benjamin Delespierre <benjamin.delespierre@gmail.com>
+         *
+         * @warning The more array you are combining, the more memory the 
+         * method will take and the more the returning array will be large
+         *
+         * Example:
+         * @code
+         * $cols = array('diamonds', 'spades', 'hearts', 'clubs');
+         * $nums = array(2,3,4,5,6,7,8,9,10,'Jack','Queen','King','Ace');
+         * $deck = util::array_cartesian_product($nums, (array)'of', $cols);
+         * shuffle($deck);
+         * for ($i=0; $i<5; $i++) echo implode(' ', array_shift($deck));
+         * @endcode
+         *
+         * @param  array $array1
+         * @param  array $array2
+         * @param  array ...
+         *
+         * @return array
+         *
+         * @access public
+         * @since 1.0.005
+         * @static
+         */
+        public static function array_cartesian_product ()
+        {
+            if (!$c = func_num_args()) return array();
+            if ($c == 1)
+            {
+                $r = array();
+                foreach (func_get_arg(0) as $v)
+                    $r[] = array($v);
+                return $r;
+            }
+ 
+            $args = func_get_args();
+            $f = array_shift($args);
+            $s = call_user_func_array(array('util::array_cartesian_product', $args);
+            $r = array();
+            
+            foreach ($f as $v)
+            {
+                foreach ($s as $w)
+                {
+                    array_unshift($w, $v);
+                    $r[] = $w;
+                }
+            }
+ 
+            return $r;
+        }
+        
+        /**
+         * Finds in @c $haystack the "closest" value from @c $needle using
+         * the levenshtein algorithm
+         *
+         * @author Benjamin Delespierre <benjamin.delespierre@gmail.com>
+         *
+         * @param string  $needle   The value to look for
+         * @param array   $haystack The array to look into
+         * @param integer $approx   The "tolerance" for matching (expressed in
+         *                          characters maximum distance)
+         *
+         * @return mixed
+         *
+         * @access public
+         * @since 1.0.005
+         * @static
+         */
+        public static function array_find_closest ($needle, $haystack, $approx = 3)
+        {
+            if (($offset = array_search($needle, $haystack)) !== false)
+                return $haystack[$offset];
+            
+            $distances = array();
+            foreach ($haystack as $item)
+            {
+                $lev = levenshtein($needle, $item);
+                
+                // if needle is  not completely different and not 'too' different
+                if ($lev <= strlen($item) && $lev <= $approx)
+                    $distances[$item] = $lev;
+            }
+            asort($distances);
+            return !empty($distances) ? key($distances) : false;
+        }
+        
+        /**
+         * Return a lambda function from a valid PHP function definition
+         * string.
+         *
+         * Usage:
+         * @code
+         * $alpha = callback('function ($a,$b) { return $a+$b; }');
+         * echo $alpha(1,2); // 3
+         * @endcode
+         * 
+         * @author Benjamin Delespierre <benjamin.delespierre@gmail.com>
+         *
+         * @param string $defintion   The function definition
+         *
+         * @return function
+         *
+         * @access public
+         * @since 1.0.005
+         * @static 
+         */
+        public static function callback ($definition)
+        {
+            if (!preg_match('~(function)?\s*\((?P<args>[^\)]*)\)\s*\{(?P<code>.*)\}~', $fct, $matches))
+                return false;
+            
+            $args = $matches['args'];
+            $code = $matches['code'];
+            return create_function($args, $code);
+        }
+        
+        /**
+         * Removes all accented characters from $str
+         * 
+         * @author Benjamin Delespierre <benjamin.delespierre@gmail.com>
+         *
+         * @param string $str The string to unnaccent
+         * 
+         * @return string
+         *
+         * @access public
+         * @since 1.0.005
+         * @static
+         */
+        public static function unaccent_chars ($str) 
+        {
+            $search  = explode(",","ç,æ ,œ ,á,é,í,ó,ú,à,è,ì,ò,ù,ä,ë,ï,ö,ü,ÿ,â,ê,î,ô,û,å,e,i,ø,u");
+            $replace = explode(",","c,ae,oe,a,e,i,o,u,a,e,i,o,u,a,e,i,o,u,y,a,e,i,o,u,a,e,i,o,u"); 
+            return str_replace($search, $replace, $str);
+        }
+        
+        /**
+         * Secures an email address for an HTML stream by replacing special
+         * character by human readable equivalent and/or adding a JavaScript
+         * snippet making it unreadable from bots
+         *
+         * @author Benjamin Delespierre <benjamin.delespierre@gmail.com>
+         * 
+         * Available options:
+         * @li script   : whenever to generates a JS snippet (default true)
+         * @li noscript : whenever to generate a noscript tag (default false)
+         * @li at       : the '@' replacement strings
+         * @li dot      : the '.' replacement strings
+         *
+         * Example:
+         * @code
+         * echo util::encode_email('foo@bar.com', 'Contact Me');
+         * @endcode
+         *
+         * @param string $mail    The email address to encode
+         * @param string $link    The link to be displayed, will be 
+         *                        automatically determined if left to false
+         * @param array  $options The other options (see above)
+         * 
+         * @return string
+         *
+         * @access public
+         * @since 1.0.005
+         * @static
+         */
+        public static function encode_email ($mail, $link = false, array $options = array())
+        {
+            $options += array(
+                'script'   => true,
+                'noscript' => false,
+                'at'       => array(' AT ','[at]','{at}','(at)','&lt;at&gt;'),
+                'dot'      => array(' DOT ','[dot]','{dot}','(dot)','&lt;dot&gt;')
+            );
+            
+            $rep = array(
+                '@' => $options['at'][array_rand($options['at'], 1)],
+                '.' => $options['dot'][array_rand($options['dot'],1)],
+            );
+            
+            $raw = str_replace(array_keys($rep), $rep, $mail);
+            
+            if ($options['script'])
+            {
+                $link  === false && $link = $mail;
+                $mail    = self::_str2hex_js("mailto:$mail");
+                $link    = self::_str2hex_js($link);
+                $id      = uniqid();
+                $encoded = 
+                    '<script type="text/javascript" id="'.$id.'">(function (s) {' .
+                    'var a=document.createElement("a");'.
+                    'a.appendChild(document.createTextNode("'.$link.'"));'.
+                    'a.href="'.$mail.'";'.
+                    's.parentNode.insertBefore(a,s);'.
+                    '})(document.getElementById("'.$id.'"))</script>';
+                    
+                $options['noscript'] && $encoded .= "<noscript>$raw</noscript>";
+            }
+            else
+            {
+                $encoded = $raw;
+            }
+            return $encoded;
+        }
+        
+        /**
+         * Converts a string to its hexadecimal JavaScript representation
+         * (used by util::encode_email for obfuscation)
+         *
+         * @author Benjamin Delespierre <benjamin.delespierre@gmail.com>
+         *
+         * @param string $str The string to encode
+         * 
+         * @return string
+         *
+         * @access protected
+         * @since 1.0.005
+         * @static
+         */
+        protected static function _str2hex_js ($str)
+        {
+            $newstr = "";
+            foreach (str_split($str) as $char)
+                $newstr .= "\x" . dechex(ord($char));
+            return $newstr;
         }
     }
 }
