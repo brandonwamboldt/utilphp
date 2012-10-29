@@ -1415,18 +1415,43 @@ if ( ! class_exists( 'util' ) ) {
         }
 
         /**
-         * Validate an email address
+         * Validate email address
          *
-         * @param   string  $possible_email  An email address to validate
+         * All these formats are accepted by PHP's mail function and thus are
+         * considered valid:
+         * @li foo@bar.com
+         * @li <foo@bar.com>
+         * @li foo bar foo@bar.com
+         * @li foo bar <foo@bar.com>
+         * 
+         * @see http://php.net/manual/en/function.mail.php
+         *
+         * @author Benjamin Delespierre <benjamin.delespierre@gmail.com>
+         * 
+         * @param   string  $email  An email address to validate
+         
          * @return  bool
          *
          * @access  public
          * @since   1.0.000
          * @static
          */
-        public static function validate_email( $possible_email )
+        public static function validate_email( $email )
         {
-            return (bool) filter_var( $possible_email, FILTER_VALIDATE_EMAIL );
+            $email = str_replace(array('<', '>'), '', $email);
+        
+            if ($offset = strrpos($email, ' ') !== false)
+                return self::validateEmail(substr($email, $offset));
+            
+            if (!filter_var($email, FILTER_VALIDATE_EMAIL))
+                return false;
+            
+            if (function_exists('checkdnsrr')) {
+                $host = substr($email, strpos($email, '@') + 1);
+                return checkdnsrr($host, 'MX');
+            }
+            
+            return true;            
         }
 
         /**
