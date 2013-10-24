@@ -35,6 +35,17 @@ You can find a list of all changes for each release in the
 Simple drop `util.php` in any project and call `include 'util.php';` in your
 project. You can then access the `Util` class.
 
+## Composer
+
+Add the following dependency to your composer.json:
+
+```
+"brandonwamboldt/utilphp": "1.0.*"
+```
+
+When used with composer, the class is namespaced (`\utilphp\util`) instead of
+just `util`.
+
 ## Contributing
 
 UtilPHP is a community driven project and accepts contributions of code and
