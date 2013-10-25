@@ -743,11 +743,7 @@ class util
      *
      * @param   string $string
      * @param   string $starts_with
-     * @return  bool
-     *
-     * @access  public
-     * @since   1.0.6
-     * @static
+     * @return  boolean
      */
     public static function starts_with($string, $starts_with)
     {
@@ -759,15 +755,36 @@ class util
      *
      * @param   string $string
      * @param   string $starts_with
-     * @return  bool
-     *
-     * @access  public
-     * @since   1.0.6
-     * @static
+     * @return  boolean
      */
     public static function ends_with($string, $ends_with)
     {
         return substr($string, -strlen($ends_with)) === $ends_with;
+    }
+
+    /**
+     * Check if a string contains another string.
+     *
+     * @param  string $haystack
+     * @param  string $needle
+     * @return boolean
+     */
+    public static function str_contains($haystack, $needle)
+    {
+        return (strpos($haystack, $needle) !== false);
+    }
+
+    /**
+     * Check if a string contains another string. This version is case
+     * insensitive.
+     *
+     * @param  string $haystack
+     * @param  string $needle
+     * @return boolean
+     */
+    public static function str_icontains($haystack, $needle)
+    {
+        return (stripos($haystack, $needle) !== false);
     }
 
     /**

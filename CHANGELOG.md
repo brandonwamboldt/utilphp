@@ -4,8 +4,10 @@ Change Log
 1.0.6
 -----
 
-* Adding `start_with` function
-* Adding `ends_with` function
+* Added `start_with` function
+* Added `ends_with` function
+* Added `str_contains` function
+* Added `str_icontains` function
 * Fixing permissions on the files & directories
 * Fixing a bug with the include path of util.php
 
