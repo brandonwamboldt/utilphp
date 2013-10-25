@@ -1,6 +1,6 @@
 <?php
 
-require __DIR__ . '/lib/utilphp/util.php';
+require __DIR__ . '/src/utilphp/util.php';
 
 /**
  * Globally namespaced version of the class.
