@@ -1,6 +1,14 @@
 Change Log
 ==========
 
+1.0.6
+-----
+
+* Adding `start_with` function
+* Adding `ends_with` function
+* Fixing permissions on the files & directories
+* Fixing a bug with the include path of util.php
+
 1.0.5
 -----
 
