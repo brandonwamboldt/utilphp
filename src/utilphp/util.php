@@ -739,6 +739,38 @@ class util
     }
 
     /**
+     * Check if a string starts with the given string.
+     *
+     * @param   string $string
+     * @param   string $starts_with
+     * @return  bool
+     *
+     * @access  public
+     * @since   1.0.6
+     * @static
+     */
+    public static function starts_with($string, $starts_with)
+    {
+        return (strpos($string, $starts_with) === 0);
+    }
+
+    /**
+     * Check if a string ends with the given string.
+     *
+     * @param   string $string
+     * @param   string $starts_with
+     * @return  bool
+     *
+     * @access  public
+     * @since   1.0.6
+     * @static
+     */
+    public static function ends_with($string, $ends_with)
+    {
+        return substr($string, -strlen($ends_with)) === $ends_with;
+    }
+
+    /**
      * Convert entities, while preserving already-encoded entities
      *
      * @param   string  $string  The text to be converted
