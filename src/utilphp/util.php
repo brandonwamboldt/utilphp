@@ -788,6 +788,17 @@ class util
     }
 
     /**
+     * Return the file extension of the given filename.
+     *
+     * @param  string $filename
+     * @return string
+     */
+    public static function get_file_ext($filename)
+    {
+        return pathinfo($filename, PATHINFO_EXTENSION);
+    }
+
+    /**
      * Convert entities, while preserving already-encoded entities
      *
      * @param   string  $string  The text to be converted

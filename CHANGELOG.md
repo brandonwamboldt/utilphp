@@ -8,6 +8,7 @@ Change Log
 * Added `ends_with` function
 * Added `str_contains` function
 * Added `str_icontains` function
+* Added `get_file_ext` function
 * Fixing permissions on the files & directories
 * Fixing a bug with the include path of util.php
 
