@@ -20,7 +20,7 @@ if ( ! class_exists( 'util' ) ) {
          * A constant representing the number of seconds in a minute, for
          * making code more verbose
          *
-         * @since  1.0.000
+         * @since  1.0.0
          * @var    int
          */
         const SECONDS_IN_A_MINUTE = 60;
@@ -29,7 +29,7 @@ if ( ! class_exists( 'util' ) ) {
          * A constant representing the number of seconds in an hour, for making
          * code more verbose
          *
-         * @since  1.0.000
+         * @since  1.0.0
          * @var    int
          */
         const SECONDS_IN_A_HOUR   = 3600;
@@ -39,7 +39,7 @@ if ( ! class_exists( 'util' ) ) {
          * A constant representing the number of seconds in a day, for making
          * code more verbose
          *
-         * @since  1.0.000
+         * @since  1.0.0
          * @var    int
          */
         const SECONDS_IN_A_DAY    = 86400;
@@ -48,7 +48,7 @@ if ( ! class_exists( 'util' ) ) {
          * A constant representing the number of seconds in a week, for making
          * code more verbose
          *
-         * @since  1.0.000
+         * @since  1.0.0
          * @var    int
          */
         const SECONDS_IN_A_WEEK   = 604800;
@@ -57,7 +57,7 @@ if ( ! class_exists( 'util' ) ) {
          * A constant representing the number of seconds in a month (30 days),
          * for making code more verbose
          *
-         * @since  1.0.000
+         * @since  1.0.0
          * @var    int
          */
         const SECONDS_IN_A_MONTH  = 2592000;
@@ -66,7 +66,7 @@ if ( ! class_exists( 'util' ) ) {
          * A constant representing the number of seconds in a year (365 days),
          * for making code more verbose
          *
-         * @since  1.0.000
+         * @since  1.0.0
          * @var    int
          */
         const SECONDS_IN_A_YEAR   = 31536000;
@@ -76,7 +76,7 @@ if ( ! class_exists( 'util' ) ) {
          * an array or object
          *
          * @access  public
-         * @since   1.0.000
+         * @since   1.0.0
          * @static
          * @var     string
          */
@@ -87,7 +87,7 @@ if ( ! class_exists( 'util' ) ) {
          * an array or object
          *
          * @access  public
-         * @since   1.0.000
+         * @since   1.0.0
          * @static
          * @var     string
          */
@@ -106,7 +106,7 @@ if ( ! class_exists( 'util' ) ) {
          * @return  mixed
          *
          * @access  public
-         * @since   1.0.000
+         * @since   1.0.0
          * @static
          */
         public static function array_get( & $var, $default = NULL )
@@ -128,7 +128,7 @@ if ( ! class_exists( 'util' ) ) {
          * @see     var_dump_plain()
          *
          * @access  public
-         * @since   1.0.000
+         * @since   1.0.0
          * @static
          */
         public static function var_dump( $var, $return = FALSE )
@@ -166,7 +166,7 @@ if ( ! class_exists( 'util' ) ) {
          * @return  string
          *
          * @access  public
-         * @since   1.0.000
+         * @since   1.0.0
          * @static
          */
         public static function var_dump_plain( $var )
@@ -361,7 +361,7 @@ if ( ! class_exists( 'util' ) ) {
          * @return  string
          *
          * @access  public
-         * @since   1.0.000
+         * @since   1.0.0
          * @static
          */
         public static function slugify( $string, $css_mode = FALSE )
@@ -392,7 +392,7 @@ if ( ! class_exists( 'util' ) ) {
          *
          * @access  public
          * @author  bmorel@ssi.fr
-         * @since   1.0.000
+         * @since   1.0.0
          * @static
          */
         public static function seems_utf8( $string )
@@ -426,7 +426,7 @@ if ( ! class_exists( 'util' ) ) {
          * @return  string
          *
          * @access  public
-         * @since   1.0.000
+         * @since   1.0.0
          * @static
          */
         public static function size_format( $bytes, $decimals = 0 )
@@ -459,7 +459,7 @@ if ( ! class_exists( 'util' ) ) {
          * @link    http://codex.wordpress.org/Function_Reference/maybe_serialize
          *
          * @access  public
-         * @since   1.0.000
+         * @since   1.0.0
          * @static
          */
         public static function maybe_serialize( $data )
@@ -480,7 +480,7 @@ if ( ! class_exists( 'util' ) ) {
          * @link    http://codex.wordpress.org/Function_Reference/maybe_unserialize
          *
          * @access  public
-         * @since   1.0.000
+         * @since   1.0.0
          * @static
          */
         public static function maybe_unserialize( $data )
@@ -505,7 +505,7 @@ if ( ! class_exists( 'util' ) ) {
          * @link    http://codex.wordpress.org/Function_Reference/is_serialized
          *
          * @access  public
-         * @since   1.0.000
+         * @since   1.0.0
          * @static
          */
         public static function is_serialized( $data )
@@ -562,7 +562,7 @@ if ( ! class_exists( 'util' ) ) {
          * @return  bool
          *
          * @access  public
-         * @since   1.0.000
+         * @since   1.0.0
          * @static
          */
         public static function is_https()
@@ -595,7 +595,7 @@ if ( ! class_exists( 'util' ) ) {
          * @link    http://codex.wordpress.org/Function_Reference/add_query_arg
          *
          * @access  public
-         * @since   1.0.000
+         * @since   1.0.0
          * @static
          */
         public static function add_query_arg()
@@ -693,7 +693,7 @@ if ( ! class_exists( 'util' ) ) {
          * @link    http://codex.wordpress.org/Function_Reference/remove_query_arg
          *
          * @access  public
-         * @since   1.0.000
+         * @since   1.0.0
          * @static
          */
         public static function remove_query_arg( $keys, $uri = FALSE )
@@ -720,7 +720,7 @@ if ( ! class_exists( 'util' ) ) {
          * @return  bool
          *
          * @access  public
-         * @since   1.0.000
+         * @since   1.0.0
          * @static
          */
         public static function str_to_bool( $string, $default = FALSE )
@@ -746,7 +746,7 @@ if ( ! class_exists( 'util' ) ) {
          * @link    http://ca2.php.net/manual/en/function.htmlentities.php#90111
          *
          * @access  public
-         * @since   1.0.000
+         * @since   1.0.0
          * @static
          */
         public static function htmlentities( $string, $preserve_encoded_entities = FALSE )
@@ -770,7 +770,7 @@ if ( ! class_exists( 'util' ) ) {
          * @link    http://ca2.php.net/manual/en/function.htmlentities.php#90111
          *
          * @access  public
-         * @since   1.0.000
+         * @since   1.0.0
          * @static
          */
         public static function htmlspecialchars( $string, $preserve_encoded_entities = FALSE  )
@@ -797,7 +797,7 @@ if ( ! class_exists( 'util' ) ) {
          * @link    http://codex.wordpress.org/Function_Reference/remove_accents
          *
          * @access  public
-         * @since   1.0.000
+         * @since   1.0.0
          * @static
          */
         public static function remove_accents( $string )
@@ -953,7 +953,7 @@ if ( ! class_exists( 'util' ) ) {
          * @return  string
          *
          * @access  public
-         * @since   1.0.000
+         * @since   1.0.0
          * @static
          */
         public static function zero_pad( $number, $length )
@@ -973,7 +973,7 @@ if ( ! class_exists( 'util' ) ) {
          * @return  string
          *
          * @access  public
-         * @since   1.0.000
+         * @since   1.0.0
          * @static
          */
         public static function human_time_diff( $from, $to = '', $as_text = FALSE, $suffix = ' ago' )
@@ -1035,7 +1035,7 @@ if ( ! class_exists( 'util' ) ) {
          *
          * @access  public
          * @author  Brenton Fletcher
-         * @since   1.0.000
+         * @since   1.0.0
          * @static
          */
         public static function number_to_word( $number )
@@ -1251,7 +1251,7 @@ if ( ! class_exists( 'util' ) ) {
          * @return  bool
          *
          * @access  public
-         * @since   1.0.000
+         * @since   1.0.0
          * @static
          */
         public static function utf8_headers( $content_type = 'text/html' )
@@ -1280,7 +1280,7 @@ if ( ! class_exists( 'util' ) ) {
          * @link    http://www.php.net/manual/en/function.header.php#102175
          *
          * @access  public
-         * @since   1.0.000
+         * @since   1.0.0
          * @static
          */
         public static function force_download( $filename, $content = FALSE )
@@ -1329,7 +1329,7 @@ if ( ! class_exists( 'util' ) ) {
          * @return  bool
          *
          * @access  public
-         * @since   1.0.000
+         * @since   1.0.0
          * @static
          */
         public static function nocache_headers()
@@ -1369,7 +1369,7 @@ if ( ! class_exists( 'util' ) ) {
          *                           enabled
          *
          * @access  public
-         * @since   1.0.000
+         * @since   1.0.0
          * @static
          */
         public static function random_string( $length, $human_friendly = TRUE, $include_symbols = FALSE, $no_duplicate_chars = FALSE )
@@ -1421,7 +1421,7 @@ if ( ! class_exists( 'util' ) ) {
          * @return  bool
          *
          * @access  public
-         * @since   1.0.000
+         * @since   1.0.0
          * @static
          */
         public static function validate_email( $possible_email )
@@ -1437,7 +1437,7 @@ if ( ! class_exists( 'util' ) ) {
          * @return  string
          *
          * @access  public
-         * @since   1.0.000
+         * @since   1.0.0
          * @static
          */
         public static function get_gravatar( $email, $size = 32 )
@@ -1462,7 +1462,7 @@ if ( ! class_exists( 'util' ) ) {
          * @link    https://github.com/jmrware/LinkifyURL
          *
          * @access  public
-         * @since   1.0.000
+         * @since   1.0.0
          * @static
          */
         public static function linkify( $text )
@@ -1493,7 +1493,7 @@ if ( ! class_exists( 'util' ) ) {
          * @link    https://github.com/jmrware/LinkifyURL
          *
          * @access  public
-         * @since   1.0.000
+         * @since   1.0.0
          * @static
          */
         public static function _linkify( $text )
@@ -1552,7 +1552,7 @@ if ( ! class_exists( 'util' ) ) {
          * @link    https://github.com/jmrware/LinkifyURL
          *
          * @access  public
-         * @since    1.0.000
+         * @since    1.0.0
          * @static
          */
         public static function _linkify_callback( $matches )
@@ -1570,7 +1570,7 @@ if ( ! class_exists( 'util' ) ) {
          * @return  string
          *
          * @access  public
-         * @since   1.0.000
+         * @since   1.0.0
          * @static
          */
         public static function get_current_url()
@@ -1633,7 +1633,7 @@ if ( ! class_exists( 'util' ) ) {
          * @return  string
          *
          * @access  public
-         * @since   1.0.000
+         * @since   1.0.0
          * @static
          */
         public static function get_client_ip( $trust_proxy_headers = FALSE )
@@ -1663,7 +1663,7 @@ if ( ! class_exists( 'util' ) ) {
          * @return  string
          *
          * @access  public
-         * @since   1.0.000
+         * @since   1.0.0
          * @static
          */
         public static function safe_truncate( $string, $length, $append = '...' )
@@ -1691,7 +1691,7 @@ if ( ! class_exists( 'util' ) ) {
          * @link    http://phpsnips.com/snippet.php?id=37
          *
          * @access  public
-         * @since   1.0.000
+         * @since   1.0.0
          * @static
          */
         public static function ordinal( $number )
@@ -1710,7 +1710,7 @@ if ( ! class_exists( 'util' ) ) {
          * @return  string
          *
          * @access  public
-         * @since   1.0.000
+         * @since   1.0.0
          * @static
          */
         public static function full_permissions( $file )
@@ -1774,7 +1774,7 @@ if ( ! class_exists( 'util' ) ) {
          * @return  mixed
          *
          * @access  public
-         * @since   1.0.000
+         * @since   1.0.0
          * @static
          */
         public static function array_first( array $array )
@@ -1789,7 +1789,7 @@ if ( ! class_exists( 'util' ) ) {
          * @return  mixed
          *
          * @access  public
-         * @since   1.0.000
+         * @since   1.0.0
          * @static
          */
         public static function array_last( array $array )
@@ -1804,7 +1804,7 @@ if ( ! class_exists( 'util' ) ) {
          * @return  int|string
          *
          * @access  public
-         * @since   1.0.000
+         * @since   1.0.0
          * @static
          */
         public static function array_first_key( array $array )
@@ -1821,7 +1821,7 @@ if ( ! class_exists( 'util' ) ) {
          * @return  int|string
          *
          * @access  public
-         * @since   1.0.000
+         * @since   1.0.0
          * @static
          */
         public static function array_last_key( array $array )
@@ -1843,7 +1843,7 @@ if ( ! class_exists( 'util' ) ) {
          * @return  array
          *
          * @access  public
-         * @since   1.0.000
+         * @since   1.0.0
          * @static
          */
         public static function array_flatten( array $array, $preserve_keys = TRUE )
@@ -1882,7 +1882,7 @@ if ( ! class_exists( 'util' ) ) {
          * @link    http://codex.wordpress.org/Function_Reference/wp_list_pluck
          *
          * @access  public
-         * @since   1.0.000
+         * @since   1.0.0
          * @static
          */
         public static function array_pluck( array $array, $field, $preserve_keys = TRUE, $remove_nomatches = TRUE )
@@ -1929,7 +1929,7 @@ if ( ! class_exists( 'util' ) ) {
          *                           success
          *
          * @access  public
-         * @since   1.0.000
+         * @since   1.0.0
          * @static
          */
         public static function array_search_deep( array $array, $search, $field = FALSE )
@@ -1982,7 +1982,7 @@ if ( ! class_exists( 'util' ) ) {
          * @return  array
          *
          * @access  public
-         * @since   1.0.000
+         * @since   1.0.0
          * @static
          */
         public static function array_map_deep( array $array, $callback, $on_nonscalar = FALSE )
