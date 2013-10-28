@@ -1,7 +1,7 @@
 {
     "name": "brandonwamboldt/utilphp",
     "type": "library",
-    "version": "1.0.4",
+    "version": "1.0.5",
     "description": "util.php is a collection of useful functions and snippets that you need or could use every day, designed to avoid conflicts with existing projects",
     "keywords": ["php", "utility", "collection", "helpers"],
     "homepage": "https://github.com/brandonwamboldt/utilphp",
@@ -13,6 +13,8 @@
         }
     ],
     "autoload": {
-        "files": ["util.php"]
+        "autoload": {
+            "psr-0": { "utilphp\\": "src/" }
+        }
     }
 }
