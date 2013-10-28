@@ -4,6 +4,7 @@ Change Log
 1.0.5
 -----
 
+* [Issue #29](https://github.com/brandonwamboldt/utilphp/issues/29) Fixed error in `var_dump` if mbstring extension wasn't present
 * Adding Composer support
 * Updating license from GPL to MIT
 * Adding Changelog to project

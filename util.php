@@ -752,11 +752,11 @@ if ( ! class_exists( 'util' ) ) {
         public static function htmlentities( $string, $preserve_encoded_entities = FALSE )
         {
             if ( $preserve_encoded_entities ) {
-                $translation_table = get_html_translation_table( HTML_ENTITIES, ENT_QUOTES, mb_internal_encoding() );
+                $translation_table = get_html_translation_table( HTML_ENTITIES, ENT_QUOTES, self::mb_internal_encoding() );
                 $translation_table[chr(38)] = '&';
                 return preg_replace( '/&(?![A-Za-z]{0,4}\w{2,3};|#[0-9]{2,3};)/', '&amp;', strtr( $string, $translation_table ) );
             } else {
-                return htmlentities( $string, ENT_QUOTES, mb_internal_encoding() );
+                return htmlentities( $string, ENT_QUOTES, self::mb_internal_encoding() );
             }
         }
 
@@ -776,12 +776,12 @@ if ( ! class_exists( 'util' ) ) {
         public static function htmlspecialchars( $string, $preserve_encoded_entities = FALSE  )
         {
             if ( $preserve_encoded_entities ) {
-                $translation_table            = get_html_translation_table( HTML_SPECIALCHARS, ENT_QUOTES, mb_internal_encoding() );
+                $translation_table            = get_html_translation_table( HTML_SPECIALCHARS, ENT_QUOTES, self::mb_internal_encoding() );
                 $translation_table[chr( 38 )] = '&';
 
                 return preg_replace( '/&(?![A-Za-z]{0,4}\w{2,3};|#[0-9]{2,3};)/', '&amp;', strtr( $string, $translation_table ) );
             } else {
-                return htmlentities( $string, ENT_QUOTES, mb_internal_encoding() );
+                return htmlentities( $string, ENT_QUOTES, self::mb_internal_encoding() );
             }
         }
 
@@ -1997,6 +1997,22 @@ if ( ! class_exists( 'util' ) ) {
             }
 
             return $array;
+        }
+
+        /**
+         * Wrapper to prevent errors if the user doesn't have the mbstring
+         * extension installed.
+         *
+         * @param  string $encoding
+         * @return string
+         */
+        protected static function mb_internal_encoding( $encoding = null )
+        {
+            if (function_exists('mb_internal_encoding')) {
+                return $encoding ? mb_internal_encoding($encoding) : mb_internal_encoding();
+            } else {
+                return 'UTF-8';
+            }
         }
     }
 }
