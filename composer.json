@@ -13,8 +13,6 @@
         }
     ],
     "autoload": {
-        "autoload": {
-            "psr-0": { "utilphp\\": "src/" }
-        }
+        "psr-0": { "utilphp\\": "src/" }
     }
 }
