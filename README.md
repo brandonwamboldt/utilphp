@@ -1,6 +1,6 @@
-# What is UtilityPHP? #
+# What is UtilPHP? #
 
-[UtilityPHP](http://brandonwamboldt.github.com/utilphp/) (Aka util.php) is a
+[UtilPHP](http://brandonwamboldt.github.com/utilphp/) (Aka util.php) is a
 collection of useful functions and snippets that you need or could use every
 day. It's implemented as a class with static methods, to avoid conflicts with
 your existing code-base. Just drop it in and start using it immediately.
@@ -28,16 +28,16 @@ You can find a list of all changes for each release in the
 
 ## Server Requirements
 
-* PHP version 5.2.4 or newer.
+* PHP version 5.3.3 or higher.
 
 ## Installation
 
 Simple drop `util.php` in any project and call `include 'util.php';` in your
-project. You can then access the `util` class.
+project. You can then access the `Util` class.
 
 ## Contributing
 
-UtilityPHP is a community driven project and accepts contributions of code and
+UtilPHP is a community driven project and accepts contributions of code and
 documentation from the community. These contributions are made in the form of
 Issues or [Pull Requests](http://help.github.com/send-pull-requests/) on the
 [UtilityPHP repository](https://github.com/brandonwamboldt/utilphp) on GitHub.
@@ -75,18 +75,10 @@ maintained.
 
 ### Compatibility
 
-UtilityPHP is compatible with PHP 5.2.4 so all code supplied must stick to this
-requirement. If PHP 5.3 or 5.4 functions or features are used then there must
-be a fallback for PHP 5.2.4.
+UtilityPHP is compatible with PHP 5.3.3 so all code supplied must stick to this
+requirement.
 
 ### Branching
-
-All pull requests must be sent to the "develop" branch. This is where the next
-planned version will be developed. The "master" branch will always contain the
-latest stable version and is kept clean so a "hotfix" (e.g: an emergency
-security patch) can be applied to master to create a new version, without
-worrying about other features holding it up. For this reason all commits need
-to be made to "develop" and any sent to "master" will be closed.
 
 One thing at a time: A pull request should only contain one change. That does
 not mean only one commit, but one change - however many commits it took. The
@@ -95,41 +87,9 @@ at the same time, we might really want X but disagree with Y, meaning we cannot
 merge the request. Using the Git-Flow branching model you can create new
 branches for both of these features and send two requests.
 
-### Signing
-
-You must sign your work, certifying that you either wrote the work or otherwise
-have the right to pass it on to an open source project. git makes this trivial
-as you merely have to use --signoff on your commits to your UtilityPHP fork.
-
-```
-git commit --signoff
-```
-
-or simply:
-
-```
-git commit -s
-```
-
-This will sign your commits with the information setup in your git config, e.g.
-
-> Signed-off-by: John Q Public <john.public@example.com>
-
-If you are using Tower there is a "Sign-Off" checkbox in the commit window. You
-could even alias git commit to use the -s flag so you don’t have to think about
-it.
-
-By signing your work in this manner, you certify to a "Developer's Certificate
-or Origin". The current version of this certificate is in the
-[DCO.txt](https://github.com/brandonwamboldt/utilphp/blob/master/DCO.txt) file in
-the root of this repository.
-
 ## License
 
-UtilityPHP is licensed under the
-[GPL v3](https://github.com/brandonwamboldt/utilphp/blob/master/LICENSE.txt).
-Please feel free to do whatever you'd like with the project. Include it in open
-source or commercial projects. I'd prefer if you gave me credit of course :)
+UtilPHP is licensed under the MIT license.
 
 ## Resources
 
