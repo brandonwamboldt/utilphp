@@ -14,5 +14,8 @@
     ],
     "autoload": {
         "psr-0": { "utilphp\\": "src/" }
+    },
+    "require": {
+        "php": ">=5.3.3"
     }
 }
