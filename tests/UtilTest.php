@@ -369,4 +369,12 @@ class UtilityPHPTest extends PHPUnit_Framework_TestCase
 
         $this->assertEquals($expect, Util::strip_space($input));
     }
+
+    public function test_sanitize_string()
+    {
+        $input = ' Benoit! à New-York? j’ai perçu 1 % : Qu’as-tu "gagné" chez M. V. Noël? Dix francs.';
+        $expect = 'benoitanewyorkjaipercu1quastugagnechezmvnoeldixfrancs';
+
+        $this->assertEquals($expect, Util::sanitize_string($input));
+    }
 }

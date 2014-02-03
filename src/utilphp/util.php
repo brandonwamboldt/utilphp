@@ -1008,6 +1008,7 @@ class util
 
     /**
      * Strip all witespaces from the given string
+     *
      * @param  string $string The string to strip
      * @return string
      *
@@ -1017,6 +1018,25 @@ class util
     public static function strip_space($string)
     {
         return preg_replace('/\s+/', '', $string);
+    }
+
+    /**
+     * Sanitize a string by performing the following operation :
+     * - Remove accents
+     * - Lower the string
+     * - Remove punctuation characters
+     * - Strip whitespaces
+     *
+     * @param  string $string the string to sanitize
+     * @return string
+     */
+    public static function sanitize_string($string)
+    {
+        $string = self::remove_accents($string);
+        $string = strtolower($string);
+        $string = preg_replace('/[^a-zA-Z 0-9]+/', '', $string);
+        $string = self::strip_space($string);
+        return $string;
     }
 
     /**
