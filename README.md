@@ -1,4 +1,4 @@
-# What is UtilPHP? #
+# Util.php [![Build Status](https://travis-ci.org/brandonwamboldt/utilphp.png?branch=master)](https://travis-ci.org/brandonwamboldt/utilphp)
 
 [UtilPHP](http://brandonwamboldt.github.com/utilphp/) (Aka util.php) is a
 collection of useful functions and snippets that you need or could use every
