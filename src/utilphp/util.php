@@ -11,9 +11,8 @@ namespace utilphp;
  * contained within a single file and hosts no dependencies. The library is
  * designed to avoid any possible conflicts.
  *
- * @author   Brandon Wamboldt
- * @link     http://github.com/brandonwamboldt/utilphp/ Official Documentation
- * @version  1.0.5
+ * @author Brandon Wamboldt <brandon.wamboldt@gmail.com>
+ * @link   http://github.com/brandonwamboldt/utilphp/ Official Documentation
  */
 class util
 {
@@ -21,8 +20,7 @@ class util
      * A constant representing the number of seconds in a minute, for
      * making code more verbose
      *
-     * @since  1.0.0
-     * @var    int
+     * @var integer
      */
     const SECONDS_IN_A_MINUTE = 60;
 
@@ -30,56 +28,48 @@ class util
      * A constant representing the number of seconds in an hour, for making
      * code more verbose
      *
-     * @since  1.0.0
-     * @var    int
+     * @var integer
      */
-    const SECONDS_IN_A_HOUR   = 3600;
-    const SECONDS_IN_AN_HOUR  = 3600;
+    const SECONDS_IN_A_HOUR = 3600;
+    const SECONDS_IN_AN_HOUR = 3600;
 
     /**
      * A constant representing the number of seconds in a day, for making
      * code more verbose
      *
-     * @since  1.0.0
-     * @var    int
+     * @var integer
      */
-    const SECONDS_IN_A_DAY    = 86400;
+    const SECONDS_IN_A_DAY = 86400;
 
     /**
      * A constant representing the number of seconds in a week, for making
      * code more verbose
      *
-     * @since  1.0.0
-     * @var    int
+     * @var integer
      */
-    const SECONDS_IN_A_WEEK   = 604800;
+    const SECONDS_IN_A_WEEK = 604800;
 
     /**
      * A constant representing the number of seconds in a month (30 days),
      * for making code more verbose
      *
-     * @since  1.0.0
-     * @var    int
+     * @var integer
      */
-    const SECONDS_IN_A_MONTH  = 2592000;
+    const SECONDS_IN_A_MONTH = 2592000;
 
     /**
      * A constant representing the number of seconds in a year (365 days),
      * for making code more verbose
      *
-     * @since  1.0.0
-     * @var    int
+     * @var integer
      */
-    const SECONDS_IN_A_YEAR   = 31536000;
+    const SECONDS_IN_A_YEAR = 31536000;
 
     /**
      * A collapse icon, using in the dump_var function to allow collapsing
      * an array or object
      *
-     * @access  public
-     * @since   1.0.0
-     * @static
-     * @var     string
+     * @var string
      */
     public static $icon_collapse = 'iVBORw0KGgoAAAANSUhEUgAAAAkAAAAJCAMAAADXT/YiAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2RpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDo3MjlFRjQ2NkM5QzJFMTExOTA0MzkwRkI0M0ZCODY4RCIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDpFNzFDNDQyNEMyQzkxMUUxOTU4MEM4M0UxRDA0MUVGNSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDpFNzFDNDQyM0MyQzkxMUUxOTU4MEM4M0UxRDA0MUVGNSIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M1IFdpbmRvd3MiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDo3NDlFRjQ2NkM5QzJFMTExOTA0MzkwRkI0M0ZCODY4RCIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDo3MjlFRjQ2NkM5QzJFMTExOTA0MzkwRkI0M0ZCODY4RCIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PuF4AWkAAAA2UExURU9t2DBStczM/1h16DNmzHiW7iNFrypMvrnD52yJ4ezs7Onp6ejo6P///+Tk5GSG7D9h5SRGq0Q2K74AAAA/SURBVHjaLMhZDsAgDANRY3ZISnP/y1ZWeV+jAeuRSky6cKL4ryDdSggP8UC7r6GvR1YHxjazPQDmVzI/AQYAnFQDdVSJ80EAAAAASUVORK5CYII=';
 
@@ -87,10 +77,7 @@ class util
      * A collapse icon, using in the dump_var function to allow collapsing
      * an array or object
      *
-     * @access  public
-     * @since   1.0.0
-     * @static
-     * @var     string
+     * @var string
      */
     public static $icon_expand = 'iVBORw0KGgoAAAANSUhEUgAAAAkAAAAJCAMAAADXT/YiAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2RpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDo3MTlFRjQ2NkM5QzJFMTExOTA0MzkwRkI0M0ZCODY4RCIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDpFQzZERTJDNEMyQzkxMUUxODRCQzgyRUNDMzZEQkZFQiIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDpFQzZERTJDM0MyQzkxMUUxODRCQzgyRUNDMzZEQkZFQiIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M1IFdpbmRvd3MiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDo3MzlFRjQ2NkM5QzJFMTExOTA0MzkwRkI0M0ZCODY4RCIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDo3MTlFRjQ2NkM5QzJFMTExOTA0MzkwRkI0M0ZCODY4RCIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PkmDvWIAAABIUExURU9t2MzM/3iW7ubm59/f5urq85mZzOvr6////9ra38zMzObm5rfB8FZz5myJ4SNFrypMvjBStTNmzOvr+mSG7OXl8T9h5SRGq/OfqCEAAABKSURBVHjaFMlbEoAwCEPRULXF2jdW9r9T4czcyUdA4XWB0IgdNSybxU9amMzHzDlPKKu7Fd1e6+wY195jW0ARYZECxPq5Gn8BBgCr0gQmxpjKAwAAAABJRU5ErkJggg==';
 
@@ -98,17 +85,13 @@ class util
      * Access an array index, retrieving the value stored there if it
      * exists or a default if it does not. This function allows you to
      * concisely access an index which may or may not exist without
-     * raising a warning
+     * raising a warning.
      *
-     * @param   array   $var      Array to access
-     * @param   string  $field    Index to access in the array
-     * @param   mixed   $default  Default value to return if the key is not
-     *                            present in the array
-     * @return  mixed
-     *
-     * @access  public
-     * @since   1.0.0
-     * @static
+     * @param  array  $var     Array to access
+     * @param  string $field   Index to access in the array
+     * @param  mixed  $default Default value to return if the key is not
+     *                         present in the array
+     * @return mixed
      */
     public static function array_get( & $var, $default = NULL )
     {
@@ -123,14 +106,10 @@ class util
      * Display a variable's contents using nice HTML formatting and will
      * properly display the value of booleans as true or false
      *
-     * @param   mixed  $var  The variable to dump
-     * @return  string
+     * @see var_dump_plain()
      *
-     * @see     var_dump_plain()
-     *
-     * @access  public
-     * @since   1.0.0
-     * @static
+     * @param  mixed $var The variable to dump
+     * @return string
      */
     public static function var_dump( $var, $return = FALSE )
     {
@@ -163,12 +142,8 @@ class util
      * like booleans and resources. Supports collapsable arrays and objects
      * as well.
      *
-     * @param   mixed  $var  The variable to dump
-     * @return  string
-     *
-     * @access  public
-     * @since   1.0.0
-     * @static
+     * @param  mixed $var The variable to dump
+     * @return string
      */
     public static function var_dump_plain( $var )
     {
@@ -354,16 +329,12 @@ class util
      * converts any sequence of two or more dashes to a single dash. This
      * function generates slugs safe for use as URLs, and if you pass TRUE
      * as the second parameter, it will create strings safe for use as CSS
-     * classes or IDs
+     * classes or IDs.
      *
-     * @param   string  $string    A string to convert to a slug
-     * @param   bool    $css_mode  Whether or not to generate strings safe
-     *                             for CSS classes/IDs (Default to false)
+     * @param   string  $string   A string to convert to a slug
+     * @param   boolean $css_mode Whether or not to generate strings safe for
+     *                            CSS classes/IDs (Default to false)
      * @return  string
-     *
-     * @access  public
-     * @since   1.0.0
-     * @static
      */
     public static function slugify( $string, $css_mode = FALSE )
     {
@@ -386,15 +357,8 @@ class util
      * NOTE: This function checks for 5-Byte sequences, UTF8
      *       has Bytes Sequences with a maximum length of 4.
      *
-     * @param   string  $string  The string to be checked
-     * @return  bool
-     *
-     * @link    https://github.com/facebook/libphutil/blob/master/src/utils/utf8.php
-     *
-     * @access  public
-     * @author  bmorel@ssi.fr
-     * @since   1.0.0
-     * @static
+     * @param  string $string The string to be checked
+     * @return boolean
      */
     public static function seems_utf8( $string )
     {
@@ -420,15 +384,11 @@ class util
     }
 
     /**
-     * Nice formatting for computer sizes (Bytes)
+     * Nice formatting for computer sizes (Bytes).
      *
-     * @param   int  $bytes     The number in bytes to format
-     * @param   int  $decimals  The number of decimal points to include
+     * @param   integer $bytes    The number in bytes to format
+     * @param   integer $decimals The number of decimal points to include
      * @return  string
-     *
-     * @access  public
-     * @since   1.0.0
-     * @static
      */
     public static function size_format( $bytes, $decimals = 0 )
     {
@@ -454,14 +414,8 @@ class util
     /**
      * Serialize data, if needed.
      *
-     * @param   mixed  $data  Data that might need to be serialized
-     * @return  mixed
-     *
-     * @link    http://codex.wordpress.org/Function_Reference/maybe_serialize
-     *
-     * @access  public
-     * @since   1.0.0
-     * @static
+     * @param  mixed $data Data that might need to be serialized
+     * @return mixed
      */
     public static function maybe_serialize( $data )
     {
@@ -473,16 +427,10 @@ class util
     }
 
     /**
-     * Unserialize value only if it is serialized
+     * Unserialize value only if it is serialized.
      *
-     * @param   string $data A variable that may or may not be serialized
-     * @return  mixed
-     *
-     * @link    http://codex.wordpress.org/Function_Reference/maybe_unserialize
-     *
-     * @access  public
-     * @since   1.0.0
-     * @static
+     * @param  string $data A variable that may or may not be serialized
+     * @return mixed
      */
     public static function maybe_unserialize( $data )
     {
@@ -500,14 +448,8 @@ class util
      * If $data is not an string, then returned value will always be false.
      * Serialized data is always a string.
      *
-     * @param   mixed  $data  Value to check to see if was serialized
-     * @return  bool
-     *
-     * @link    http://codex.wordpress.org/Function_Reference/is_serialized
-     *
-     * @access  public
-     * @since   1.0.0
-     * @static
+     * @param  mixed $data Value to check to see if was serialized
+     * @return boolean
      */
     public static function is_serialized( $data )
     {
@@ -560,11 +502,7 @@ class util
     /**
      * Checks to see if the page is being server over SSL or not
      *
-     * @return  bool
-     *
-     * @access  public
-     * @since   1.0.0
-     * @static
+     * @return boolean
      */
     public static function is_https()
     {
@@ -587,17 +525,11 @@ class util
      * uses the $_SERVER value. Additional values provided are expected
      * to be encoded appropriately with urlencode() or rawurlencode().
      *
-     * @param   mixed  $newkey          Either newkey or an associative
-     *                                  array
-     * @param   mixed  $newvalue        Either newvalue or oldquery or uri
-     * @param   mixed  $oldquery_or_uri Optionally the old query or uri
-     * @return  string
-     *
-     * @link    http://codex.wordpress.org/Function_Reference/add_query_arg
-     *
-     * @access  public
-     * @since   1.0.0
-     * @static
+     * @param  mixed  $newkey          Either newkey or an associative
+     *                                 array
+     * @param  mixed  $newvalue        Either newvalue or oldquery or uri
+     * @param  mixed  $oldquery_or_uri Optionally the old query or uri
+     * @return string
      */
     public static function add_query_arg()
     {
@@ -687,15 +619,9 @@ class util
     /**
      * Removes an item or list from the query string.
      *
-     * @param   string|array  $keys  Query key or keys to remove.
-     * @param   bool          $uri   When false uses the $_SERVER value
-     * @return  string
-     *
-     * @link    http://codex.wordpress.org/Function_Reference/remove_query_arg
-     *
-     * @access  public
-     * @since   1.0.0
-     * @static
+     * @param  string|array  $keys Query key or keys to remove.
+     * @param  bool          $uri  When false uses the $_SERVER value
+     * @return string
      */
     public static function remove_query_arg( $keys, $uri = FALSE )
     {
@@ -711,18 +637,14 @@ class util
     }
 
     /**
-     * Converts many english words that equate to true or false to boolean
+     * Converts many english words that equate to true or false to boolean.
      *
-     * Supports 'y', 'n', 'yes', 'no' and a few other variations
+     * Supports 'y', 'n', 'yes', 'no' and a few other variations.
      *
-     * @param   string  $string   The string to convert to boolean
-     * @param   bool    $default  The value to return if we can't match any
-     *                            yes/no words
-     * @return  bool
-     *
-     * @access  public
-     * @since   1.0.0
-     * @static
+     * @param  string $string  The string to convert to boolean
+     * @param  bool   $default The value to return if we can't match any
+     *                          yes/no words
+     * @return boolean
      */
     public static function str_to_bool( $string, $default = FALSE )
     {
@@ -741,9 +663,9 @@ class util
     /**
      * Check if a string starts with the given string.
      *
-     * @param   string $string
-     * @param   string $starts_with
-     * @return  boolean
+     * @param  string $string
+     * @param  string $starts_with
+     * @return boolean
      */
     public static function starts_with($string, $starts_with)
     {
@@ -753,9 +675,9 @@ class util
     /**
      * Check if a string ends with the given string.
      *
-     * @param   string $string
-     * @param   string $starts_with
-     * @return  boolean
+     * @param  string $string
+     * @param  string $starts_with
+     * @return boolean
      */
     public static function ends_with($string, $ends_with)
     {
@@ -799,16 +721,10 @@ class util
     }
 
     /**
-     * Convert entities, while preserving already-encoded entities
+     * Convert entities, while preserving already-encoded entities.
      *
-     * @param   string  $string  The text to be converted
-     * @return  string
-     *
-     * @link    http://ca2.php.net/manual/en/function.htmlentities.php#90111
-     *
-     * @access  public
-     * @since   1.0.0
-     * @static
+     * @param  string $string The text to be converted
+     * @return string
      */
     public static function htmlentities( $string, $preserve_encoded_entities = FALSE )
     {
@@ -827,17 +743,11 @@ class util
     }
 
     /**
-     * Convert >, <, ', " and & to html entities, but preserves entities
-     * that are already encoded
+     * Convert >, <, ', " and & to html entities, but preserves entities that
+     * are already encoded.
      *
-     * @param   string  $string  The text to be converted
+     * @param   string $string The text to be converted
      * @return  string
-     *
-     * @link    http://ca2.php.net/manual/en/function.htmlentities.php#90111
-     *
-     * @access  public
-     * @since   1.0.0
-     * @static
      */
     public static function htmlspecialchars( $string, $preserve_encoded_entities = FALSE  )
     {
@@ -857,19 +767,13 @@ class util
     }
 
     /**
-     * Converts all accent characters to ASCII characters
+     * Converts all accent characters to ASCII characters.
      *
      * If there are no accent characters, then the string given is just
-     * returned
+     * returned.
      *
-     * @param   string  $string  Text that might have accent characters
-     * @return  string  Filtered string with replaced "nice" characters
-     *
-     * @link    http://codex.wordpress.org/Function_Reference/remove_accents
-     *
-     * @access  public
-     * @since   1.0.0
-     * @static
+     * @param  string $string  Text that might have accent characters
+     * @return string Filtered string with replaced "nice" characters
      */
     public static function remove_accents( $string )
     {
@@ -1017,13 +921,10 @@ class util
     }
 
     /**
-     * Strip all witespaces from the given string
+     * Strip all witespaces from the given string.
      *
      * @param  string $string The string to strip
      * @return string
-     *
-     * @access public
-     * @static
      */
     public static function strip_space($string)
     {
@@ -1050,15 +951,11 @@ class util
     }
 
     /**
-     * Pads a given string with zeroes on the left
+     * Pads a given string with zeroes on the left.
      *
-     * @param   int  $number  The number to pad
-     * @param   int  $length  The total length of the desired string
-     * @return  string
-     *
-     * @access  public
-     * @since   1.0.0
-     * @static
+     * @param  int  $number The number to pad
+     * @param  int  $length The total length of the desired string
+     * @return string
      */
     public static function zero_pad( $number, $length )
     {
@@ -1066,19 +963,13 @@ class util
     }
 
     /**
-     * Converts a unix timestamp to a relative time string, such as "3 days
-     * ago" or "2 weeks ago"
+     * Converts a unix timestamp to a relative time string, such as "3 days ago"
+     * or "2 weeks ago".
      *
-     * @param   int     $from    The date to use as a starting point
-     * @param   int     $to      The date to compare to. Defaults to the
-     *                           current time
-     * @param   string  $suffix  The string to add to the end, defaults to
-     *                           " ago"
-     * @return  string
-     *
-     * @access  public
-     * @since   1.0.0
-     * @static
+     * @param  int    $from   The date to use as a starting point
+     * @param  int    $to     The date to compare to, defaults to now
+     * @param  string $suffix The string to add to the end, defaults to " ago"
+     * @return string
      */
     public static function human_time_diff( $from, $to = '', $as_text = FALSE, $suffix = ' ago' )
     {
@@ -1129,18 +1020,11 @@ class util
     }
 
     /**
-     * Converts a number into the text equivalent. For example, 456 becomes
-     * four hundred and fifty-six
+     * Converts a number into the text equivalent. For example, 456 becomes four
+     * hundred and fifty-six.
      *
-     * @param   int|float  $number  The number to convert into text
-     * @return  string
-     *
-     * @link    http://bloople.net/num2text
-     *
-     * @access  public
-     * @author  Brenton Fletcher
-     * @since   1.0.0
-     * @static
+     * @param  int|float $number The number to convert into text
+     * @return string
      */
     public static function number_to_word( $number )
     {
@@ -1347,16 +1231,10 @@ class util
     }
 
     /**
-     * Transmit UTF-8 content headers if the headers haven't already been
-     * sent
+     * Transmit UTF-8 content headers if the headers haven't already been sent.
      *
-     * @param   string  $content_type  The content type to send out,
-     *                                 defaults to text/html
-     * @return  bool
-     *
-     * @access  public
-     * @since   1.0.0
-     * @static
+     * @param  string  $content_type The content type to send out
+     * @return boolean
      */
     public static function utf8_headers( $content_type = 'text/html' )
     {
@@ -1374,18 +1252,12 @@ class util
      * dialog. Cross browser compatible. Only fires if headers have not
      * already been sent.
      *
-     * @param   string  $filename  The name of the filename to display to
-     *                             browsers
-     * @param   string  $content   The content to output for the download.
-     *                             If you don't specify this, just the
-     *                             headers will be sent
-     * @return  bool
-     *
-     * @link    http://www.php.net/manual/en/function.header.php#102175
-     *
-     * @access  public
-     * @since   1.0.0
-     * @static
+     * @param string $filename The name of the filename to display to
+     *                         browsers
+     * @param string $content  The content to output for the download.
+     *                         If you don't specify this, just the
+     *                         headers will be sent
+     * @return boolean
      */
     public static function force_download( $filename, $content = FALSE )
     {
@@ -1424,17 +1296,13 @@ class util
     }
 
     /**
-     * Sets the headers to prevent caching for the different browsers
+     * Sets the headers to prevent caching for the different browsers.
      *
      * Different browsers support different nocache headers, so several
      * headers must be sent so that all of them get the point that no
      * caching should occur
      *
-     * @return  bool
-     *
-     * @access  public
-     * @since   1.0.0
-     * @static
+     * @return boolean
      */
     public static function nocache_headers()
     {
@@ -1451,30 +1319,26 @@ class util
     }
 
     /**
-     * Generates a string of random characters
-     *
-     * @param   int   $length              The length of the string to
-     *                                     generate
-     * @param   bool  $human_friendly      Whether or not to make the
-     *                                     string human friendly by
-     *                                     removing characters that can be
-     *                                     confused with other characters (
-     *                                     O and 0, l and 1, etc)
-     * @param   bool  $include_symbols     Whether or not to include
-     *                                     symbols in the string. Can not
-     *                                     be enabled if $human_friendly is
-     *                                     true
-     * @param   bool  $no_duplicate_chars  Whether or not to only use
-     *                                     characters once in the string.
-     * @return  string
+     * Generates a string of random characters.
      *
      * @throws  LengthException  If $length is bigger than the available
      *                           character pool and $no_duplicate_chars is
      *                           enabled
      *
-     * @access  public
-     * @since   1.0.0
-     * @static
+     * @param   integer $length             The length of the string to
+     *                                      generate
+     * @param   boolean $human_friendly     Whether or not to make the
+     *                                      string human friendly by
+     *                                      removing characters that can be
+     *                                      confused with other characters (
+     *                                      O and 0, l and 1, etc)
+     * @param   boolean $include_symbols    Whether or not to include
+     *                                      symbols in the string. Can not
+     *                                      be enabled if $human_friendly is
+     *                                      true
+     * @param   boolean $no_duplicate_chars Whether or not to only use
+     *                                      characters once in the string.
+     * @return  string
      */
     public static function random_string( $length, $human_friendly = TRUE, $include_symbols = FALSE, $no_duplicate_chars = FALSE )
     {
@@ -1497,7 +1361,7 @@ class util
         // Don't allow duplicate letters to be disabled if the length is
         // longer than the available characters
         if ( $no_duplicate_chars && strlen( $pool ) < $length ) {
-            throw new LengthException( '$length exceeds the size of the pool and $no_duplicate_chars is enabled' );
+            throw new \LengthException( '$length exceeds the size of the pool and $no_duplicate_chars is enabled' );
         }
 
         // Convert the pool of characters into an array of characters and
@@ -1519,14 +1383,10 @@ class util
     }
 
     /**
-     * Validate an email address
+     * Validate an email address.
      *
-     * @param   string  $possible_email  An email address to validate
-     * @return  bool
-     *
-     * @access  public
-     * @since   1.0.0
-     * @static
+     * @param  string $possible_email An email address to validate
+     * @return bool
      */
     public static function validate_email( $possible_email )
     {
@@ -1534,40 +1394,30 @@ class util
     }
 
     /**
-     * Return the URL to a user's gravatar
+     * Return the URL to a user's gravatar.
      *
-     * @param   string  $email  The email of the user
-     * @param   int     $size   The size of the gravatar
+     * @param   string  $email The email of the user
+     * @param   integer $size  The size of the gravatar
      * @return  string
-     *
-     * @access  public
-     * @since   1.0.0
-     * @static
      */
     public static function get_gravatar( $email, $size = 32 )
     {
-  if ( self::is_https() ) {
-    $url = 'https://secure.gravatar.com/';
-  } else {
-    $url = 'http://www.gravatar.com/';
+        if ( self::is_https() ) {
+            $url = 'https://secure.gravatar.com/';
+        } else {
+            $url = 'http://www.gravatar.com/';
         }
 
         $url .= 'avatar/' . md5( $email ) . '?s=' . (int) abs( $size );
 
-  return $url;
+        return $url;
     }
 
     /**
-     * Turns all of the links in a string into HTML links
+     * Turns all of the links in a string into HTML links.
      *
-     * @param   string  $text  The string to parse
-     * @return  string
-     *
-     * @link    https://github.com/jmrware/LinkifyURL
-     *
-     * @access  public
-     * @since   1.0.0
-     * @static
+     * @param  string $text The string to parse
+     * @return string
      */
     public static function linkify( $text )
     {
@@ -1589,16 +1439,10 @@ class util
     }
 
     /**
-     * Callback for the preg_replace in the linkify() method
+     * Callback for the preg_replace in the linkify() method.
      *
-     * @param   array  $matches  Matches from the preg_ function
-     * @return  string
-     *
-     * @link    https://github.com/jmrware/LinkifyURL
-     *
-     * @access  public
-     * @since   1.0.0
-     * @static
+     * @param  array  $matches Matches from the preg_ function
+     * @return string
      */
     public static function _linkify( $text )
     {
@@ -1648,16 +1492,10 @@ class util
     }
 
     /**
-     * Callback for the preg_replace in the linkify() method
+     * Callback for the preg_replace in the linkify() method.
      *
-     * @param   array  $matches  Matches from the preg_ function
-     * @return  string
-     *
-     * @link    https://github.com/jmrware/LinkifyURL
-     *
-     * @access  public
-     * @since    1.0.0
-     * @static
+     * @param  array  $matches Matches from the preg_ function
+     * @return string
      */
     public static function _linkify_callback( $matches )
     {
@@ -1669,13 +1507,9 @@ class util
     }
 
     /**
-     * Return the current URL
+     * Return the current URL.
      *
-     * @return  string
-     *
-     * @access  public
-     * @since   1.0.0
-     * @static
+     * @return string
      */
     public static function get_current_url()
     {
@@ -1727,18 +1561,14 @@ class util
     }
 
     /**
-     * Returns the IP address of the client
+     * Returns the IP address of the client.
      *
-     * @param   bool  $trust_proxy_headers  Whether or not to trust the
-     *                                      proxy headers HTTP_CLIENT_IP
-     *                                      and HTTP_X_FORWARDED_FOR. ONLY
-     *                                      use if your server is behind a
-     *                                      proxy that sets these values
+     * @param   boolean $trust_proxy_headers Whether or not to trust the
+     *                                       proxy headers HTTP_CLIENT_IP
+     *                                       and HTTP_X_FORWARDED_FOR. ONLY
+     *                                       use if your server is behind a
+     *                                       proxy that sets these values
      * @return  string
-     *
-     * @access  public
-     * @since   1.0.0
-     * @static
      */
     public static function get_client_ip( $trust_proxy_headers = FALSE )
     {
@@ -1758,17 +1588,13 @@ class util
     }
 
     /**
-     * Truncate a string to a specified length without cutting a word off
+     * Truncate a string to a specified length without cutting a word off.
      *
      * @param   string  $string  The string to truncate
-     * @param   int     $length  The length to truncate the string to
+     * @param   integer $length  The length to truncate the string to
      * @param   string  $append  Text to append to the string IF it gets
      *                           truncated, defaults to '...'
      * @return  string
-     *
-     * @access  public
-     * @since   1.0.0
-     * @static
      */
     public static function safe_truncate( $string, $length, $append = '...' )
     {
@@ -1787,16 +1613,10 @@ class util
     }
 
     /**
-     * Returns the ordinal version of a number (appends th, st, nd, rd)
+     * Returns the ordinal version of a number (appends th, st, nd, rd).
      *
-     * @param   string  $number  The number to append an ordinal suffix to
-     * @return  string
-     *
-     * @link    http://phpsnips.com/snippet.php?id=37
-     *
-     * @access  public
-     * @since   1.0.0
-     * @static
+     * @param  string $number The number to append an ordinal suffix to
+     * @return string
      */
     public static function ordinal( $number )
     {
@@ -1810,12 +1630,8 @@ class util
     /**
      * Returns the file permissions as a nice string, like -rw-r--r--
      *
-     * @param   string  $file  The name of the file to get permissions form
+     * @param   string $file The name of the file to get permissions form
      * @return  string
-     *
-     * @access  public
-     * @since   1.0.0
-     * @static
      */
     public static function full_permissions( $file )
     {
@@ -1872,14 +1688,10 @@ class util
     }
 
     /**
-     * Returns the first element in an array
+     * Returns the first element in an array.
      *
-     * @param   array  $array  The array
-     * @return  mixed
-     *
-     * @access  public
-     * @since   1.0.0
-     * @static
+     * @param  array $array
+     * @return mixed
      */
     public static function array_first( array $array )
     {
@@ -1887,14 +1699,10 @@ class util
     }
 
     /**
-     * Returns the last element in an array
+     * Returns the last element in an array.
      *
-     * @param   array  $array  The array
-     * @return  mixed
-     *
-     * @access  public
-     * @since   1.0.0
-     * @static
+     * @param  array $array
+     * @return mixed
      */
     public static function array_last( array $array )
     {
@@ -1902,14 +1710,10 @@ class util
     }
 
     /**
-     * Returns the first key in an array
+     * Returns the first key in an array.
      *
-     * @param   array  $array  The array
-     * @return  int|string
-     *
-     * @access  public
-     * @since   1.0.0
-     * @static
+     * @param  array $array
+     * @return int|string
      */
     public static function array_first_key( array $array )
     {
@@ -1919,14 +1723,10 @@ class util
     }
 
     /**
-     * Returns the last key in an array
+     * Returns the last key in an array.
      *
-     * @param   array  $array  The array
-     * @return  int|string
-     *
-     * @access  public
-     * @since   1.0.0
-     * @static
+     * @param  array $array
+     * @return int|string
      */
     public static function array_last_key( array $array )
     {
@@ -1936,19 +1736,13 @@ class util
     }
 
     /**
-     * Flattens a potentially multi-dimensional array into a one
-     * dimensional array
+     * Flatten a multi-dimensional array into a one dimensional array.
      *
-     * @param   array  $array         The array to flatten
-     * @param   bool   preserve_keys  Whether or not to preserve array
-     *                                keys. Keys from deeply nested arrays
-     *                                will overwrite keys from shallowy
-     *                                nested arrays
-     * @return  array
-     *
-     * @access  public
-     * @since   1.0.0
-     * @static
+     * @param  array   $array         The array to flatten
+     * @param  boolean $preserve_keys Whether or not to preserve array keys.
+     *                                Keys from deeply nested arrays will
+     *                                overwrite keys from shallowy nested arrays
+     * @return array
      */
     public static function array_flatten( array $array, $preserve_keys = TRUE )
     {
@@ -1973,21 +1767,15 @@ class util
      * Accepts an array, and returns an array of values from that array as
      * specified by $field. For example, if the array is full of objects
      * and you call util::array_pluck( $array, 'name' ), the function will
-     * return an array of values from $array[]->name
+     * return an array of values from $array[]->name.
      *
-     * @param   array   $array             An array
-     * @param   string  $field             The field to get values from
-     * @param   bool    $preserve_keys     Whether or not to preserve the
-     *                                     array keys
-     * @param   bool    $remove_nomatches  If the field doesn't appear to
-     *                                     be set, remove it from the array
-     * @return  array
-     *
-     * @link    http://codex.wordpress.org/Function_Reference/wp_list_pluck
-     *
-     * @access  public
-     * @since   1.0.0
-     * @static
+     * @param  array   $array            An array
+     * @param  string  $field            The field to get values from
+     * @param  boolean $preserve_keys    Whether or not to preserve the
+     *                                   array keys
+     * @param  boolean $remove_nomatches If the field doesn't appear to be set,
+     *                                   remove it from the array
+     * @return array
      */
     public static function array_pluck( array $array, $field, $preserve_keys = TRUE, $remove_nomatches = TRUE )
     {
@@ -2023,18 +1811,13 @@ class util
     /**
      * Searches for a given value in an array of arrays, objects and scalar
      * values. You can optionally specify a field of the nested arrays and
-     * objects to search in
+     * objects to search in.
      *
-     * @param   array   $array   The array to search
-     * @param   scalar  $search  The value to search for
-     * @param   string  $field   The field to search in, if not specified
-     *                           all fields will be searched
-     * @return  bool|scalar      False on failure or the array key on
-     *                           success
-     *
-     * @access  public
-     * @since   1.0.0
-     * @static
+     * @param  array   $array  The array to search
+     * @param  scalar  $search The value to search for
+     * @param  string  $field  The field to search in, if not specified
+     *                         all fields will be searched
+     * @return boolean|scalar  False on failure or the array key on success
      */
     public static function array_search_deep( array $array, $search, $field = FALSE )
     {
@@ -2074,20 +1857,16 @@ class util
 
     /**
      * Returns an array containing all the elements of arr1 after applying
-     * the callback function to each one
+     * the callback function to each one.
      *
-     * @param   string  $callback      Callback function to run for each
-     *                                 element in each array
-     * @param   array   $array         An array to run through the callback
-     *                                 function
-     * @param   bool    $on_nonscalar  Whether or not to call the callback
-     *                                 function on nonscalar values
-     *                                 (Objects, resources, etc)
-     * @return  array
-     *
-     * @access  public
-     * @since   1.0.0
-     * @static
+     * @param  string  $callback     Callback function to run for each
+     *                               element in each array
+     * @param  array   $array        An array to run through the callback
+     *                               function
+     * @param  boolean $on_nonscalar Whether or not to call the callback
+     *                               function on nonscalar values
+     *                               (Objects, resources, etc)
+     * @return array
      */
     public static function array_map_deep( array $array, $callback, $on_nonscalar = FALSE )
     {
