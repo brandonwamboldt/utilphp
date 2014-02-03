@@ -1007,6 +1007,19 @@ class util
     }
 
     /**
+     * Strip all witespaces from the given string
+     * @param  string $string The string to strip
+     * @return string
+     *
+     * @access public
+     * @static
+     */
+    public static function strip_space($string)
+    {
+        return preg_replace('/\s+/', '', $string);
+    }
+
+    /**
      * Pads a given string with zeroes on the left
      *
      * @param   int  $number  The number to pad
@@ -1043,8 +1056,8 @@ class util
             $to = time();
         }
 
-        $from = new DateTime( date( 'Y-m-d H:i:s', $from ) );
-        $to   = new DateTime( date( 'Y-m-d H:i:s', $to ) );
+        $from = new \DateTime( date( 'Y-m-d H:i:s', $from ) );
+        $to   = new \DateTime( date( 'Y-m-d H:i:s', $to ) );
         $diff = $from->diff( $to );
 
         if ( $diff->y > 1 ) {

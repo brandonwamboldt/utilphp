@@ -361,4 +361,12 @@ class UtilityPHPTest extends PHPUnit_Framework_TestCase
 
         $this->assertEquals( $expect, util::array_flatten( $input ) );
     }
+
+    public function test_strip_space()
+    {
+        $input = ' The quick brown fox jumps over the lazy dog ';
+        $expect = 'Thequickbrownfoxjumpsoverthelazydog';
+
+        $this->assertEquals($expect, Util::strip_space($input));
+    }
 }
