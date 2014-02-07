@@ -388,4 +388,62 @@ class UtilityPHPTest extends PHPUnit_Framework_TestCase
         $expect = array('a', 'b');
         $this->assertEquals($expect, Util::array_clean($input));
     }
+
+    public function test_var_dump_plain()
+    {
+        $input = 'var';
+        $expect = '<span style="color:#588bff;">string</span><span style="color:#999;">(</span>3<span style="color:#999;">)</span> <strong>"var"</strong>';
+        $this->assertEquals($expect, Util::var_dump_plain($input, true));
+        $input = true;
+        $expect = '<span style="color:#588bff;">bool</span><span style="color:#999;">(</span><strong>true</strong><span style="color:#999;">)</span>';
+        $this->assertEquals($expect, Util::var_dump_plain($input, true));
+        $input = 1;
+        $expect = '<span style="color:#588bff;">int</span><span style="color:#999;">(</span><strong>1</strong><span style="color:#999;">)</span>';
+        $this->assertEquals($expect, Util::var_dump_plain($input, true));
+    }
+
+    public function test_var_dump()
+    {
+        $input = 'var';
+        $expect = '<pre style="margin-bottom: 18px;background: #f7f7f9;border: 1px solid #e1e1e8;padding: 8px;border-radius: 4px;-moz-border-radius: 4px;-webkit-border radius: 4px;display: block;font-size: 12.05px;white-space: pre-wrap;word-wrap: break-word;color: #333;font-family: Menlo,Monaco,Consolas,\'Courier New\',monospace;"><span style="color:#588bff;">string</span><span style="color:#999;">(</span>3<span style="color:#999;">)</span> <strong>"var"</strong></pre>';
+        $this->assertEquals($expect, Util::var_dump($input, true));
+    }
+
+    public function test_linkify()
+    {
+        $input = 'great websites: http://www.google.com?param=test and http://yahoo.com/a/nested/folder';
+        $expect = 'great websites: <a href="http://www.google.com?param=test">http://www.google.com?param=test</a> and <a href="http://yahoo.com/a/nested/folder">http://yahoo.com/a/nested/folder</a>';
+        $this->assertEquals($expect, Util::linkify($input));
+    }
+
+    public function test_start_with()
+    {
+        $this->assertTrue(Util::starts_with('start a string', 'start a'));
+        $this->assertFalse(Util::starts_with('start a string', 'string'));
+    }
+
+    public function test_end_with()
+    {
+        $this->assertTrue(Util::ends_with('start a string', 'a string'));
+        $this->assertFalse(Util::ends_with('start a string', 'start'));
+    }
+
+    public function test_contains()
+    {
+        $this->assertTrue(Util::str_contains('start a string', 'a string'));
+        $this->assertFalse(Util::str_contains('start a string', 'Start'));
+    }
+
+    public function test_iContains()
+    {
+        $this->assertTrue(Util::str_icontains('start a string', 'a string'));
+        $this->assertTrue(Util::str_icontains('start a string', 'Start'));
+    }
+
+    public function test_get_file_ext()
+    {
+        $input = 'a_pdf_fil.pdf';
+        $expect = 'pdf';
+        $this->assertEquals($expect, Util::get_file_ext($input));
+    }
 }
