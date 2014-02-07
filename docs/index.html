@@ -38,6 +38,7 @@
             <li>- <a href="#array_map_deep">array_map_deep</a></li>
             <li>- <a href="#array_pluck">array_pluck</a></li>
             <li>- <a href="#array_search_deep">array_search_deep</a></li>
+            <li>- <a href="#array_clean">array_clean</a></li>
         </ul>
 
         <a class="toc_title" href="#urls">URLs</a>
@@ -345,6 +346,24 @@ util::array_pluck($users, 'email');
 util::array_search_deep('rogue_coder', $users, 'username');
 =&gt; Might return 5 if $users[5]->username = 'rogue_coder'</pre>
                 </article>
+
+                <article id="array_clean">
+                    <p>
+                        <span class="header">array_clean</span>
+                        <code>
+                            <span class="util_class">util::</span><span class="func_name">array_clean</span>(array <span class="param">$array</span>)
+                        </code>
+                    </p>
+
+                    <p>
+                        Remove all null/empty/false values from the given array.
+                    </p>
+
+                    <p><strong>Usage:</strong></p>
+
+                    <pre>util::array_clean( array( 'a', 'b', '', null, false, 0) );<br />=&gt; Returns array('a', 'b');</pre>
+                </article>
+
             </section>
 
             <h2 id="urls">URL Functions</h2>

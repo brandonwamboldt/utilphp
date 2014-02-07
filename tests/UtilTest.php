@@ -124,10 +124,14 @@ class UtilityPHPTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( util::str_to_bool( 'true' ) );
         $this->assertTrue( util::str_to_bool( 'yes' ) );
         $this->assertTrue( util::str_to_bool( 'y' ) );
+        $this->assertTrue( util::str_to_bool( 'oui' ) );
+        $this->assertTrue( util::str_to_bool( 'vrai' ) );
 
         $this->assertFalse( util::str_to_bool( 'false' ) );
         $this->assertFalse( util::str_to_bool( 'no' ) );
         $this->assertFalse( util::str_to_bool( 'n' ) );
+        $this->assertFalse( util::str_to_bool( 'non' ) );
+        $this->assertFalse( util::str_to_bool( 'faux' ) );
     }
 
     public function test_array_pluck()
@@ -376,5 +380,12 @@ class UtilityPHPTest extends PHPUnit_Framework_TestCase
         $expect = 'benoitanewyorkjaipercu1quastugagnechezmvnoeldixfrancs';
 
         $this->assertEquals($expect, Util::sanitize_string($input));
+    }
+
+    public function test_array_clean()
+    {
+        $input = array( 'a', 'b', '', null, false, 0);
+        $expect = array('a', 'b');
+        $this->assertEquals($expect, Util::array_clean($input));
     }
 }
