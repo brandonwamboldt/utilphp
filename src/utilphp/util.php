@@ -574,14 +574,8 @@ class util
         // Does the URI contain a query string?
         if ( strpos( $uri, '?' ) !== FALSE ) {
             $parts = explode( '?', $uri, 2 );
-
-            if ( 1 == count( $parts ) ) {
-                $base  = '?';
-                $query = $parts[0];
-            } else {
-                $base  = $parts[0] . '?';
-                $query = $parts[1];
-            }
+            $base  = $parts[0] . '?';
+            $query = $parts[1];
         } else if ( ! empty( $protocol ) || strpos( $uri, '=' ) === FALSE ) {
             $base  = $uri . '?';
             $query = '';
@@ -1844,7 +1838,7 @@ class util
                         return $key;
                     }
                 } else if ( is_array( $elem ) && in_array( $search, $elem ) ) {
-                    return array_search( $search, $elem );
+                    return $key;
                 } else if ( is_scalar( $elem ) && $elem === $search ) {
                     return $key;
                 }

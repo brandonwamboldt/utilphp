@@ -62,6 +62,12 @@ class UtilityPHPTest extends PHPUnit_Framework_TestCase
 
         $size = util::size_format( 2748779069440, 1 );
         $this->assertEquals( '2.5 TiB', $size );
+
+        $size = util::size_format( 2.81475e15, 1 );
+        $this->assertEquals( '2.5 PiB', $size );
+
+        $size = util::size_format( 2.81475e19, 1 );
+        $this->assertEquals( '25000.0 PiB', $size );
     }
 
     public function test_maybe_serialize()
@@ -92,10 +98,27 @@ class UtilityPHPTest extends PHPUnit_Framework_TestCase
 
     public function test_is_serialized()
     {
+        $this->assertFalse( util::is_serialized( 's:4:"test;' ) );
+        $this->assertFalse( util::is_serialized( 'a:0:{}!' ) );
+        $this->assertFalse( util::is_serialized( 'a:0' ) );
         $this->assertFalse( util::is_serialized( 'This is a string' ) );
         $this->assertFalse( util::is_serialized( 'a string' ) );
+        $this->assertFalse( util::is_serialized( 'z:0;' ) );
+        $this->assertTrue( util::is_serialized( 'N;' ) );
+        $this->assertTrue( util::is_serialized( 'b:1;' ) );
         $this->assertTrue( util::is_serialized( 'a:0:{}' ) );
         $this->assertTrue( util::is_serialized( 'O:8:"stdClass":2:{s:5:"prop1";s:5:"Hello";s:5:"prop2";s:5:"World";}' ) );
+    }
+
+    public function test_is_https()
+    {
+        $_SERVER['HTTPS'] = null;
+
+        $this->assertFalse( util::is_https() );
+
+        $_SERVER['HTTPS'] = 'on';
+
+        $this->assertTrue( util::is_https() );
     }
 
     public function test_add_query_arg()
@@ -103,13 +126,29 @@ class UtilityPHPTest extends PHPUnit_Framework_TestCase
         // Regular tests
         $this->assertEquals( '/app/admin/users?user=5', util::add_query_arg( 'user', 5, '/app/admin/users' ) );
         $this->assertEquals( '/app/admin/users?user=5', util::add_query_arg( array( 'user' => 5 ), '/app/admin/users' ) );
+        $this->assertEquals( '/app/admin/users?user=5', util::add_query_arg( array( 'user' => 5 ), null, '/app/admin/users' ) );
         $this->assertEquals( '/app/admin/users?action=edit&user=5', util::add_query_arg( 'user', 5, '/app/admin/users?action=edit' ) );
         $this->assertEquals( '/app/admin/users?action=edit&user=5', util::add_query_arg( array( 'user' => 5 ), '/app/admin/users?action=edit' ) );
         $this->assertEquals( '/app/admin/users?action=edit&tab=personal&user=5', util::add_query_arg( 'user', 5, '/app/admin/users?action=edit&tab=personal' ) );
         $this->assertEquals( '/app/admin/users?action=edit&tab=personal&user=5', util::add_query_arg( array( 'user' => 5 ), '/app/admin/users?action=edit&tab=personal' ) );
 
+        // With a URL fragment
+        $this->assertEquals( '/app/admin/users?user=5#test', util::add_query_arg( 'user', 5, '/app/admin/users#test' ) );
+
+        // Full URL
+        $this->assertEquals( 'http://example.com?a=b', util::add_query_arg( 'a', 'b', 'http://example.com' ) );
+
+        // Only the query string
+        $this->assertEquals( '?a=b&c=d', util::add_query_arg( 'c', 'd', '?a=b' ) );
+        $this->assertEquals( 'a=b&c=d', util::add_query_arg( 'c', 'd', 'a=b' ) );
+
         // Url encoding test
         $this->assertEquals( '/app/admin/users?param=containsa%26sym', util::add_query_arg( 'param', 'containsa&sym', '/app/admin/users' ) );
+
+        // Superglobal test
+        $_SERVER['REQUEST_URI'] = '/app/admin/users';
+        $this->assertEquals( '/app/admin/users?user=6', util::add_query_arg( array( 'user' => 6 ) ) );
+        $this->assertEquals( '/app/admin/users?user=7', util::add_query_arg( 'user', 7 ) );
     }
 
     public function test_remove_query_arg()
@@ -223,11 +262,14 @@ class UtilityPHPTest extends PHPUnit_Framework_TestCase
 
     public function test_human_time_diff()
     {
+        $this->assertEquals( '1 second ago', util::human_time_diff( time() - 1 ) );
+        $this->assertEquals( '30 seconds ago', util::human_time_diff( time() - 30 ) );
         $this->assertEquals( '1 minute ago', util::human_time_diff( time() - ( util::SECONDS_IN_A_MINUTE * 1.4 ) ) );
         $this->assertEquals( '5 minutes ago', util::human_time_diff( time() - ( util::SECONDS_IN_A_MINUTE * 5 ) ) );
         $this->assertEquals( '1 hour ago', util::human_time_diff( time() - ( util::SECONDS_IN_AN_HOUR ) ) );
         $this->assertEquals( '2 hours ago', util::human_time_diff( time() - ( util::SECONDS_IN_AN_HOUR * 2 ) ) );
         $this->assertEquals( '1 day ago', util::human_time_diff( time() - ( util::SECONDS_IN_AN_HOUR * 24 ) ) );
+        $this->assertEquals( '5 days ago', util::human_time_diff( time() - ( util::SECONDS_IN_AN_HOUR * 24 * 5 ) ) );
         $this->assertEquals( '1 week ago', util::human_time_diff( time() - ( util::SECONDS_IN_AN_HOUR * 24 * 7 ) ) );
         $this->assertEquals( '2 weeks ago', util::human_time_diff( time() - ( util::SECONDS_IN_AN_HOUR * 24 * 14 ) ) );
         $this->assertEquals( '1 month ago', util::human_time_diff( time() - ( util::SECONDS_IN_A_WEEK * 5 ) ) );
@@ -241,6 +283,7 @@ class UtilityPHPTest extends PHPUnit_Framework_TestCase
 
     public function test_number_to_word()
     {
+        $this->assertEquals( 'positive one', util::number_to_word( '+1' ) );
         $this->assertEquals( 'one', util::number_to_word( 1 ) );
         $this->assertEquals( 'five', util::number_to_word( 5 ) );
         $this->assertEquals( 'fifteen', util::number_to_word( 15 ) );
@@ -270,18 +313,30 @@ class UtilityPHPTest extends PHPUnit_Framework_TestCase
     public function test_array_search_deep()
     {
         $users = array(
-            1 => (object) array( 'username' => 'brandon', 'age' => 20 ),
-            2 => (object) array( 'username' => 'matt', 'age' => 27 ),
-            3 => (object) array( 'username' => 'jane', 'age' => 53 ),
-            4 => (object) array( 'username' => 'john', 'age' => 41 ),
-            5 => (object) array( 'username' => 'steve', 'age' => 11 ),
-            6 => (object) array( 'username' => 'fred', 'age' => 42 ),
-            7 => (object) array( 'username' => 'rasmus', 'age' => 21 ),
-            8 => (object) array( 'username' => 'don', 'age' => 15 ),
-            9 => (object) array( 'username' => 'darcy', 'age' => 33 ),
+            1  => (object) array( 'username' => 'brandon', 'age' => 20 ),
+            2  => (object) array( 'username' => 'matt', 'age' => 27 ),
+            3  => (object) array( 'username' => 'jane', 'age' => 53 ),
+            4  => (object) array( 'username' => 'john', 'age' => 41 ),
+            5  => (object) array( 'username' => 'steve', 'age' => 11 ),
+            6  => (object) array( 'username' => 'fred', 'age' => 42 ),
+            7  => (object) array( 'username' => 'rasmus', 'age' => 21 ),
+            8  => (object) array( 'username' => 'don', 'age' => 15 ),
+            9  => array( 'username' => 'darcy', 'age' => 33 ),
         );
 
+        $test = array(
+            1 => 'brandon',
+            2 => 'devon',
+            3 => array( 'troy' ),
+            4 => 'annie'
+        );
+
+        $this->assertFalse( util::array_search_deep( $test, 'bob' ) );
+        $this->assertEquals( 3, util::array_search_deep( $test, 'troy' ) );
+        $this->assertEquals( 4, util::array_search_deep( $test, 'annie' ) );
+        $this->assertEquals( 2, util::array_search_deep( $test, 'devon', 'devon' ) );
         $this->assertEquals( 7, util::array_search_deep( $users, 'rasmus', 'username' ) );
+        $this->assertEquals( 9, util::array_search_deep( $users, 'darcy', 'username' ) );
         $this->assertEquals( 1, util::array_search_deep( $users, 'brandon' ) );
     }
 
@@ -314,9 +369,25 @@ class UtilityPHPTest extends PHPUnit_Framework_TestCase
         $str = util::random_string( 30 );
         $this->assertTrue( (bool) preg_match( '/^([ABCDEFGHJKLMNPQRSTUVWXYZabcdefhjkmnprstuvwxyz23456789]{30})$/', $str ) );
 
+        // Make sure the generated string is 30 characters long
+        $str = util::random_string( 30, false, true );
+        $this->assertTrue( strlen( $str ) === 30 );
+
         // Make sure the generated string is 120 characters long
         $str = util::random_string( 120 );
         $this->assertTrue( strlen( $str ) === 120 );
+
+        // Make sure the string doesn't contain duplicate letters
+        $str = util::random_string( 53, true, false, true );
+        $this->assertFalse( (bool) preg_match('/(.)\\1{2}/', $str ) );
+
+        // Longer length than characters available
+        try {
+            $str = util::random_string( 55, true, false, true );
+            $this->assertTrue( false );
+        } catch (Exception $e) {
+            $this->assertTrue( true );
+        }
     }
 
     public function test_validate_email()
