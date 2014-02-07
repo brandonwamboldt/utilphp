@@ -1126,7 +1126,6 @@ class util
                 $output .= ' and ';
             }
         }
-
         if ( $digit2 != '0') {
             $output .= self::_number_to_word_two_digits( $digit2, $digit3 );
         } else if( $digit3 != '0' ) {
@@ -1139,7 +1138,7 @@ class util
     protected static function _number_to_word_two_digits( $digit1, $digit2 )
     {
         if ( $digit2 == '0' ) {
-            switch ( $digit2 ) {
+            switch ( $digit1 ) {
                 case '1':
                     return 'ten';
                 case '2':

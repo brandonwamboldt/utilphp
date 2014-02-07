@@ -132,6 +132,9 @@ class UtilityPHPTest extends PHPUnit_Framework_TestCase
         $this->assertFalse( util::str_to_bool( 'n' ) );
         $this->assertFalse( util::str_to_bool( 'non' ) );
         $this->assertFalse( util::str_to_bool( 'faux' ) );
+
+        $this->assertFalse( util::str_to_bool( 'test' , false) );
+
     }
 
     public function test_array_pluck()
@@ -244,6 +247,24 @@ class UtilityPHPTest extends PHPUnit_Framework_TestCase
         $this->assertEquals( 'one hundred and thirty-six', util::number_to_word( 136 ) );
         $this->assertEquals( 'negative twelve', util::number_to_word( -12 ) );
         $this->assertEquals( 'zero point eight', util::number_to_word( 0.8 ) );
+        $this->assertEquals( 'ten', util::number_to_word( 10 ) );
+        $this->assertEquals( 'twenty', util::number_to_word( 20 ) );
+        $this->assertEquals( 'thirty', util::number_to_word( 30 ) );
+        $this->assertEquals( 'forty', util::number_to_word( 40 ) );
+        $this->assertEquals( 'fifty', util::number_to_word( 50 ) );
+        $this->assertEquals( 'sixty', util::number_to_word( 60 ) );
+        $this->assertEquals( 'seventy', util::number_to_word( 70 ) );
+        $this->assertEquals( 'eighty', util::number_to_word( 80 ) );
+        $this->assertEquals( 'ninety', util::number_to_word( 90 ) );
+        $this->assertEquals( 'eleven', util::number_to_word( 11 ) );
+        $this->assertEquals( 'thirteen', util::number_to_word( 13 ) );
+        $this->assertEquals( 'fourteen', util::number_to_word( 14 ) );
+        $this->assertEquals( 'fifteen', util::number_to_word( 15 ) );
+        $this->assertEquals( 'sixteen', util::number_to_word( 16 ) );
+        $this->assertEquals( 'seventeen', util::number_to_word( 17 ) );
+        $this->assertEquals( 'eighteen', util::number_to_word( 18 ) );
+        $this->assertEquals( 'nineteen', util::number_to_word( 19 ) );
+
     }
 
     public function test_array_search_deep()
