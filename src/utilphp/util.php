@@ -80,7 +80,8 @@ class util
      * @var string
      */
     public static $icon_expand = 'iVBORw0KGgoAAAANSUhEUgAAAAkAAAAJCAMAAADXT/YiAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2RpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDo3MTlFRjQ2NkM5QzJFMTExOTA0MzkwRkI0M0ZCODY4RCIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDpFQzZERTJDNEMyQzkxMUUxODRCQzgyRUNDMzZEQkZFQiIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDpFQzZERTJDM0MyQzkxMUUxODRCQzgyRUNDMzZEQkZFQiIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M1IFdpbmRvd3MiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDo3MzlFRjQ2NkM5QzJFMTExOTA0MzkwRkI0M0ZCODY4RCIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDo3MTlFRjQ2NkM5QzJFMTExOTA0MzkwRkI0M0ZCODY4RCIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PkmDvWIAAABIUExURU9t2MzM/3iW7ubm59/f5urq85mZzOvr6////9ra38zMzObm5rfB8FZz5myJ4SNFrypMvjBStTNmzOvr+mSG7OXl8T9h5SRGq/OfqCEAAABKSURBVHjaFMlbEoAwCEPRULXF2jdW9r9T4czcyUdA4XWB0IgdNSybxU9amMzHzDlPKKu7Fd1e6+wY195jW0ARYZECxPq5Gn8BBgCr0gQmxpjKAwAAAABJRU5ErkJggg==';
-
+    
+    private static $hasArray = false;
     /**
      * Access an array index, retrieving the value stored there if it
      * exists or a default if it does not. This function allows you to
@@ -111,8 +112,12 @@ class util
      * @param  mixed $var The variable to dump
      * @return string
      */
-    public static function var_dump( $var, $return = FALSE )
+    public static function var_dump( $var, $return = FALSE , $expandLevel = 1)
     {
+        self::$hasArray=false;
+        $toggScript= 'var colToggle = function(toggID) {var img = document.getElementById(toggID);if (document.getElementById(toggID + "-collapsable").style.display == "none") {document.getElementById(toggID + "-collapsable").style.display = "inline";setImg(toggID, 0);var previousSibling = document.getElementById(toggID + "-collapsable").previousSibling;while (previousSibling != null && (previousSibling.nodeType != 1 || previousSibling.tagName.toLowerCase() != "br")) {previousSibling = previousSibling.previousSibling;}} else {document.getElementById(toggID + "-collapsable").style.display = "none";setImg(toggID, 1);var previousSibling = document.getElementById(toggID + "-collapsable").previousSibling; while (previousSibling != null && (previousSibling.nodeType != 1 || previousSibling.tagName.toLowerCase() != "br")) {previousSibling = previousSibling.previousSibling;}}};';
+        $imgScript='var setImg = function(objID,imgID,addStyle) {var imgStore = ["data:image/png;base64,' . self::$icon_collapse . '", "data:image/png;base64,' . self::$icon_expand . '"];if (objID) {document.getElementById(objID).setAttribute("src", imgStore[imgID]);if (addStyle){document.getElementById(objID).setAttribute("style", "position:relative;left:-5px;top:-1px;cursor:pointer;");}}};';
+        $jsCode=preg_replace( '/ +/', ' ', "<script>" . $toggScript . $imgScript . "</script>");
         $html = '<pre style="margin-bottom: 18px;' .
             'background: #f7f7f9;' .
             'border: 1px solid #e1e1e8;' .
@@ -126,8 +131,13 @@ class util
             'word-wrap: break-word;' .
             'color: #333;' .
             'font-family: Menlo,Monaco,Consolas,\'Courier New\',monospace;">';
-        $html .= self::var_dump_plain( $var );
+        $html .= self::var_dump_plain( $var , intval($expandLevel));
         $html .= '</pre>';
+        
+        if (self::$hasArray==true)
+        {
+            $html=$jsCode . $html;
+        }
 
         if ( ! $return ) {
             echo $html;
@@ -145,10 +155,25 @@ class util
      * @param  mixed $var The variable to dump
      * @return string
      */
-    public static function var_dump_plain( $var )
+    public static function var_dump_plain( $var , $expLevel)
     {
         $html = '';
-
+        if ($expLevel>0)
+        {
+            $expLevel--;
+            $setImg=0;
+            $setStyle="display:inline;";
+        }
+        elseif ($expLevel==0)
+        {
+            $setImg=1;
+            $setStyle="display:none;";
+        }
+        elseif ($expLevel<0)
+        {
+            $setImg=0;
+            $setStyle="display:inline;";
+        }
         if ( is_bool( $var ) ) {
             $html .= '<span style="color:#588bff;">bool</span><span style="color:#999;">(</span><strong>' . ( ( $var ) ? 'true' : 'false' ) . '</strong><span style="color:#999;">)</span>';
         } else if ( is_int( $var ) ) {
@@ -162,12 +187,12 @@ class util
         } else if ( is_resource( $var ) ) {
             $html .= '<span style="color:#588bff;">resource</span>("' . get_resource_type( $var ) . '") <strong>"' . $var . '"</strong>';
         } else if ( is_array( $var ) ) {
+            self::$hasArray=true;
             $uuid = 'include-php-' . uniqid() . mt_rand(1,1000000);
 
-            $html .= '<span style="color:#588bff;">array</span>(' . count( $var ) . ')';
-
+            $html .= (!empty( $var ) ? ' <img id="' . $uuid . '" src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs%3D" onclick="javascript:colToggle(this.id);" /><script>setImg("' . $uuid . '",'.$setImg.',1);</script>' : '') . '<span style="color:#588bff;">array</span>(' . count( $var ) . ')';
             if ( ! empty( $var ) ) {
-                $html .= ' <img id="' . $uuid . '" data-expand="data:image/png;base64,' . self::$icon_expand . '" style="position:relative;left:-5px;top:-1px;cursor:pointer;" src="data:image/png;base64,' . self::$icon_collapse . '" /><br /><span id="' . $uuid . '-collapsable">[<br />';
+                $html .= ' <span id="' . $uuid . '-collapsable" style="'.$setStyle.'"><br />[<br />';
 
                 $indent = 4;
                 $longest_key = 0;
@@ -189,7 +214,7 @@ class util
 
                     $html .= ' => ';
 
-                    $value = explode( '<br />', self::var_dump_plain( $value ) );
+                    $value = explode( '<br />', self::var_dump_plain($value, $expLevel) );
 
                     foreach ( $value as $line => $val ) {
                         if ( $line != 0 ) {
@@ -201,44 +226,12 @@ class util
                 }
 
                 $html .= ']</span>';
-
-                $html .= preg_replace( '/ +/', ' ', '<script type="text/javascript">(function() {
-                var img = document.getElementById("' . $uuid . '");
-                img.onclick = function() {
-                    if ( document.getElementById("' . $uuid . '-collapsable").style.display == "none" ) {
-                        document.getElementById("' . $uuid . '-collapsable").style.display = "inline";
-                        img.src = img.getAttribute("data-collapse");
-                        var previousSibling = document.getElementById("' . $uuid . '-collapsable").previousSibling;
-
-                        while ( previousSibling != null && ( previousSibling.nodeType != 1 || previousSibling.tagName.toLowerCase() != "br" ) ) {
-                            previousSibling = previousSibling.previousSibling;
-                        }
-
-                        if ( previousSibling != null && previousSibling.tagName.toLowerCase() == "br" ) {
-                            previousSibling.style.display = "inline";
-                        }
-                    } else {
-                        document.getElementById("' . $uuid . '-collapsable").style.display = "none";
-                        img.setAttribute( "data-collapse", img.getAttribute("src") );
-                        img.src = img.getAttribute("data-expand");
-                        var previousSibling = document.getElementById("' . $uuid . '-collapsable").previousSibling;
-
-                        while ( previousSibling != null && ( previousSibling.nodeType != 1 || previousSibling.tagName.toLowerCase() != "br" ) ) {
-                            previousSibling = previousSibling.previousSibling;
-                        }
-
-                        if ( previousSibling != null && previousSibling.tagName.toLowerCase() == "br" ) {
-                            previousSibling.style.display = "none";
-                        }
-                    }
-                };
-                })();
-                </script>' );
             }
         } else if ( is_object( $var ) ) {
-            $uuid = 'include-php-' . uniqid();
+            self::$hasArray=true;
+            $uuid = 'include-php-' . uniqid() . mt_rand(1,1000000);;
 
-            $html .= '<span style="color:#588bff;">object</span>(' . get_class( $var ) . ') <img id="' . $uuid . '" data-expand="data:image/png;base64,' . self::$icon_expand . '" style="position:relative;left:-5px;top:-1px;cursor:pointer;" src="data:image/png;base64,' . self::$icon_collapse . '" /><br /><span id="' . $uuid . '-collapsable">[<br />';
+            $html .= ' <img id="' . $uuid . '" src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs%3D" onclick="javascript:colToggle(this.id);" /><script>setImg("' . $uuid . '",'.$setImg.',1);</script><span style="color:#588bff;">object</span>(' . get_class( $var ) . ') <span id="' . $uuid . '-collapsable" style="'.$setStyle.'"><br />[<br />';
 
             $original = $var;
             $var = (array) $var;
@@ -273,7 +266,7 @@ class util
 
                 $html .= ' => ';
 
-                $value = explode( '<br />', self::var_dump_plain( $value ) );
+                $value = explode( '<br />', self::var_dump_plain($value, $expLevel) );
 
                 foreach ( $value as $line => $val ) {
                     if ( $line != 0 ) {
@@ -285,39 +278,6 @@ class util
             }
 
             $html .= ']</span>';
-
-            $html .= preg_replace( '/ +/', ' ', '<script type="text/javascript">(function() {
-            var img = document.getElementById("' . $uuid . '");
-            img.onclick = function() {
-                if ( document.getElementById("' . $uuid . '-collapsable").style.display == "none" ) {
-                    document.getElementById("' . $uuid . '-collapsable").style.display = "inline";
-                    img.src = img.getAttribute("data-collapse");
-                    var previousSibling = document.getElementById("' . $uuid . '-collapsable").previousSibling;
-
-                    while ( previousSibling != null && ( previousSibling.nodeType != 1 || previousSibling.tagName.toLowerCase() != "br" ) ) {
-                        previousSibling = previousSibling.previousSibling;
-                    }
-
-                    if ( previousSibling != null && previousSibling.tagName.toLowerCase() == "br" ) {
-                        previousSibling.style.display = "inline";
-                    }
-                } else {
-                    document.getElementById("' . $uuid . '-collapsable").style.display = "none";
-                    img.setAttribute( "data-collapse", img.getAttribute("src") );
-                    img.src = img.getAttribute("data-expand");
-                    var previousSibling = document.getElementById("' . $uuid . '-collapsable").previousSibling;
-
-                    while ( previousSibling != null && ( previousSibling.nodeType != 1 || previousSibling.tagName.toLowerCase() != "br" ) ) {
-                        previousSibling = previousSibling.previousSibling;
-                    }
-
-                    if ( previousSibling != null && previousSibling.tagName.toLowerCase() == "br" ) {
-                        previousSibling.style.display = "none";
-                    }
-                }
-            };
-            })();
-            </script>' );
         }
 
         return $html;
