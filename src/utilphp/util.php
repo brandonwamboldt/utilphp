@@ -162,7 +162,7 @@ class util
         } else if ( is_resource( $var ) ) {
             $html .= '<span style="color:#588bff;">resource</span>("' . get_resource_type( $var ) . '") <strong>"' . $var . '"</strong>';
         } else if ( is_array( $var ) ) {
-            $uuid = 'include-php-' . uniqid();
+            $uuid = 'include-php-' . uniqid() . mt_rand(1,1000000);
 
             $html .= '<span style="color:#588bff;">array</span>(' . count( $var ) . ')';
 
