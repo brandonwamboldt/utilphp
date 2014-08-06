@@ -93,10 +93,10 @@ class util
      *                         present in the array
      * @return mixed
      */
-    public static function array_get( & $var, $default = NULL )
+    public static function array_get( & $var, $field, $default = NULL )
     {
-        if ( isset( $var ) ) {
-            return $var;
+        if ( isset( $var[$field] ) ) {
+            return $var[$field];
         } else {
             return $default;
         }
