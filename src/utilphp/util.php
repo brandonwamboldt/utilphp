@@ -1702,7 +1702,7 @@ class util
         $flattened = array();
 
         array_walk_recursive($array, function($value, $key) use (&$flattened, $preserve_keys) {
-            if ($preserve_keys) {
+            if ($preserve_keys && !is_int($key)) {
                 $flattened[$key] = $value;
             } else {
                 $flattened[] = $value;

@@ -1,5 +1,5 @@
 <?php
-session_start();
+#session_start();
 require_once dirname(__FILE__) . '/../util.php';
 
 /**
@@ -452,10 +452,21 @@ class UtilityPHPTest extends PHPUnit_Framework_TestCase
 
     public function test_array_flatten()
     {
-        $input = array( 'a', 'b', 'c', 'd', array( 'e', 'f', 'g', array( 'h', 'i', array( array( array( array( 'j', 'k', 'l' ) ) ) ) ) ) );
-        $expect = range( 'a', 'l' );
+        $input = array( 'a', 'b', 'c', 'd', array( 'first' => 'e', 'f', 'second' => 'g', array( 'h', 'third' => 'i', array( array( array( array( 'j', 'k', 'l' ) ) ) ) ) ) );
+        $expectNoKeys = range( 'a', 'l' );
+        $expectWithKeys = array(
+            'a', 'b', 'c', 'd',
+            'first' => 'e',
+            'f',
+            'second' => 'g',
+            'h',
+            'third' => 'i',
+            'j', 'k', 'l'
+        );
 
-        $this->assertEquals( $expect, util::array_flatten( $input ) );
+        $this->assertEquals( $expectWithKeys, util::array_flatten( $input ) );
+        $this->assertEquals( $expectNoKeys, util::array_flatten( $input, false ) );
+        $this->assertEquals( $expectWithKeys, util::array_flatten( $input, true ) );
     }
 
     public function test_strip_space()
