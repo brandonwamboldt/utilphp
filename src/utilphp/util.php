@@ -1531,7 +1531,8 @@ class util
         $url = '';
 
         // Check to see if it's over https
-        if ( self::is_https() ) {
+        $is_https = self::is_https();
+        if ( $is_https ) {
             $url .= 'https://';
         } else {
             $url .= 'http://';
@@ -1554,8 +1555,12 @@ class util
         // see http://shiflett.org/blog/2006/mar/server-name-versus-http-host
         $url .= $_SERVER['HTTP_HOST'];
 
+        $port = $_SERVER['SERVER_PORT'];
+
         // Is it on a non standard port?
-        if ( $_SERVER['SERVER_PORT'] != 80 ) {
+        if ( $is_https && ( $port != 443 ) ) {
+            $url .= ':' . $_SERVER['SERVER_PORT'];
+        } elseif ( !$is_https && ( $port != 80 ) ) {
             $url .= ':' . $_SERVER['SERVER_PORT'];
         }
 
