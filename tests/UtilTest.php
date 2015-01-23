@@ -122,23 +122,29 @@ class UtilityPHPTest extends PHPUnit_Framework_TestCase
         // Temporarily override error handling to ensure that this is, in fact, [still] a broken serialization.
         {
             $expectedError = array(
-                'errorno' => 8,
+                'errno' => 8,
                 'errstr' => 'unserialize(): Error at offset 55 of 60 bytes'
             );
 
             $reportedError = array();
             set_error_handler(function ($errno, $errstr, $errfile, $errline, $errcontext) use (&$reportedError) {
-                $reportedError = compact('errno', 'errstr', 'errfile', 'errline', 'errcontext');
+                $reportedError = compact('errno', 'errstr');
             });
 
             unserialize($brokenSerialization);
-            $this->assertEquals($expectedError, array_intersect($expectedError, $reportedError));
+
+            $this->assertEquals($expectedError['errno'], $reportedError['errno']);
+            // Because HHVM's unserialize() error message does not contain enough info to properly test.
+            if (!defined('HHVM_VERSION')) {
+                $this->assertEquals($expectedError['errstr'], $reportedError['errstr']);
+            }
             restore_error_handler();
         }
 
         $fixedSerialization = util::fix_broken_serialization($brokenSerialization);
         $unserializedData = unserialize($fixedSerialization);
         $this->assertEquals($expectedData[0], $unserializedData[0], 'Did not properly fix the broken serialized data.');
+
         $this->assertEquals(substr($expectedData[1], 0, 10), substr($unserializedData[1], 0, 10), 'Did not properly fix the broken serialized data.');
     }
 
