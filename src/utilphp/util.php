@@ -632,6 +632,25 @@ class util
     }
 
     /**
+     * Unserializes partially-corrupted arrays that occur sometimes. Addresses specifically the
+     * `unserialize(): Error at offset xxx of yyy bytes` error.
+     *
+     * NOTE: This error can *frequently* occur with mismatched character sets and higher-than-ASCII characters.
+     *
+     * @param $brokenSerializedData
+     * @return string
+     */
+    public static function fix_broken_serialization( $brokenSerializedData )
+    {
+        $fixdSerializedData = preg_replace_callback('!s:(\d+):"(.*?)";!', function($matches) {
+            $snip = $matches[2];
+            return 's:' . strlen($snip) . ':"' . $snip . '";';
+        }, $brokenSerializedData);
+
+        return $fixdSerializedData;
+    }
+
+    /**
      * Checks to see if the page is being server over SSL or not
      *
      * @return boolean

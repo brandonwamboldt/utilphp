@@ -110,6 +110,38 @@ class UtilityPHPTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( util::is_serialized( 'O:8:"stdClass":2:{s:5:"prop1";s:5:"Hello";s:5:"prop2";s:5:"World";}' ) );
     }
 
+    public function test_fix_broken_serialization()
+    {
+        $expectedData = array(
+            'Normal',
+            'High-value Char: '.chr(231).'a-va?',   // High-value Char:  ça-va? [in ISO-8859-1]
+        );
+
+        $brokenSerialization = 'a:2:{i:0;s:6:"Normal";i:1;s:23:"High-value Char: ▒a-va?";}';
+
+        // Temporarily override error handling to ensure that this is, in fact, [still] a broken serialization.
+        {
+            $expectedError = array(
+                'errorno' => 8,
+                'errstr' => 'unserialize(): Error at offset 55 of 60 bytes'
+            );
+
+            $reportedError = array();
+            set_error_handler(function ($errno, $errstr, $errfile, $errline, $errcontext) use (&$reportedError) {
+                $reportedError = compact('errno', 'errstr', 'errfile', 'errline', 'errcontext');
+            });
+
+            unserialize($brokenSerialization);
+            $this->assertEquals($expectedError, array_intersect($expectedError, $reportedError));
+            restore_error_handler();
+        }
+
+        $fixedSerialization = util::fix_broken_serialization($brokenSerialization);
+        $unserializedData = unserialize($fixedSerialization);
+        $this->assertEquals($expectedData[0], $unserializedData[0], 'Did not properly fix the broken serialized data.');
+        $this->assertEquals(substr($expectedData[1], 0, 10), substr($unserializedData[1], 0, 10), 'Did not properly fix the broken serialized data.');
+    }
+
     public function test_is_https()
     {
         $_SERVER['HTTPS'] = null;
