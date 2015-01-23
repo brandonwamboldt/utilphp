@@ -110,7 +110,7 @@
 
         <p>
             Included are 35+ functions that provide you with the ability to do common tasks much easier and more efficiently,
-            without having to find that one comment on php.net where you know it's been done already. Access superglobals
+            without having to find that one comment on php.net where you know its been done already. Access superglobals
             without checking to see if certain indexes are set first and pass default values, use a nicely formatted var dump,
             validate emails, generate random strings, flatten an array, pull a single column out of a multidimensional array
             and much more.
@@ -236,7 +236,7 @@
                     <p><strong>Usage:</strong></p>
 
                     <pre>util::array_get($_POST['action'], 'index');
-=&gt; If $_POST['action'] is set, returns it's value, otherwise returns 'index'
+=&gt; If $_POST['action'] is set, returns its value, otherwise returns 'index'
 util::array_get($_POST['action']['do'], 'index');
 =&gt; Returns the value of $_POST['action']['do'] or 'index'</pre>
                 </article>
@@ -298,7 +298,7 @@ util::array_get($_POST['action']['do'], 'index');
                     <pre>util::array_map_deep($_POST, 'htmlentities');
 =&gt; Recursively escapes each scalar value in $_POST
 util::array_map_deep($_POST, 'htmlentities', TRUE);
-=&gt; Recursively escapes each value in $_POST regardless of it's type</pre>
+=&gt; Recursively escapes each value in $_POST regardless of its type</pre>
                 </article>
 
                 <article id="array_pluck">
@@ -525,7 +525,7 @@ util::remove_query_arg( [ 'user', 'action'], '/admin/users?action=edit&amp;user=
                         </code>
                     </p>
 
-                    <p>Converts a number into it's text equivalent. For example, 56 becomes fifty-six.</p>
+                    <p>Converts a number into its text equivalent. For example, 56 becomes fifty-six.</p>
 
                     <pre>util::number_to_word(512.5);
 =&gt; Returns 'five hundred and twelve point five'</pre>
