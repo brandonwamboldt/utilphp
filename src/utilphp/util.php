@@ -1697,21 +1697,17 @@ class util
      *                                overwrite keys from shallowy nested arrays
      * @return array
      */
-    public static function array_flatten( array $array, $preserve_keys = TRUE )
+    public static function array_flatten(array $array, $preserve_keys = TRUE)
     {
         $flattened = array();
 
-        foreach ( $array as $key => $value ) {
-            if ( is_array( $value ) ) {
-                $flattened = array_merge( $flattened, self::array_flatten( $value, $preserve_keys ) );
+        array_walk_recursive($array, function($value, $key) use (&$flattened, $preserve_keys) {
+            if ($preserve_keys) {
+                $flattened[$key] = $value;
             } else {
-                if ( $preserve_keys ) {
-                    $flattened[$key] = $value;
-                } else {
-                    $flattened[] = $value;
-                }
+                $flattened[] = $value;
             }
-        }
+        });
 
         return $flattened;
     }
