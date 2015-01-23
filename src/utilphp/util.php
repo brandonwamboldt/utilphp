@@ -82,6 +82,178 @@ class util
     public static $icon_expand = 'iVBORw0KGgoAAAANSUhEUgAAAAkAAAAJCAMAAADXT/YiAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2RpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDo3MTlFRjQ2NkM5QzJFMTExOTA0MzkwRkI0M0ZCODY4RCIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDpFQzZERTJDNEMyQzkxMUUxODRCQzgyRUNDMzZEQkZFQiIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDpFQzZERTJDM0MyQzkxMUUxODRCQzgyRUNDMzZEQkZFQiIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M1IFdpbmRvd3MiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDo3MzlFRjQ2NkM5QzJFMTExOTA0MzkwRkI0M0ZCODY4RCIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDo3MTlFRjQ2NkM5QzJFMTExOTA0MzkwRkI0M0ZCODY4RCIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PkmDvWIAAABIUExURU9t2MzM/3iW7ubm59/f5urq85mZzOvr6////9ra38zMzObm5rfB8FZz5myJ4SNFrypMvjBStTNmzOvr+mSG7OXl8T9h5SRGq/OfqCEAAABKSURBVHjaFMlbEoAwCEPRULXF2jdW9r9T4czcyUdA4XWB0IgdNSybxU9amMzHzDlPKKu7Fd1e6+wY195jW0ARYZECxPq5Gn8BBgCr0gQmxpjKAwAAAABJRU5ErkJggg==';
 
     private static $hasArray = false;
+
+    /**
+     * Map of special non-ASCII characters and suitable ASCII replacement
+     * characters.
+     *
+     * @see https://github.com/jbroadway/urlify/blob/master/URLify.php
+     */
+    public static $maps = array(
+        'de' => array( /* German */
+            'Ä' => 'Ae', 'Ö' => 'Oe', 'Ü' => 'Ue', 'ä' => 'ae', 'ö' => 'oe', 'ü' => 'ue', 'ß' => 'ss',
+            'ẞ' => 'SS'
+        ),
+        'latin' => array(
+            'À' => 'A', 'Á' => 'A', 'Â' => 'A', 'Ã' => 'A', 'Ä' => 'A', 'Å' => 'A','Ă' => 'A', 'Æ' => 'AE', 'Ç' =>
+            'C', 'È' => 'E', 'É' => 'E', 'Ê' => 'E', 'Ë' => 'E', 'Ì' => 'I', 'Í' => 'I', 'Î' => 'I',
+            'Ï' => 'I', 'Ð' => 'D', 'Ñ' => 'N', 'Ò' => 'O', 'Ó' => 'O', 'Ô' => 'O', 'Õ' => 'O', 'Ö' =>
+            'O', 'Ő' => 'O', 'Ø' => 'O','Ș' => 'S','Ț' => 'T', 'Ù' => 'U', 'Ú' => 'U', 'Û' => 'U', 'Ü' => 'U', 'Ű' => 'U',
+            'Ý' => 'Y', 'Þ' => 'TH', 'ß' => 'ss', 'à' => 'a', 'á' => 'a', 'â' => 'a', 'ã' => 'a', 'ä' =>
+            'a', 'å' => 'a', 'ă' => 'a', 'æ' => 'ae', 'ç' => 'c', 'è' => 'e', 'é' => 'e', 'ê' => 'e', 'ë' => 'e',
+            'ì' => 'i', 'í' => 'i', 'î' => 'i', 'ï' => 'i', 'ð' => 'd', 'ñ' => 'n', 'ò' => 'o', 'ó' =>
+            'o', 'ô' => 'o', 'õ' => 'o', 'ö' => 'o', 'ő' => 'o', 'ø' => 'o', 'ș' => 's', 'ț' => 't', 'ù' => 'u', 'ú' => 'u',
+            'û' => 'u', 'ü' => 'u', 'ű' => 'u', 'ý' => 'y', 'þ' => 'th', 'ÿ' => 'y'
+        ),
+        'latin_symbols' => array(
+            '©' => '(c)'
+        ),
+        'el' => array( /* Greek */
+            'α' => 'a', 'β' => 'b', 'γ' => 'g', 'δ' => 'd', 'ε' => 'e', 'ζ' => 'z', 'η' => 'h', 'θ' => '8',
+            'ι' => 'i', 'κ' => 'k', 'λ' => 'l', 'μ' => 'm', 'ν' => 'n', 'ξ' => '3', 'ο' => 'o', 'π' => 'p',
+            'ρ' => 'r', 'σ' => 's', 'τ' => 't', 'υ' => 'y', 'φ' => 'f', 'χ' => 'x', 'ψ' => 'ps', 'ω' => 'w',
+            'ά' => 'a', 'έ' => 'e', 'ί' => 'i', 'ό' => 'o', 'ύ' => 'y', 'ή' => 'h', 'ώ' => 'w', 'ς' => 's',
+            'ϊ' => 'i', 'ΰ' => 'y', 'ϋ' => 'y', 'ΐ' => 'i',
+            'Α' => 'A', 'Β' => 'B', 'Γ' => 'G', 'Δ' => 'D', 'Ε' => 'E', 'Ζ' => 'Z', 'Η' => 'H', 'Θ' => '8',
+            'Ι' => 'I', 'Κ' => 'K', 'Λ' => 'L', 'Μ' => 'M', 'Ν' => 'N', 'Ξ' => '3', 'Ο' => 'O', 'Π' => 'P',
+            'Ρ' => 'R', 'Σ' => 'S', 'Τ' => 'T', 'Υ' => 'Y', 'Φ' => 'F', 'Χ' => 'X', 'Ψ' => 'PS', 'Ω' => 'W',
+            'Ά' => 'A', 'Έ' => 'E', 'Ί' => 'I', 'Ό' => 'O', 'Ύ' => 'Y', 'Ή' => 'H', 'Ώ' => 'W', 'Ϊ' => 'I',
+            'Ϋ' => 'Y'
+        ),
+        'tr' => array( /* Turkish */
+            'ş' => 's', 'Ş' => 'S', 'ı' => 'i', 'İ' => 'I', 'ç' => 'c', 'Ç' => 'C', 'ü' => 'u', 'Ü' => 'U',
+            'ö' => 'o', 'Ö' => 'O', 'ğ' => 'g', 'Ğ' => 'G'
+        ),
+        'ru' => array( /* Russian */
+            'а' => 'a', 'б' => 'b', 'в' => 'v', 'г' => 'g', 'д' => 'd', 'е' => 'e', 'ё' => 'yo', 'ж' => 'zh',
+            'з' => 'z', 'и' => 'i', 'й' => 'j', 'к' => 'k', 'л' => 'l', 'м' => 'm', 'н' => 'n', 'о' => 'o',
+            'п' => 'p', 'р' => 'r', 'с' => 's', 'т' => 't', 'у' => 'u', 'ф' => 'f', 'х' => 'h', 'ц' => 'c',
+            'ч' => 'ch', 'ш' => 'sh', 'щ' => 'sh', 'ъ' => '', 'ы' => 'y', 'ь' => '', 'э' => 'e', 'ю' => 'yu',
+            'я' => 'ya',
+            'А' => 'A', 'Б' => 'B', 'В' => 'V', 'Г' => 'G', 'Д' => 'D', 'Е' => 'E', 'Ё' => 'Yo', 'Ж' => 'Zh',
+            'З' => 'Z', 'И' => 'I', 'Й' => 'J', 'К' => 'K', 'Л' => 'L', 'М' => 'M', 'Н' => 'N', 'О' => 'O',
+            'П' => 'P', 'Р' => 'R', 'С' => 'S', 'Т' => 'T', 'У' => 'U', 'Ф' => 'F', 'Х' => 'H', 'Ц' => 'C',
+            'Ч' => 'Ch', 'Ш' => 'Sh', 'Щ' => 'Sh', 'Ъ' => '', 'Ы' => 'Y', 'Ь' => '', 'Э' => 'E', 'Ю' => 'Yu',
+            'Я' => 'Ya',
+            '№' => ''
+        ),
+        'uk' => array( /* Ukrainian */
+            'Є' => 'Ye', 'І' => 'I', 'Ї' => 'Yi', 'Ґ' => 'G', 'є' => 'ye', 'і' => 'i', 'ї' => 'yi', 'ґ' => 'g'
+        ),
+        'cs' => array( /* Czech */
+            'č' => 'c', 'ď' => 'd', 'ě' => 'e', 'ň' => 'n', 'ř' => 'r', 'š' => 's', 'ť' => 't', 'ů' => 'u',
+            'ž' => 'z', 'Č' => 'C', 'Ď' => 'D', 'Ě' => 'E', 'Ň' => 'N', 'Ř' => 'R', 'Š' => 'S', 'Ť' => 'T',
+            'Ů' => 'U', 'Ž' => 'Z'
+        ),
+        'pl' => array( /* Polish */
+            'ą' => 'a', 'ć' => 'c', 'ę' => 'e', 'ł' => 'l', 'ń' => 'n', 'ó' => 'o', 'ś' => 's', 'ź' => 'z',
+            'ż' => 'z', 'Ą' => 'A', 'Ć' => 'C', 'Ę' => 'e', 'Ł' => 'L', 'Ń' => 'N', 'Ó' => 'O', 'Ś' => 'S',
+            'Ź' => 'Z', 'Ż' => 'Z'
+        ),
+        'ro' => array( /* Romanian */
+            'ă' => 'a', 'â' => 'a', 'î' => 'i', 'ș' => 's', 'ț' => 't', 'Ţ' => 'T', 'ţ' => 't'
+        ),
+        'lv' => array( /* Latvian */
+            'ā' => 'a', 'č' => 'c', 'ē' => 'e', 'ģ' => 'g', 'ī' => 'i', 'ķ' => 'k', 'ļ' => 'l', 'ņ' => 'n',
+            'š' => 's', 'ū' => 'u', 'ž' => 'z', 'Ā' => 'A', 'Č' => 'C', 'Ē' => 'E', 'Ģ' => 'G', 'Ī' => 'i',
+            'Ķ' => 'k', 'Ļ' => 'L', 'Ņ' => 'N', 'Š' => 'S', 'Ū' => 'u', 'Ž' => 'Z'
+        ),
+        'lt' => array( /* Lithuanian */
+            'ą' => 'a', 'č' => 'c', 'ę' => 'e', 'ė' => 'e', 'į' => 'i', 'š' => 's', 'ų' => 'u', 'ū' => 'u', 'ž' => 'z',
+            'Ą' => 'A', 'Č' => 'C', 'Ę' => 'E', 'Ė' => 'E', 'Į' => 'I', 'Š' => 'S', 'Ų' => 'U', 'Ū' => 'U', 'Ž' => 'Z'
+        ),
+        'vn' => array( /* Vietnamese */
+            'Á' => 'A', 'À' => 'A', 'Ả' => 'A', 'Ã' => 'A', 'Ạ' => 'A', 'Ă' => 'A', 'Ắ' => 'A', 'Ằ' => 'A', 'Ẳ' => 'A', 'Ẵ' => 'A', 'Ặ' => 'A', 'Â' => 'A', 'Ấ' => 'A', 'Ầ' => 'A', 'Ẩ' => 'A', 'Ẫ' => 'A', 'Ậ' => 'A',
+            'á' => 'a', 'à' => 'a', 'ả' => 'a', 'ã' => 'a', 'ạ' => 'a', 'ă' => 'a', 'ắ' => 'a', 'ằ' => 'a', 'ẳ' => 'a', 'ẵ' => 'a', 'ặ' => 'a', 'â' => 'a', 'ấ' => 'a', 'ầ' => 'a', 'ẩ' => 'a', 'ẫ' => 'a', 'ậ' => 'a',
+            'É' => 'E', 'È' => 'E', 'Ẻ' => 'E', 'Ẽ' => 'E', 'Ẹ' => 'E', 'Ê' => 'E', 'Ế' => 'E', 'Ề' => 'E', 'Ể' => 'E', 'Ễ' => 'E', 'Ệ' => 'E',
+            'é' => 'e', 'è' => 'e', 'ẻ' => 'e', 'ẽ' => 'e', 'ẹ' => 'e', 'ê' => 'e', 'ế' => 'e', 'ề' => 'e', 'ể' => 'e', 'ễ' => 'e', 'ệ' => 'e',
+            'Í' => 'I', 'Ì' => 'I', 'Ỉ' => 'I', 'Ĩ' => 'I', 'Ị' => 'I', 'í' => 'i', 'ì' => 'i', 'ỉ' => 'i', 'ĩ' => 'i', 'ị' => 'i',
+            'Ó' => 'O', 'Ò' => 'O', 'Ỏ' => 'O', 'Õ' => 'O', 'Ọ' => 'O', 'Ô' => 'O', 'Ố' => 'O', 'Ồ' => 'O', 'Ổ' => 'O', 'Ỗ' => 'O', 'Ộ' => 'O', 'Ơ' => 'O', 'Ớ' => 'O', 'Ờ' => 'O', 'Ở' => 'O', 'Ỡ' => 'O', 'Ợ' => 'O',
+            'ó' => 'o', 'ò' => 'o', 'ỏ' => 'o', 'õ' => 'o', 'ọ' => 'o', 'ô' => 'o', 'ố' => 'o', 'ồ' => 'o', 'ổ' => 'o', 'ỗ' => 'o', 'ộ' => 'o', 'ơ' => 'o', 'ớ' => 'o', 'ờ' => 'o', 'ở' => 'o', 'ỡ' => 'o', 'ợ' => 'o',
+            'Ú' => 'U', 'Ù' => 'U', 'Ủ' => 'U', 'Ũ' => 'U', 'Ụ' => 'U', 'Ư' => 'U', 'Ứ' => 'U', 'Ừ' => 'U', 'Ử' => 'U', 'Ữ' => 'U', 'Ự' => 'U',
+            'ú' => 'u', 'ù' => 'u', 'ủ' => 'u', 'ũ' => 'u', 'ụ' => 'u', 'ư' => 'u', 'ứ' => 'u', 'ừ' => 'u', 'ử' => 'u', 'ữ' => 'u', 'ự' => 'u',
+            'Ý' => 'Y', 'Ỳ' => 'Y', 'Ỷ' => 'Y', 'Ỹ' => 'Y', 'Ỵ' => 'Y', 'ý' => 'y', 'ỳ' => 'y', 'ỷ' => 'y', 'ỹ' => 'y', 'ỵ' => 'y',
+            'Đ' => 'D', 'đ' => 'd'
+        ),
+        'ar' => array( /* Arabic */
+            'أ' => 'a', 'ب' => 'b', 'ت' => 't', 'ث' => 'th', 'ج' => 'g', 'ح' => 'h', 'خ' => 'kh', 'د' => 'd',
+            'ذ' => 'th', 'ر' => 'r', 'ز' => 'z', 'س' => 's', 'ش' => 'sh', 'ص' => 's', 'ض' => 'd', 'ط' => 't',
+            'ظ' => 'th', 'ع' => 'aa', 'غ' => 'gh', 'ف' => 'f', 'ق' => 'k', 'ك' => 'k', 'ل' => 'l', 'م' => 'm',
+            'ن' => 'n', 'ه' => 'h', 'و' => 'o', 'ي' => 'y'
+        ),
+        'sr' => array( /* Serbian */
+            'ђ' => 'dj', 'ј' => 'j', 'љ' => 'lj', 'њ' => 'nj', 'ћ' => 'c', 'џ' => 'dz', 'đ' => 'dj',
+            'Ђ' => 'Dj', 'Ј' => 'j', 'Љ' => 'Lj', 'Њ' => 'Nj', 'Ћ' => 'C', 'Џ' => 'Dz', 'Đ' => 'Dj'
+        ),
+        'az' => array( /* Azerbaijani */
+            'ç' => 'c', 'ə' => 'e', 'ğ' => 'g', 'ı' => 'i', 'ö' => 'o', 'ş' => 's', 'ü' => 'u',
+            'Ç' => 'C', 'Ə' => 'E', 'Ğ' => 'G', 'İ' => 'I', 'Ö' => 'O', 'Ş' => 'S', 'Ü' => 'U'
+        ),
+    );
+
+    /**
+     * The character map for the designated language
+     *
+     * @see https://github.com/jbroadway/urlify/blob/master/URLify.php
+     */
+    private static $map = array();
+
+    /**
+     * The character list as a string.
+     *
+     * @see https://github.com/jbroadway/urlify/blob/master/URLify.php
+     */
+    private static $chars = '';
+
+    /**
+     * The character list as a regular expression.
+     *
+     * @see https://github.com/jbroadway/urlify/blob/master/URLify.php
+     */
+    private static $regex = '';
+
+    /**
+     * The current language
+     *
+     * @see https://github.com/jbroadway/urlify/blob/master/URLify.php
+     */
+    private static $language = '';
+
+    /**
+     * Initializes the character map.
+     *
+     * @see https://github.com/jbroadway/urlify/blob/master/URLify.php
+     */
+    private static function initLanguageMap($language = '')
+    {
+        if (count(self::$map) > 0 && (($language == '') || ($language == self::$language))) {
+            return;
+        }
+
+        // Is a specific map associated with $language?
+        if (isset(self::$maps[$language]) && is_array(self::$maps[$language])) {
+            // Move this map to end. This means it will have priority over others
+            $m = self::$maps[$language];
+            unset(self::$maps[$language]);
+            self::$maps[$language] = $m;
+        }
+
+        // Reset static vars
+        self::$language = $language;
+        self::$map = array();
+        self::$chars = '';
+
+        foreach (self::$maps as $map) {
+            foreach ($map as $orig => $conv) {
+                self::$map[$orig] = $conv;
+                self::$chars .= $orig;
+            }
+        }
+
+        self::$regex = '/[' . self::$chars . ']/u';
+    }
+
+
     /**
      * Access an array index, retrieving the value stored there if it
      * exists or a default if it does not. This function allows you to
@@ -721,226 +893,47 @@ class util
     }
 
     /**
+     * Transliterates characters to their ASCII equivalents.
+     *
+     * @see https://github.com/jbroadway/urlify/blob/master/URLify.php
+     *
+     * @param  string $string   Text that might have not-ASCII characters
+     * @param  string $language Specifies a priority for a specific language.
+     * @return string Filtered string with replaced "nice" characters
+     */
+    public static function downcode($text, $language = '')
+    {
+        self::initLanguageMap($language);
+
+        if (preg_match_all (self::$regex, $text, $matches)) {
+            for ($i = 0; $i < count($matches[0]); $i++) {
+                $char = $matches[0][$i];
+                if (isset (self::$map[$char])) {
+                    $text = str_replace($char, self::$map[$char], $text);
+                }
+            }
+        }
+
+        return $text;
+    }
+
+    /**
      * Converts all accent characters to ASCII characters.
      *
      * If there are no accent characters, then the string given is just
      * returned.
      *
-     * @param  string $string  Text that might have accent characters
-     * @return string Filtered string with replaced "nice" characters
+     * @param  string $string   Text that might have accent characters
+     * @param  string $language Specifies a priority for a specific language.
+     * @return string Filtered  string with replaced "nice" characters
      */
-    public static function remove_accents( $string )
+    public static function remove_accents($string, $language = '')
     {
-        if ( ! preg_match( '/[\x80-\xff]/', $string ) ) {
+        if (!preg_match('/[\x80-\xff]/', $string)) {
             return $string;
         }
 
-        if ( self::seems_utf8( $string ) ) {
-            $chars = array(
-                'ª' => 'a',
-                'º' => 'o',
-                'À' => 'A',
-                'Á' => 'A',
-                'Â' => 'A',
-                'Ã' => 'A',
-                'Ä' => 'A',
-                'Å' => 'A',
-                'Æ' => 'AE',
-                'Ç' => 'C',
-                'È' => 'E',
-                'É' => 'E',
-                'Ê' => 'E',
-                'Ë' => 'E',
-                'Ì' => 'I',
-                'Í' => 'I',
-                'Î' => 'I',
-                'Ï' => 'I',
-                'Ð' => 'D',
-                'Ñ' => 'N',
-                'Ò' => 'O',
-                'Ó' => 'O',
-                'Ô' => 'O',
-                'Õ' => 'O',
-                'Ö' => 'O',
-                'Ù' => 'U',
-                'Ú' => 'U',
-                'Û' => 'U',
-                'Ü' => 'U',
-                'Ý' => 'Y',
-                'Þ' => 'TH',
-                'ß' => 's',
-                'à' => 'a',
-                'á' => 'a',
-                'â' => 'a',
-                'ã' => 'a',
-                'ä' => 'a',
-                'å' => 'a',
-                'æ' => 'ae',
-                'ç' => 'c',
-                'è' => 'e',
-                'é' => 'e',
-                'ê' => 'e',
-                'ë' => 'e',
-                'ì' => 'i',
-                'í' => 'i',
-                'î' => 'i',
-                'ï' => 'i',
-                'ð' => 'd',
-                'ñ' => 'n',
-                'ò' => 'o',
-                'ó' => 'o',
-                'ô' => 'o',
-                'õ' => 'o',
-                'ö' => 'o',
-                'ø' => 'o',
-                'ù' => 'u',
-                'ú' => 'u',
-                'û' => 'u',
-                'ü' => 'u',
-                'ý' => 'y',
-                'þ' => 'th',
-                'ÿ' => 'y',
-                'Ø' => 'O',
-                'Ā' => 'A',
-                'ā' => 'a',
-                'Ă' => 'A',
-                'ă' => 'a',
-                'Ą' => 'A',
-                'ą' => 'a',
-                'Ć' => 'C',
-                'ć' => 'c',
-                'Ĉ' => 'C',
-                'ĉ' => 'c',
-                'Ċ' => 'C',
-                'ċ' => 'c',
-                'Č' => 'C',
-                'č' => 'c',
-                'Ď' => 'D',
-                'ď' => 'd',
-                'Đ' => 'D',
-                'đ' => 'd',
-                'Ē' => 'E',
-                'ē' => 'e',
-                'Ĕ' => 'E',
-                'ĕ' => 'e',
-                'Ė' => 'E',
-                'ė' => 'e',
-                'Ę' => 'E',
-                'ę' => 'e',
-                'Ě' => 'E',
-                'ě' => 'e',
-                'Ĝ' => 'G',
-                'ĝ' => 'g',
-                'Ğ' => 'G',
-                'ğ' => 'g',
-                'Ġ' => 'G',
-                'ġ' => 'g',
-                'Ģ' => 'G',
-                'ģ' => 'g',
-                'Ĥ' => 'H',
-                'ĥ' => 'h',
-                'Ħ' => 'H',
-                'ħ' => 'h',
-                'Ĩ' => 'I',
-                'ĩ' => 'i',
-                'Ī' => 'I',
-                'ī' => 'i',
-                'Ĭ' => 'I',
-                'ĭ' => 'i',
-                'Į' => 'I',
-                'į' => 'i',
-                'İ' => 'I',
-                'ı' => 'i',
-                'Ĳ' => 'IJ',
-                'ĳ' => 'ij',
-                'Ĵ' => 'J',
-                'ĵ' => 'j',
-                'Ķ' => 'K',
-                'ķ' => 'k',
-                'ĸ' => 'k',
-                'Ĺ' => 'L',
-                'ĺ' => 'l',
-                'Ļ' => 'L',
-                'ļ' => 'l',
-                'Ľ' => 'L',
-                'ľ' => 'l',
-                'Ŀ' => 'L',
-                'ŀ' => 'l',
-                'Ł' => 'L',
-                'ł' => 'l',
-                'Ń' => 'N',
-                'ń' => 'n',
-                'Ņ' => 'N',
-                'ņ' => 'n',
-                'Ň' => 'N',
-                'ň' => 'n',
-                'ŉ' => 'N',
-                'Ŋ' => 'n',
-                'ŋ' => 'N',
-                'Ō' => 'O',
-                'ō' => 'o',
-                'Ŏ' => 'O',
-                'ŏ' => 'o',
-                'Ő' => 'O',
-                'ő' => 'o',
-                'Œ' => 'OE',
-                'œ' => 'oe',
-                'Ŕ' => 'R',
-                'ŕ' => 'r',
-                'Ŗ' => 'R',
-                'ŗ' => 'r',
-                'Ř' => 'R',
-                'ř' => 'r',
-                'Ś' => 'S',
-                'ś' => 's',
-                'Ŝ' => 'S',
-                'ŝ' => 's',
-                'Ş' => 'S',
-                'ş' => 's',
-                'Š' => 'S',
-                'š' => 's',
-                'Ţ' => 'T',
-                'ţ' => 't',
-                'Ť' => 'T',
-                'ť' => 't',
-                'Ŧ' => 'T',
-                'ŧ' => 't',
-                'Ũ' => 'U',
-                'ũ' => 'u',
-                'Ū' => 'U',
-                'ū' => 'u',
-                'Ŭ' => 'U',
-                'ŭ' => 'u',
-                'Ů' => 'U',
-                'ů' => 'u',
-                'Ű' => 'U',
-                'ű' => 'u',
-                'Ų' => 'U',
-                'ų' => 'u',
-                'Ŵ' => 'W',
-                'ŵ' => 'w',
-                'Ŷ' => 'Y',
-                'ŷ' => 'y',
-                'Ÿ' => 'Y',
-                'Ź' => 'Z',
-                'ź' => 'z',
-                'Ż' => 'Z',
-                'ż' => 'z',
-                'Ž' => 'Z',
-                'ž' => 'z',
-                'ſ' => 's',
-                'Ș' => 'S',
-                'ș' => 's',
-                'Ț' => 'T',
-                'ț' => 't',
-                '€' => 'E',
-                '£' => '',
-            );
-
-            $string = strtr( $string, $chars );
-        }
-
-        return $string;
+        return self::downcode($string, $language);
     }
 
     /**
