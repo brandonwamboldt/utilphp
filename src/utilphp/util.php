@@ -270,9 +270,9 @@ class util
     {
         if ( isset( $var ) ) {
             return $var;
-        } else {
-            return $default;
         }
+        
+        return $default;
     }
 
     /**
@@ -313,9 +313,9 @@ class util
 
         if ( ! $return ) {
             echo $html;
-        } else {
-            return $html;
         }
+        
+        return $html;
     }
 
     /**
@@ -659,9 +659,9 @@ class util
     {
         if ( isset( $_SERVER['HTTPS'] ) && ! empty( $_SERVER['HTTPS'] ) && $_SERVER['HTTPS'] != 'off' ) {
             return TRUE;
-        } else {
-            return FALSE;
         }
+        
+        return FALSE;
     }
 
     /**
@@ -758,6 +758,7 @@ class util
         $ret = preg_replace( '#=(&|$)#', '$1', $ret );
         $ret = $protocol . $base . $ret . $frag;
         $ret = rtrim( $ret, '?' );
+        
         return $ret;
     }
 
@@ -800,9 +801,9 @@ class util
             return TRUE;
         } else if ( preg_match( '/^(' . $no_words . ')$/i', $string ) ) {
             return FALSE;
-        } else {
-            return $default;
         }
+        
+        return $default;
     }
 
     /**
@@ -882,9 +883,9 @@ class util
 
             $translation_table[chr(38)] = '&';
             return preg_replace( '/&(?![A-Za-z]{0,4}\w{2,3};|#[0-9]{2,3};)/', '&amp;', strtr( $string, $translation_table ) );
-        } else {
-            return htmlentities( $string, ENT_QUOTES, self::mb_internal_encoding() );
         }
+        
+        return htmlentities( $string, ENT_QUOTES, self::mb_internal_encoding() );
     }
 
     /**
@@ -906,9 +907,9 @@ class util
             $translation_table[chr( 38 )] = '&';
 
             return preg_replace( '/&(?![A-Za-z]{0,4}\w{2,3};|#[0-9]{2,3};)/', '&amp;', strtr( $string, $translation_table ) );
-        } else {
-            return htmlentities( $string, ENT_QUOTES, self::mb_internal_encoding() );
         }
+        
+        return htmlentities( $string, ENT_QUOTES, self::mb_internal_encoding() );
     }
 
     /**
@@ -982,6 +983,7 @@ class util
         $string = strtolower($string);
         $string = preg_replace('/[^a-zA-Z 0-9]+/', '', $string);
         $string = self::strip_space($string);
+        
         return $string;
     }
 
@@ -1276,9 +1278,9 @@ class util
             header( 'Content-type: ' . $content_type . '; charset=utf-8' );
 
             return TRUE;
-        } else {
-            return FALSE;
         }
+        
+        return FALSE;
     }
 
     /**
@@ -1324,9 +1326,9 @@ class util
             }
 
             return TRUE;
-        } else {
-            return FALSE;
         }
+        
+        return FALSE;
     }
 
     /**
@@ -1347,9 +1349,9 @@ class util
             header( 'Pragma: no-cache' );
 
             return TRUE;
-        } else {
-            return FALSE;
         }
+        
+        return FALSE;
     }
 
     /**
@@ -1522,6 +1524,7 @@ class util
             /imx';
 
         $url_replace = '$1$4$7$10$13<a href="$2$5$8$11$14">$2$5$8$11$14</a>$3$6$9$12';
+        
         return preg_replace( $url_pattern, $url_replace, $text );
     }
 
@@ -1933,8 +1936,8 @@ class util
     {
         if (function_exists('mb_internal_encoding')) {
             return $encoding ? mb_internal_encoding($encoding) : mb_internal_encoding();
-        } else {
-            return 'UTF-8';
         }
+        
+        return 'UTF-8';
     }
 }
