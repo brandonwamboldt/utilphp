@@ -945,13 +945,27 @@ class util
     {
         self::initLanguageMap($language);
 
-        if (preg_match_all (self::$regex, $text, $matches)) {
-            for ($i = 0; $i < count($matches[0]); $i++) {
-                $char = $matches[0][$i];
-                if (isset (self::$map[$char])) {
-                    $text = str_replace($char, self::$map[$char], $text);
+        if (self::seems_utf8($text)) {
+            if (preg_match_all(self::$regex, $text, $matches)) {
+                for ($i = 0; $i < count($matches[0]); $i++) {
+                    $char = $matches[0][$i];
+                    if (isset(self::$map[$char])) {
+                        $text = str_replace($char, self::$map[$char], $text);
+                    }
                 }
             }
+        } else {
+            // Not a UTF-8 string so we assume its ISO-8859-1
+            $search  = "\x80\x83\x8a\x8e\x9a\x9e\x9f\xa2\xa5\xb5\xc0\xc1\xc2\xc3\xc4\xc5\xc7\xc8\xc9\xca\xcb\xcc\xcd";
+            $search .= "\xce\xcf\xd1\xd2\xd3\xd4\xd5\xd6\xd8\xd9\xda\xdb\xdc\xdd\xe0\xe1\xe2\xe3\xe4\xe5\xe7\xe8\xe9";
+            $search .= "\xea\xeb\xec\xed\xee\xef\xf1\xf2\xf3\xf4\xf5\xf6\xf8\xf9\xfa\xfb\xfc\xfd\xff";
+            $text    = strtr($text, $search, 'EfSZszYcYuAAAAAACEEEEIIIINOOOOOOUUUUYaaaaaaceeeeiiiinoooooouuuuyy');
+
+            // These latin characters should be represented by two characters so
+            // we can't use strtr
+            $complexSearch  = array("\x8c", "\x9c", "\xc6", "\xd0", "\xde", "\xdf", "\xe6", "\xf0", "\xfe");
+            $complexReplace = array('OE', 'oe', 'AE', 'DH', 'TH', 'ss', 'ae', 'dh', 'th');
+            $text           = str_replace($complexSearch, $complexReplace, $text);
         }
 
         return $text;

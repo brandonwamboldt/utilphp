@@ -292,6 +292,7 @@ class UtilityPHPTest extends PHPUnit_Framework_TestCase
         $this->assertEquals( 'A', util::remove_accents( "\xC3\x81" ) );
         $this->assertEquals( 'e', util::remove_accents( "\xC4\x97" ) );
         $this->assertEquals( 'U', util::remove_accents( "\xC3\x9C" ) );
+        $this->assertEquals( 'OEoeAEDHTHssaedhth', util::remove_accents(chr(140) . chr(156) . chr(198) . chr(208) . chr(222) . chr(223) . chr(230) . chr(240) . chr(254)));
     }
 
     public function test_zero_pad()
