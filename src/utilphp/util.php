@@ -1550,7 +1550,7 @@ class util
      * @param  array  $matches Matches from the preg_ function
      * @return string
      */
-    public static function _linkify( $text )
+    protected static function _linkify( $text )
     {
         $url_pattern = '/# Rev:20100913_0900 github.com\/jmrware\/LinkifyURL
             # Match http & ftp URL that is not already linkified.
@@ -1604,7 +1604,7 @@ class util
      * @param  array  $matches Matches from the preg_ function
      * @return string
      */
-    public static function _linkify_callback( $matches )
+    protected static function _linkify_callback( $matches )
     {
         if ( isset( $matches[2] ) ) {
             return $matches[2];
