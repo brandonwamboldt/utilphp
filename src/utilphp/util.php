@@ -286,10 +286,10 @@ class util
      */
     public static function var_dump( $var, $return = FALSE , $expandLevel = 1)
     {
-        self::$hasArray=false;
-        $toggScript= 'var colToggle = function(toggID) {var img = document.getElementById(toggID);if (document.getElementById(toggID + "-collapsable").style.display == "none") {document.getElementById(toggID + "-collapsable").style.display = "inline";setImg(toggID, 0);var previousSibling = document.getElementById(toggID + "-collapsable").previousSibling;while (previousSibling != null && (previousSibling.nodeType != 1 || previousSibling.tagName.toLowerCase() != "br")) {previousSibling = previousSibling.previousSibling;}} else {document.getElementById(toggID + "-collapsable").style.display = "none";setImg(toggID, 1);var previousSibling = document.getElementById(toggID + "-collapsable").previousSibling; while (previousSibling != null && (previousSibling.nodeType != 1 || previousSibling.tagName.toLowerCase() != "br")) {previousSibling = previousSibling.previousSibling;}}};';
-        $imgScript='var setImg = function(objID,imgID,addStyle) {var imgStore = ["data:image/png;base64,' . self::$icon_collapse . '", "data:image/png;base64,' . self::$icon_expand . '"];if (objID) {document.getElementById(objID).setAttribute("src", imgStore[imgID]);if (addStyle){document.getElementById(objID).setAttribute("style", "position:relative;left:-5px;top:-1px;cursor:pointer;");}}};';
-        $jsCode=preg_replace( '/ +/', ' ', "<script>" . $toggScript . $imgScript . "</script>");
+        self::$hasArray = false;
+        $toggScript = 'var colToggle = function(toggID) {var img = document.getElementById(toggID);if (document.getElementById(toggID + "-collapsable").style.display == "none") {document.getElementById(toggID + "-collapsable").style.display = "inline";setImg(toggID, 0);var previousSibling = document.getElementById(toggID + "-collapsable").previousSibling;while (previousSibling != null && (previousSibling.nodeType != 1 || previousSibling.tagName.toLowerCase() != "br")) {previousSibling = previousSibling.previousSibling;}} else {document.getElementById(toggID + "-collapsable").style.display = "none";setImg(toggID, 1);var previousSibling = document.getElementById(toggID + "-collapsable").previousSibling; while (previousSibling != null && (previousSibling.nodeType != 1 || previousSibling.tagName.toLowerCase() != "br")) {previousSibling = previousSibling.previousSibling;}}};';
+        $imgScript = 'var setImg = function(objID,imgID,addStyle) {var imgStore = ["data:image/png;base64,' . self::$icon_collapse . '", "data:image/png;base64,' . self::$icon_expand . '"];if (objID) {document.getElementById(objID).setAttribute("src", imgStore[imgID]);if (addStyle){document.getElementById(objID).setAttribute("style", "position:relative;left:-5px;top:-1px;cursor:pointer;");}}};';
+        $jsCode = preg_replace( '/ +/', ' ', '<script>' . $toggScript . $imgScript . '</script>');
         $html = '<pre style="margin-bottom: 18px;' .
             'background: #f7f7f9;' .
             'border: 1px solid #e1e1e8;' .
@@ -303,12 +303,12 @@ class util
             'word-wrap: break-word;' .
             'color: #333;' .
             'font-family: Menlo,Monaco,Consolas,\'Courier New\',monospace;">';
-        $html .= self::var_dump_plain( $var , intval($expandLevel));
+        $done  = array();
+        $html .= self::var_dump_plain( $var , intval($expandLevel), 0, $done);
         $html .= '</pre>';
 
-        if (self::$hasArray==true)
-        {
-            $html=$jsCode . $html;
+        if (self::$hasArray) {
+            $html = $jsCode . $html;
         }
 
         if ( ! $return ) {
@@ -327,25 +327,22 @@ class util
      * @param  mixed $var The variable to dump
      * @return string
      */
-    public static function var_dump_plain( $var , $expLevel)
+    public static function var_dump_plain( $var , $expLevel, $depth, $done )
     {
         $html = '';
-        if ($expLevel>0)
-        {
+
+        if ($expLevel > 0) {
             $expLevel--;
-            $setImg=0;
-            $setStyle="display:inline;";
+            $setImg = 0;
+            $setStyle = 'display:inline;';
+        } elseif ($expLevel == 0) {
+            $setImg = 1;
+            $setStyle='display:none;';
+        } elseif ($expLevel < 0) {
+            $setImg = 0;
+            $setStyle = 'display:inline;';
         }
-        elseif ($expLevel==0)
-        {
-            $setImg=1;
-            $setStyle="display:none;";
-        }
-        elseif ($expLevel<0)
-        {
-            $setImg=0;
-            $setStyle="display:inline;";
-        }
+
         if ( is_bool( $var ) ) {
             $html .= '<span style="color:#588bff;">bool</span><span style="color:#999;">(</span><strong>' . ( ( $var ) ? 'true' : 'false' ) . '</strong><span style="color:#999;">)</span>';
         } else if ( is_int( $var ) ) {
@@ -359,7 +356,20 @@ class util
         } else if ( is_resource( $var ) ) {
             $html .= '<span style="color:#588bff;">resource</span>("' . get_resource_type( $var ) . '") <strong>"' . $var . '"</strong>';
         } else if ( is_array( $var ) ) {
-            self::$hasArray=true;
+            // Check for recursion
+            if ($depth > 0) {
+                foreach ($done as $prev) {
+                    if ($prev === $var) {
+                        $html .= '<span style="color:#588bff;">array</span>(' . count($var) . ') *RECURSION DETECTED*';
+                        return $html;
+                    }
+                }
+
+                // Keep track of variables we have already processed to detect recursion
+                $done[] = &$var;
+            }
+
+            self::$hasArray = true;
             $uuid = 'include-php-' . uniqid() . mt_rand(1,1000000);
 
             $html .= (!empty( $var ) ? ' <img id="' . $uuid . '" src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs%3D" onclick="javascript:colToggle(this.id);" /><script>setImg("' . $uuid . '",'.$setImg.',1);</script>' : '') . '<span style="color:#588bff;">array</span>(' . count( $var ) . ')';
@@ -386,7 +396,7 @@ class util
 
                     $html .= ' => ';
 
-                    $value = explode( '<br />', self::var_dump_plain($value, $expLevel) );
+                    $value = explode( '<br />', self::var_dump_plain($value, $expLevel, $depth + 1, $done) );
 
                     foreach ( $value as $line => $val ) {
                         if ( $line != 0 ) {
@@ -400,26 +410,36 @@ class util
                 $html .= ']</span>';
             }
         } else if ( is_object( $var ) ) {
+            // Check for recursion
+            foreach ($done as $prev) {
+                if ($prev === $var) {
+                    $html .= '<span style="color:#588bff;">object</span>(' . get_class( $var ) . ') *RECURSION DETECTED*';
+                    return $html;
+                }
+            }
+
+            // Keep track of variables we have already processed to detect recursion
+            $done[] = &$var;
+
             self::$hasArray=true;
             $uuid = 'include-php-' . uniqid() . mt_rand(1,1000000);;
 
             $html .= ' <img id="' . $uuid . '" src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs%3D" onclick="javascript:colToggle(this.id);" /><script>setImg("' . $uuid . '",'.$setImg.',1);</script><span style="color:#588bff;">object</span>(' . get_class( $var ) . ') <span id="' . $uuid . '-collapsable" style="'.$setStyle.'"><br />[<br />';
 
-            $original = $var;
-            $var = (array) $var;
+            $varArray = (array) $var;
 
             $indent = 4;
             $longest_key = 0;
 
-            foreach( $var as $key => $value ) {
+            foreach( $varArray as $key => $value ) {
                 if ( substr( $key, 0, 2 ) == "\0*" ) {
-                    unset( $var[$key] );
+                    unset( $varArray[$key] );
                     $key = 'protected:' . substr( $key, 2 );
-                    $var[$key] = $value;
+                    $varArray[$key] = $value;
                 } else if ( substr( $key, 0, 1 ) == "\0" ) {
-                    unset( $var[$key] );
+                    unset( $varArray[$key] );
                     $key = 'private:' . substr( $key, 1, strpos( substr( $key, 1 ), "\0" ) ) . ':' . substr( $key, strpos( substr( $key, 1 ), "\0" ) + 1 );
-                    $var[$key] = $value;
+                    $varArray[$key] = $value;
                 }
 
                 if ( is_string( $key ) ) {
@@ -429,7 +449,7 @@ class util
                 }
             }
 
-            foreach ( $var as $key => $value ) {
+            foreach ( $varArray as $key => $value ) {
                 if ( is_numeric( $key ) ) {
                     $html .= str_repeat( ' ', $indent ) . str_pad( $key, $longest_key, ' ');
                 } else {
@@ -438,7 +458,7 @@ class util
 
                 $html .= ' => ';
 
-                $value = explode( '<br />', self::var_dump_plain($value, $expLevel) );
+                $value = explode( '<br />', self::var_dump_plain($value, $expLevel, $depth + 1, $done) );
 
                 foreach ( $value as $line => $val ) {
                     if ( $line != 0 ) {
