@@ -1436,16 +1436,29 @@ class util
 
         // Convert the pool of characters into an array of characters and
         // shuffle the array
-        $pool = str_split( $pool );
-        shuffle( $pool );
+        $pool       = str_split($pool);
+        $poolLength = count($pool);
+        $rand       = mt_rand(0, $poolLength - 1);
 
         // Generate our string
         for ( $i = 0; $i < $length; $i++ ) {
             if ( $no_duplicate_chars ) {
-                $string .= array_shift( $pool );
+                $string = $pool[$rand];
+
+                // Remove the character from the array to avoid duplicates
+                array_splice($pool, $rand, 1);
+
+                // Generate a new number
+                if (($poolLength - 2 - $i) > 0) {
+                    $rand = mt_rand(0, $poolLength - 2 - $i);
+                } else {
+                    $rand = 0;
+                }
             } else {
-                $string .= $pool[0];
-                shuffle( $pool );
+                $string .= $pool[$rand];
+
+                // Generate a new number
+                $rand = mt_rand(0, $poolLength - 1);
             }
         }
 
