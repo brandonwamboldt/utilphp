@@ -1410,7 +1410,7 @@ class util
      *                                      characters once in the string.
      * @return  string
      */
-    public static function random_string( $length, $human_friendly = TRUE, $include_symbols = FALSE, $no_duplicate_chars = FALSE )
+    public static function random_string( $length = 16, $human_friendly = TRUE, $include_symbols = FALSE, $no_duplicate_chars = FALSE )
     {
         $nice_chars = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefhjkmnprstuvwxyz23456789';
         $all_an     = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890';
@@ -1450,6 +1450,28 @@ class util
         }
 
         return $string;
+    }
+
+    /**
+     * Generate secure random string of given length
+     * If 'openssl_random_pseudo_bytes' is not available
+     * then generate random string using default function
+     *
+     * @param int $length length of string
+     * @return bool
+     */
+    public static function secure_random_string( $length = 16 )
+    {
+        if (function_exists('openssl_random_pseudo_bytes'))
+        {
+            $bytes = openssl_random_pseudo_bytes( $length * 2 );
+            if ( $bytes === FALSE )
+            {
+                throw new \LengthException( '$length is not accurate, unable to generate random string' );
+            }
+            return substr( str_replace( array('/', '+', '='), '', base64_encode( $bytes )), 0, $length );
+        }
+        return static::random_string($length);
     }
 
     /**
