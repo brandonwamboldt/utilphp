@@ -552,17 +552,17 @@ class UtilityPHPTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($expect, Util::var_dump($input, true));
 
         // Ensure we avoid infinite recursion on recursive arrays
-        $a = ['a' => 'value a', 'b' => 'value b'];
-        $b = ['test' => &$a];
-        $c = ['a' => &$a, 'b' => &$b];
+        $a = array('a' => 'value a', 'b' => 'value b');
+        $b = array('test' => &$a);
+        $c = array('a' => &$a, 'b' => &$b);
         $a['c'] = &$c;
         $b['c'] = &$c;
         $this->assertContains('*RECURSION DETECTED*', Util::var_dump($c, true));
 
         // Ensure we avoid infinite recursion on recursive objects
-        $a = (object) ['a' => 'value a', 'b' => 'value b'];
-        $b = (object) ['test' => &$a];
-        $c = (object) ['a' => &$a, 'b' => &$b];
+        $a = (object) array('a' => 'value a', 'b' => 'value b');
+        $b = (object) array('test' => &$a);
+        $c = (object) array('a' => &$a, 'b' => &$b);
         $a->c = &$c;
         $b->c = &$c;
         $this->assertContains('*RECURSION DETECTED*', Util::var_dump($c, true));
