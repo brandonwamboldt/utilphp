@@ -341,7 +341,7 @@ util::array_pluck($users, 'email');
 
                     <p><strong>Usage:</strong></p>
 
-                    <pre>util::array_search_deep('delete_post', $_POST);
+                    <pre>util::array_search_deep($_POST, 'delete_post');
 =&gt; Might return 'do' if $_POST['do']['action'] = 'delete_post'
 util::array_search_deep($users, 'rogue_coder', 'username');
 =&gt; Might return 5 if $users[5]->username = 'rogue_coder'</pre>
