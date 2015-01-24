@@ -1460,17 +1460,18 @@ class util
      * @param int $length length of string
      * @return bool
      */
-    public static function secure_random_string( $length = 16 )
+    public static function secure_random_string($length = 16)
     {
-        if (function_exists('openssl_random_pseudo_bytes'))
-        {
-            $bytes = openssl_random_pseudo_bytes( $length * 2 );
-            if ( $bytes === FALSE )
-            {
+        if (function_exists('openssl_random_pseudo_bytes')) {
+            $bytes = openssl_random_pseudo_bytes($length * 2);
+
+            if ($bytes === false) {
                 throw new \LengthException( '$length is not accurate, unable to generate random string' );
             }
-            return substr( str_replace( array('/', '+', '='), '', base64_encode( $bytes )), 0, $length );
+
+            return substr(str_replace(array('/', '+', '='), '', base64_encode($bytes)), 0, $length);
         }
+
         return static::random_string($length);
     }
 
