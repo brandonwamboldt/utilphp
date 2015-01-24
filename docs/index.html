@@ -18,7 +18,7 @@
 
 <body>
     <div id="sidebar" class="interface">
-        <a class="toc_title" href="#">util.php <span class="version">(1.0.004)</span></a>
+        <a class="toc_title" href="#">util.php <span class="version">(1.0.7)</span></a>
 
         <a class="toc_title" href="#debug_functions">Debugging</a>
 
@@ -974,42 +974,72 @@ util::validate_email( 'not an email' );
 
             <h2 id="changelog">Change Log</h2>
 
-            <p>
-                <span class="header">1.0.004</span><br />
-                - <a href="https://github.com/brandonwamboldt/utilphp/issues/22">Issue #22</a> Removed all superglobal *_get functions, you can use the modified array_get now<br />
-                - <a href="https://github.com/brandonwamboldt/utilphp/issues/22">Issue #22</a> Modifed the behaviour of array_get, see documentation<br />
+            <p class="changelog">
+                <span class="header">1.0.7</span><br>
+                - Added <code>fix_broken_serialization</code> to fix broken serialized strings (Thanks to @hopeseekr via <a href="https://github.com/brandonwamboldt/utilphp/pull/48">Pull Request #48</a>)<br>
+                - Fixed <code>get_current_url</code> appending port 80 or 443 when not needed (Thanks to @scottchiefbaker via <a href="https://github.com/brandonwamboldt/utilphp/pull/49">Pull Request #49</a>)<br>
+                - <code>var_dump</code> can now handle recursive data structures without crashing<br>
+                - <code>var_dump</code> code was minified and cleaned up<br>
+                - <code>array_flatten</code> was optimized (thanks to @hopeseekr via <a href="https://github.com/brandonwamboldt/utilphp/pull/47">Pull Request #47</a>)<br>
+                - <code>remove_accents</code> was completely rewritten and is now ~4x faster<br>
+            </p>
+
+            <p class="changelog">
+                <span class="header">1.0.6</span><br>
+                - Added <code>start_with</code> function<br>
+                - Added <code>ends_with</code> function<br>
+                - Added <code>str_contains</code> function<br>
+                - Added <code>str_icontains</code> function<br>
+                - Added <code>get_file_ext</code> function<br>
+                - Fixing permissions on the files &amp; directories<br>
+                - Fixing a bug with the include path of util.php<br>
+            </p>
+
+            <p class="changelog">
+                <span class="header">1.0.5</span><br>
+                - <a href="https://github.com/brandonwamboldt/utilphp/issues/29">Issue #29</a> Fixed error in <code>var_dump</code> if mbstring extension wasn't present<br>
+                -  Adding Composer support<br>
+                -  Updating license from GPL to MIT<br>
+                -  Adding Changelog to project<br>
+                -  Bumping minimum version to PHP 5.3.3<br>
+            </p>
+
+            <p class="changelog">
+                <span class="header">1.0.4</span><br />
+                - <a href="https://github.com/brandonwamboldt/utilphp/issues/22">Issue #22</a> Removed all superglobal *_get functions, you can use the modified <code>array_get</code> now<br />
+                - <a href="https://github.com/brandonwamboldt/utilphp/issues/22">Issue #22</a> Modifed the behaviour of <code>array_get</code>, see documentation<br />
                 - <a href="https://github.com/brandonwamboldt/utilphp/pull/21">Pull Request #21</a> Added multibyte support to html* functions<br />
-                - <a href="https://github.com/brandonwamboldt/utilphp/issues/9">Issue #9</a> Removed the str_to_utf8 function<br />
+                - <a href="https://github.com/brandonwamboldt/utilphp/issues/9">Issue #9</a> Removed the <code>str_to_utf8</code> function<br />
                 - <a href="https://github.com/brandonwamboldt/utilphp/issues/3">Issue #3</a> Removed the absint function<br />
                 - Removed declare() from util.php to avoid errors<br />
                 - Updated PHPUnit tests to use PHPUnit 3.6
             </p>
 
-            <p>
-                <span class="header">1.0.003</span><br />
-                - <a href="https://github.com/brandonwamboldt/utilphp/issues/16">Issue #16</a> Improved performance of slugify<br />
-                - <a href="https://github.com/brandonwamboldt/utilphp/issues/14">Issue #14</a> Modified the regex for seems_utf8 to be more accurate<br />
-                - <a href="https://github.com/brandonwamboldt/utilphp/issues/13">Issue #13</a> Changed validate_email to be wrapper for filter_var<br />
-                - Added 'ok' to the list of yes words for str_to_bool<br />
-                - str_to_bool matches no followed by any number of 'o's
+            <p class="changelog">
+                <span class="header">1.0.3</span><br />
+                - <a href="https://github.com/brandonwamboldt/utilphp/issues/16">Issue #16</a> Improved performance of <code>slugify</code><br />
+                - <a href="https://github.com/brandonwamboldt/utilphp/issues/14">Issue #14</a> Modified the regex for <code>seems_utf8</code> to be more accurate<br />
+                - <a href="https://github.com/brandonwamboldt/utilphp/issues/13">Issue #13</a> Changed <code>validate_email</code> to be wrapper for <code>filter_var</code><br />
+                - Added 'ok' to the list of yes words for <code>str_to_bool</code><br />
+                - <code>str_to_bool</code> matches no followed by any number of 'o's
             </p>
 
-            <p>
-                <span class="header">1.0.002</span><br />
-                - <a href="https://github.com/brandonwamboldt/utilphp/issues/12">Issue #12</a> get_current_url() now includes the port and user/password if required<br />
-                - <a href="https://github.com/brandonwamboldt/utilphp/issues/11">Issue #11</a> human_time_diff() now uses the DateTime functions<br />
-                - <a href="https://github.com/brandonwamboldt/utilphp/issues/10">Issue #10</a> is_https() no longer checks the port as well
+            <p class="changelog">
+                <span class="header">1.0.2</span><br />
+                - <a href="https://github.com/brandonwamboldt/utilphp/issues/12">Issue #12</a> <code>get_current_url</code> now includes the port and user/password if required<br />
+                - <a href="https://github.com/brandonwamboldt/utilphp/issues/11">Issue #11</a> <code>human_time_diff</code> now uses the DateTime functions<br />
+                - <a href="https://github.com/brandonwamboldt/utilphp/issues/10">Issue #10</a> <code>is_https</code> no longer checks the port as well
             </p>
 
-            <p>
-                <span class="header">1.0.001</span><br />
-                - <a href="https://github.com/brandonwamboldt/utilphp/issues/7">Issue #7</a> Added the $trust_proxy_headers parameter to get_client_ip()<br />
-                - <a href="https://github.com/brandonwamboldt/utilphp/issues/6">Issue #6</a> Removed is_isset() as the function did not work as intended<br />
-                - <a href="https://github.com/brandonwamboldt/utilphp/issues/6">Issue #6</a> Removed is_empty() as it is redundant, use ! with function calls instead<br />
-                - Fixed a bug with get_gravatar()
+            <p class="changelog">
+                <span class="header">1.0.1</span><br />
+                - <a href="https://github.com/brandonwamboldt/utilphp/issues/7">Issue #7</a> Added the <code style="color:#DA72F3">$trust_proxy_headers</code> parameter to <code>get_client_ip</code><br />
+                - <a href="https://github.com/brandonwamboldt/utilphp/issues/6">Issue #6</a> Removed <code>is_isset</code> as the function did not work as intended<br />
+                - <a href="https://github.com/brandonwamboldt/utilphp/issues/6">Issue #6</a> Removed <code>is_empty</code> as it is redundant, use ! with function calls instead<br />
+                - Fixed a bug with <code>get_gravatar</code>
             </p>
 
-            <p>
+            <p class="changelog">
                 <span class="header">1.0.000</span><br />
                 Initial release of util.php.
             </p>

@@ -80,6 +80,12 @@ span.header {
     line-height: 30px;
 }
 
+.changelog code {
+    margin-left: 0;
+    font-size: 18px;
+    color: #0E04C8;
+}
+
 #sidebar {
     background: #fff;
     position: fixed;
