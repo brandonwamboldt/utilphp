@@ -271,7 +271,7 @@ class util
         if ( isset( $var ) ) {
             return $var;
         }
-        
+
         return $default;
     }
 
@@ -314,7 +314,7 @@ class util
         if ( ! $return ) {
             echo $html;
         }
-        
+
         return $html;
     }
 
@@ -327,7 +327,7 @@ class util
      * @param  mixed $var The variable to dump
      * @return string
      */
-    public static function var_dump_plain( $var , $expLevel, $depth, $done )
+    public static function var_dump_plain( $var , $expLevel, $depth = 0, $done = [] )
     {
         $html = '';
 
@@ -680,7 +680,7 @@ class util
         if ( isset( $_SERVER['HTTPS'] ) && ! empty( $_SERVER['HTTPS'] ) && $_SERVER['HTTPS'] != 'off' ) {
             return TRUE;
         }
-        
+
         return FALSE;
     }
 
@@ -778,7 +778,7 @@ class util
         $ret = preg_replace( '#=(&|$)#', '$1', $ret );
         $ret = $protocol . $base . $ret . $frag;
         $ret = rtrim( $ret, '?' );
-        
+
         return $ret;
     }
 
@@ -822,7 +822,7 @@ class util
         } else if ( preg_match( '/^(' . $no_words . ')$/i', $string ) ) {
             return FALSE;
         }
-        
+
         return $default;
     }
 
@@ -904,7 +904,7 @@ class util
             $translation_table[chr(38)] = '&';
             return preg_replace( '/&(?![A-Za-z]{0,4}\w{2,3};|#[0-9]{2,3};)/', '&amp;', strtr( $string, $translation_table ) );
         }
-        
+
         return htmlentities( $string, ENT_QUOTES, self::mb_internal_encoding() );
     }
 
@@ -928,7 +928,7 @@ class util
 
             return preg_replace( '/&(?![A-Za-z]{0,4}\w{2,3};|#[0-9]{2,3};)/', '&amp;', strtr( $string, $translation_table ) );
         }
-        
+
         return htmlentities( $string, ENT_QUOTES, self::mb_internal_encoding() );
     }
 
@@ -1003,7 +1003,7 @@ class util
         $string = strtolower($string);
         $string = preg_replace('/[^a-zA-Z 0-9]+/', '', $string);
         $string = self::strip_space($string);
-        
+
         return $string;
     }
 
@@ -1299,7 +1299,7 @@ class util
 
             return TRUE;
         }
-        
+
         return FALSE;
     }
 
@@ -1347,7 +1347,7 @@ class util
 
             return TRUE;
         }
-        
+
         return FALSE;
     }
 
@@ -1370,7 +1370,7 @@ class util
 
             return TRUE;
         }
-        
+
         return FALSE;
     }
 
@@ -1544,7 +1544,7 @@ class util
             /imx';
 
         $url_replace = '$1$4$7$10$13<a href="$2$5$8$11$14">$2$5$8$11$14</a>$3$6$9$12';
-        
+
         return preg_replace( $url_pattern, $url_replace, $text );
     }
 
@@ -1957,7 +1957,7 @@ class util
         if (function_exists('mb_internal_encoding')) {
             return $encoding ? mb_internal_encoding($encoding) : mb_internal_encoding();
         }
-        
+
         return 'UTF-8';
     }
 }
