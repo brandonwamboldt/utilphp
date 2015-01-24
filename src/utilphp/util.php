@@ -327,7 +327,7 @@ class util
      * @param  mixed $var The variable to dump
      * @return string
      */
-    public static function var_dump_plain( $var , $expLevel, $depth = 0, $done = [] )
+    public static function var_dump_plain( $var , $expLevel, $depth = 0, $done = array() )
     {
         $html = '';
 
