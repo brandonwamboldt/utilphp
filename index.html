@@ -38,6 +38,7 @@
             <li>- <a href="#array_map_deep">array_map_deep</a></li>
             <li>- <a href="#array_pluck">array_pluck</a></li>
             <li>- <a href="#array_search_deep">array_search_deep</a></li>
+            <li>- <a href="#array_clean">array_clean</a></li>
         </ul>
 
         <a class="toc_title" href="#urls">URLs</a>
@@ -65,6 +66,8 @@
             <li>- <a href="#size_format">size_format</a></li>
             <li>- <a href="#str_to_bool">str_to_bool</a></li>
             <li>- <a href="#zero_pad">zero_pad</a></li>
+            <li>- <a href="#strip_space">strip_space</a></li>
+            <li>- <a href="#sanitize_string">sanitize_string</a></li>
         </ul>
 
         <a class="toc_title" href="#other">Other</a>
@@ -343,6 +346,24 @@ util::array_pluck($users, 'email');
 util::array_search_deep($users, 'rogue_coder', 'username');
 =&gt; Might return 5 if $users[5]->username = 'rogue_coder'</pre>
                 </article>
+
+                <article id="array_clean">
+                    <p>
+                        <span class="header">array_clean</span>
+                        <code>
+                            <span class="util_class">util::</span><span class="func_name">array_clean</span>(array <span class="param">$array</span>)
+                        </code>
+                    </p>
+
+                    <p>
+                        Remove all null/empty/false values from the given array.
+                    </p>
+
+                    <p><strong>Usage:</strong></p>
+
+                    <pre>util::array_clean( array( 'a', 'b', '', null, false, 0) );<br />=&gt; Returns array('a', 'b');</pre>
+                </article>
+
             </section>
 
             <h2 id="urls">URL Functions</h2>
@@ -642,6 +663,46 @@ util::remove_query_arg( [ 'user', 'action'], '/admin/users?action=edit&amp;user=
                     <pre>util::zero_pad(341, 8);
 =&gt; Returns '00000341'</pre>
                 </article>
+
+                <article id="strip_space">
+                    <p>
+                        <span class="header">strip_space</span>
+                        <code>
+                            <span class="util_class">util::</span><span class="func_name">strip_space</span>(string <span class="param">$string</span>)
+                        </code>
+                    </p>
+
+                    <p>Strip all withspace from the given string</p>
+
+                    <p><strong>Usage:</strong></p>
+
+                    <pre>util::strip_space(' The quick brown fox jumps over the lazy dog ');
+=&gt; Returns 'Thequickbrownfoxjumpsoverthelazydog'</pre>
+                </article>
+
+                <article id="sanitize_string">
+                    <p>
+                        <span class="header">sanitize_string</span>
+                        <code>
+                            <span class="util_class">util::</span><span class="func_name">sanitize_string</span>(string <span class="param">$string</span>)
+                        </code>
+                    </p>
+
+                    <p>
+                        Sanitize a string by performing the following operation :
+                        <ul>
+                            <li>Remove accents</li>
+                            <li>Lower the string</li>
+                            <li>Remove punctuation characters</li>
+                            <li>Strip whitespaces</li>
+                        </ul>
+
+                    </p>
+                    <p><strong>Usage:</strong></p>
+
+                    <pre>util::sanitize_string(' Benoit! à New-York? j’ai perçu 1 % : Qu’as-tu "gagné" chez M. V. Noël? Dix francs.');
+=&gt; Returns 'benoitanewyorkjaipercu1quastugagnechezmvnoeldixfrancs'</pre>
+                </article>
             </section>
 
             <h2 id="other">Other</h2>
@@ -807,7 +868,7 @@ util::maybe_unserialize( a:0:{} );
                     <pre>util::nocache_headers();</pre>
                 </article>
 
-                <article id="nocache_headers">
+                <article id="utf8_headers">
                     <p>
                         <span class="header">utf8_headers</span>
                         <code>
