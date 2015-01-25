@@ -1,4 +1,4 @@
-# Util.php [![Build Status](https://travis-ci.org/brandonwamboldt/utilphp.png?branch=master)](https://travis-ci.org/brandonwamboldt/utilphp) [![Coverage Status](https://coveralls.io/repos/brandonwamboldt/utilphp/badge.png)](https://coveralls.io/r/brandonwamboldt/utilphp)
+# Util.php [![Build Status](https://img.shields.io/travis/brandonwamboldt/utilphp.svg)](https://travis-ci.org/brandonwamboldt/utilphp) [![Coverage Status](https://coveralls.io/repos/brandonwamboldt/utilphp/badge.png)](https://coveralls.io/r/brandonwamboldt/utilphp)
 
 [UtilPHP](http://brandonwamboldt.github.com/utilphp/) (Aka util.php) is a
 collection of useful functions and snippets that you need or could use every
