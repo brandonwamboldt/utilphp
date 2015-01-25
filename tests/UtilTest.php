@@ -609,7 +609,7 @@ class UtilityPHPTest extends PHPUnit_Framework_TestCase
     
     public function test_removeDirectory()
     {
-        $dir = __DIR__ . '/test';
+        $dir = dirname(__FILE__) . '/test';
         @mkdir($dir);
         
         if(is_dir($dir)) {
