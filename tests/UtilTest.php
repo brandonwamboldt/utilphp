@@ -586,6 +586,9 @@ class UtilityPHPTest extends PHPUnit_Framework_TestCase
         $a->c = &$c;
         $b->c = &$c;
         $this->assertContains('*RECURSION DETECTED*', Util::var_dump($c, true));
+
+        $this->expectOutputString($expect);
+        util::var_dump($input);
     }
 
     public function test_linkify()
