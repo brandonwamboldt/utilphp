@@ -447,6 +447,25 @@ class UtilityPHPTest extends PHPUnit_Framework_TestCase
         $this->assertEquals( 'The...', util::safe_truncate( 'The quick brown fox jumps over the lazy dog', 7 ) );
     }
 
+    public function test_limit_characters()
+    {
+        $this->assertEquals( 'The quick brown fox jump...', util::limit_characters( 'The quick brown fox jumps over the lazy dog', 24 ) );
+        $this->assertEquals( 'The quick brown fox jumps over the lazy dog', util::limit_characters( 'The quick brown fox jumps over the lazy dog', 55 ) );
+        $this->assertEquals( 'Th...', util::limit_characters( 'The quick brown fox jumps over the lazy dog', 2 ) );
+        $this->assertEquals( 'The...', util::limit_characters( 'The quick brown fox jumps over the lazy dog', 3 ) );
+        $this->assertEquals( 'The qui...', util::limit_characters( 'The quick brown fox jumps over the lazy dog', 7 ) );
+        $this->assertEquals( 'The quick brown fox jumps over the lazy dog', util::limit_characters( 'The quick brown fox jumps over the lazy dog', 150 ) );
+    }
+
+    public function test_limit_words()
+    {
+        $this->assertEquals( 'The quick brown...', util::limit_words( 'The quick brown fox jumps over the lazy dog', 3 ) );
+        $this->assertEquals( 'The quick brown fox jumps...', util::limit_words( 'The quick brown fox jumps over the lazy dog', 5 ) );
+        $this->assertEquals( 'The...', util::limit_words( 'The quick brown fox jumps over the lazy dog', 1 ) );
+        $this->assertEquals( 'The quick brown fox jumps over the lazy dog', util::limit_words( 'The quick brown fox jumps over the lazy dog', 90 ) );
+        $this->assertEquals( 'The quick brown fox jumps over the...', util::limit_words( 'The quick brown fox jumps over the lazy dog', 7 ) );
+    }
+
     public function test_ordinal()
     {
         $this->assertEquals( '1st', util::ordinal( 1 ) );
