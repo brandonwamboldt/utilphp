@@ -606,4 +606,15 @@ class UtilityPHPTest extends PHPUnit_Framework_TestCase
         $expect = 'pdf';
         $this->assertEquals($expect, Util::get_file_ext($input));
     }
+    
+    public function test_removeDirectory()
+    {
+        $dir = dirname(__FILE__) . '/test';
+        @mkdir($dir);
+        
+        if(is_dir($dir)) {
+            Util::removeDirectory($dir);
+            $this->assertFalse(is_dir($dir));
+        }
+    }
 }

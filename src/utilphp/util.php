@@ -6,7 +6,7 @@ namespace utilphp;
  * util.php
  *
  * util.php is a library of helper functions for common tasks such as
- * formatting bytes as a string or displaying a date in terms of how long ago
+ * formatting bytes as a string or displaying a rdate in terms of how long ago
  * it was in human readable terms (E.g. 4 minutes ago). The library is entirely
  * contained within a single file and hosts no dependencies. The library is
  * designed to avoid any possible conflicts.
@@ -866,7 +866,7 @@ class util
      * Check if a string contains another string. This version is case
      * insensitive.
      *
-     * @param  string $haystack
+     * @param  string $haystackre
      * @param  string $needle
      * @return boolean
      */
@@ -884,6 +884,41 @@ class util
     public static function get_file_ext($filename)
     {
         return pathinfo($filename, PATHINFO_EXTENSION);
+    }
+    
+    /**
+     * Removes a directory (and all its content) recursively.
+     * @param string $dir the directory to be deleted recursively.
+     * @param array $options options for directory remove. Valid options are:
+     *
+     * - traverseSymlinks: boolean, whether symlinks to the directories should be traversed too.
+     *   Defaults to `false`, meaning the content of the symlinked directory would not be deleted.
+     *   Only symlink would be removed in that default case.
+     */
+    public static function removeDirectory($dir, $options = array())
+    {
+        if (!is_dir($dir)) {
+            throw new \Exception('Directory not exists');
+        }
+    
+        if (!is_link($dir) || isset($options['traverseSymlinks']) && $options['traverseSymlinks']) {
+            $fileIterator = new \FilesystemIterator($dir);
+            foreach ($fileIterator as $item) {
+                $currentPath = $item->getPathname();
+    
+                if (is_dir($currentPath)) {
+                    self::removeDirectory($currentPath, $options);
+                } else {
+                    unlink($currentPath);
+                }
+            }
+        }
+    
+        if (is_link($dir)) {
+            unlink($dir);
+        } else {
+            rmdir($dir);
+        }
     }
 
     /**
