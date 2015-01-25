@@ -12,6 +12,20 @@ require_once dirname(__FILE__) . '/../util.php';
  */
 class UtilityPHPTest extends PHPUnit_Framework_TestCase
 {
+    /**
+     * Allows for the testing of private and protected methods.
+     *
+     * @param $name
+     * @return \ReflectionMethod
+     */
+    protected static function getMethod($name)
+    {
+        $class = new \ReflectionClass('util');
+        $method = $class->getMethod($name);
+        $method->setAccessible(true);
+        return $method;
+    }
+
     public function test_array_get()
     {
         $_GET = array();
@@ -38,14 +52,38 @@ class UtilityPHPTest extends PHPUnit_Framework_TestCase
 
     public function test_seems_utf8()
     {
-        // Test a valid UTF-8 sequence
+        // Test a valid UTF-8 sequence: "ÜTF-8 Fµñ".
+        $validUTF8 = "\xC3\x9CTF-8 F\xC2\xB5\xC3\xB1";
+        $this->assertTrue( util::seems_utf8( $validUTF8 ) );
+
         $this->assertTrue( util::seems_utf8( "\xEF\xBF\xBD this has \xEF\xBF\xBD\xEF\xBF\xBD some invalid utf8 \xEF\xBF\xBD" ) );
 
         // Test invalid UTF-8 sequences
-        $this->assertFalse( util::seems_utf8( "\xc3 this has \xe6\x9d some invalid utf8 \xe6" ) );
+        $invalidUTF8 = "\xc3 this has \xe6\x9d some invalid utf8 \xe6";
+        $this->assertFalse( util::seems_utf8( $invalidUTF8 ) );
 
         // And test some plain ASCII
         $this->assertTrue( util::seems_utf8( 'The quick brown fox jumps over the lazy dog' ) );
+
+        // Test an invalid non-UTF-8 string.
+        if (function_exists('mb_convert_encoding')) {
+            mb_internal_encoding('UTF-8');
+            // Converts the 'ç' UTF-8 character to UCS-2LE
+            $utf8Char = pack('n', 50087);
+            $ucsChar = mb_convert_encoding($utf8Char, 'UCS-2LE', 'UTF-8');
+
+            // Ensure that PHP's internal encoding system isn't malconfigured.
+            $this->assertEquals( $utf8Char, 'ç', 'This PHP system\'s internal character set is not properly set as UTF-8.' );
+            $this->assertEquals( $utf8Char, pack('n', 50087), 'Something is wrong with your ICU unicode library.' );
+
+            // Test for not UTF-8.
+            $this->assertFalse( util::seems_utf8( $ucsChar) );
+
+            // Test the worker method.
+            $method = self::getMethod('seems_utf8_worker');
+            $this->assertFalse($method->invoke(null, $invalidUTF8), 'util::seems_utf8_worker did not properly detect invalid UTF-8.');
+            $this->assertTrue($method->invoke(null, $validUTF8), 'util::seems_utf8_worker did not properly detect valid UTF-8.');
+        }
     }
 
     public function test_size_format()
