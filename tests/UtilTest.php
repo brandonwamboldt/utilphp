@@ -440,11 +440,12 @@ class UtilityPHPTest extends PHPUnit_Framework_TestCase
 
     public function test_safe_truncate()
     {
-        $this->assertEquals( 'The quick brown fox...', util::safe_truncate( 'The quick brown fox jumps over the lazy dog', 24 ) );
+        $this->assertEquals( 'The quick brown fox jump...', util::safe_truncate( 'The quick brown fox jumps over the lazy dog', 24 ) );
         $this->assertEquals( 'The quick brown fox jumps over the lazy dog', util::safe_truncate( 'The quick brown fox jumps over the lazy dog', 55 ) );
         $this->assertEquals( 'Th...', util::safe_truncate( 'The quick brown fox jumps over the lazy dog', 2 ) );
         $this->assertEquals( 'The...', util::safe_truncate( 'The quick brown fox jumps over the lazy dog', 3 ) );
-        $this->assertEquals( 'The...', util::safe_truncate( 'The quick brown fox jumps over the lazy dog', 7 ) );
+        $this->assertEquals( 'The qui...', util::safe_truncate( 'The quick brown fox jumps over the lazy dog', 7 ) );
+        $this->assertEquals( 'The quick brown fox jumps over the lazy dog', util::safe_truncate( 'The quick brown fox jumps over the lazy dog', 150 ) );
     }
 
     public function test_ordinal()
