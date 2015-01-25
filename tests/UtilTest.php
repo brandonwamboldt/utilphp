@@ -625,4 +625,75 @@ class UtilityPHPTest extends PHPUnit_Framework_TestCase
         $expect = 'pdf';
         $this->assertEquals($expect, Util::get_file_ext($input));
     }
+
+    public function test_rmdir()
+    {
+        $dirname = dirname(__FILE__);
+
+        // Test deleting a non-existant directory
+        $this->assertFalse(file_exists($dirname . '/test1'));
+        $this->assertTrue(util::rmdir($dirname . '/test1'));
+
+        // Test deleting an empty directory
+        $dir = $dirname . '/test2';
+        mkdir($dir);
+
+        $this->assertTrue(is_dir($dir));
+
+        if (is_dir($dir)) {
+            util::rmdir($dir);
+            $this->assertFalse(is_dir($dir));
+        }
+
+        // Test deleting a non-empty directory
+        $dir = $dirname . '/test3';
+        $file = $dirname . '/test3/test.txt';
+        mkdir($dir);
+        touch($file);
+
+        $this->assertTrue(is_dir($dir));
+        $this->assertTrue(is_file($file));
+
+        if (is_dir($dir)) {
+            util::rmdir($dir);
+            $this->assertFalse(is_dir($dir));
+            $this->assertFalse(is_file($file));
+        }
+
+        // Test deleting a non-directory path
+        $file = $dirname . '/test4.txt';
+        touch($file);
+
+        try {
+            $str = util::rmdir($file);
+            $this->assertTrue(false);
+        } catch (\Exception $e) {
+            $this->assertTrue(true);
+        }
+
+        unlink($file);
+
+        // Test deleting a nested directory
+        $dir1 = $dirname . '/test5';
+        $dir2 = $dirname . '/test5/nested_dir';
+        $file1 = $dir1 . '/file1.txt';
+        $file2 = $dir2 . '/file2.txt';
+        mkdir($dir1);
+        mkdir($dir2);
+        touch($file1);
+        touch($file2);
+
+        $this->assertTrue(is_dir($dir1));
+        $this->assertTrue(is_dir($dir2));
+        $this->assertTrue(is_file($file1));
+        $this->assertTrue(is_file($file2));
+
+        if (is_dir($dir1)) {
+            util::rmdir($dir1);
+            $this->assertFalse(is_dir($dir1));
+            $this->assertFalse(is_dir($dir2));
+            $this->assertFalse(is_file($file1));
+            $this->assertFalse(is_file($file2));
+        }
+    }
 }

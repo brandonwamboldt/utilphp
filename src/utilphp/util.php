@@ -887,6 +887,48 @@ class util
     }
 
     /**
+     * Removes a directory (and its contents) recursively.
+     *
+     * @param  string $dir              The directory to be deleted recursively
+     * @param  bool   $traverseSymlinks Delete contents of symlinks recursively
+     * @return bool
+     */
+    public static function rmdir($dir, $traverseSymlinks = false)
+    {
+        if (!file_exists($dir)) {
+            return true;
+        } elseif (!is_dir($dir)) {
+            throw new \Exception('Given path is not a directory');
+        }
+
+        if (!is_link($dir) || $traverseSymlinks) {
+            foreach (scandir($dir) as $file) {
+                if ($file === '.' || $file === '..') {
+                    continue;
+                }
+
+                $currentPath = $dir . '/' . $file;
+
+                if (is_dir($currentPath)) {
+                    self::rmdir($currentPath, $traverseSymlinks);
+                } elseif (!unlink($currentPath)) {
+                    throw new \Exception('Unable to delete ' . $currentPath);
+                }
+            }
+        }
+
+        if (is_link($dir)) {
+            if (!unlink($dir)) {
+                throw new \Exception('Unable to delete ' . $dir);
+            }
+        } else {
+            if (!rmdir($dir)) {
+                throw new \Exception('Unable to delete ' . $dir);
+            }
+        }
+    }
+
+    /**
      * Convert entities, while preserving already-encoded entities.
      *
      * @param  string $string The text to be converted
