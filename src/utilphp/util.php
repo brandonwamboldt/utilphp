@@ -520,6 +520,19 @@ class util
             return mb_check_encoding( $string, 'UTF-8' );
         }
 
+        // @codeCoverageIgnoreStart
+        return self::seems_utf8_worker( $string );
+        // @codeCoverageIgnoreEnd
+    }
+
+    /**
+     * A non-Mbstring UTF-8 checker.
+     *
+     * @param $string
+     * @return bool
+     */
+    protected static function seems_utf8_worker( $string )
+    {
         $regex = '/(
 | [\xF8-\xFF] # Invalid UTF-8 Bytes
 | [\xC0-\xDF](?![\x80-\xBF]) # Invalid UTF-8 Sequence Start
