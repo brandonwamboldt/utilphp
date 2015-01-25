@@ -1724,6 +1724,42 @@ class util
         return $ret;
     }
 
+
+    /**
+     * Truncate the string to given length of charactes.
+     *
+     * @param $string
+     * @param $limit
+     * @param string $append
+     * @return string
+     */
+    public static function limit_characters( $string, $limit = 100, $append = '...')
+    {
+        if (mb_strlen($string) <= $limit) {
+            return $string;
+        }
+
+        return rtrim(mb_substr($string, 0, $limit, 'UTF-8')).$append;
+    }
+
+    /**
+     * Truncate the string to given length of words.
+     *
+     * @param $string
+     * @param $limit
+     * @param string $append
+     * @return string
+     */
+    public static function limit_words( $string, $limit = 100, $append = '...')
+    {
+        preg_match('/^\s*+(?:\S++\s*+){1,'.$limit.'}/u', $string, $matches);
+        if ( ! isset($matches[0]) || strlen($string) === strlen($matches[0])) {
+            return $string;
+        }
+
+        return rtrim($matches[0]).$append;
+    }
+
     /**
      * Returns the ordinal version of a number (appends th, st, nd, rd).
      *
