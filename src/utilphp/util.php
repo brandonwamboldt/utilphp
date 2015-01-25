@@ -895,28 +895,25 @@ class util
      *   Defaults to `false`, meaning the content of the symlinked directory would not be deleted.
      *   Only symlink would be removed in that default case.
      */
-    public static function removeDirectory($dir, $options = array())
+    function removeDirectory($dir, $options = array())
     {
         if (!is_dir($dir)) {
-            return;
+            throw new Exception('Directory not exists');
         }
+    
         if (!is_link($dir) || isset($options['traverseSymlinks']) && $options['traverseSymlinks']) {
-            if (!($handle = opendir($dir))) {
-                return;
-            }
-            while (($file = readdir($handle)) !== false) {
-                if ($file === '.' || $file === '..') {
-                    continue;
-                }
-                $path = $dir . DIRECTORY_SEPARATOR . $file;
-                if (is_dir($path)) {
-                    static::removeDirectory($path, $options);
+            $fileIterator = new FilesystemIterator($dir);
+            foreach ($fileIterator as $item) {
+                $currentPath = $item->getPathname();
+    
+                if (is_dir($currentPath)) {
+                    removeDirectory($currentPath, $options);
                 } else {
-                    unlink($path);
+                    unlink($currentPath);
                 }
             }
-            closedir($handle);
         }
+    
         if (is_link($dir)) {
             unlink($dir);
         } else {
