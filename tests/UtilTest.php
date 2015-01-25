@@ -330,6 +330,7 @@ class UtilityPHPTest extends PHPUnit_Framework_TestCase
         $this->assertEquals( 'A', util::remove_accents( "\xC3\x81" ) );
         $this->assertEquals( 'e', util::remove_accents( "\xC4\x97" ) );
         $this->assertEquals( 'U', util::remove_accents( "\xC3\x9C" ) );
+        $this->assertEquals( 'Ae', util::remove_accents( "Ä", 'de' ) );
         $this->assertEquals( 'OEoeAEDHTHssaedhth', util::remove_accents(chr(140) . chr(156) . chr(198) . chr(208) . chr(222) . chr(223) . chr(230) . chr(240) . chr(254)));
     }
 
@@ -366,6 +367,14 @@ class UtilityPHPTest extends PHPUnit_Framework_TestCase
         $this->assertEquals( 'one', util::number_to_word( 1 ) );
         $this->assertEquals( 'five', util::number_to_word( 5 ) );
         $this->assertEquals( 'fifteen', util::number_to_word( 15 ) );
+        $this->assertEquals( 'twenty-one', util::number_to_word( 21 ) );
+        $this->assertEquals( 'thirty-two', util::number_to_word( 32 ) );
+        $this->assertEquals( 'forty-three', util::number_to_word( 43 ) );
+        $this->assertEquals( 'fifty-four', util::number_to_word( 54 ) );
+        $this->assertEquals( 'sixty-six', util::number_to_word( 66 ) );
+        $this->assertEquals( 'seventy-seven', util::number_to_word( 77 ) );
+        $this->assertEquals( 'eighty-eight', util::number_to_word( 88 ) );
+        $this->assertEquals( 'ninety-nine', util::number_to_word( 99 ) );
         $this->assertEquals( 'one hundred and thirty-six', util::number_to_word( 136 ) );
         $this->assertEquals( 'negative twelve', util::number_to_word( -12 ) );
         $this->assertEquals( 'zero point eight', util::number_to_word( 0.8 ) );
@@ -386,6 +395,18 @@ class UtilityPHPTest extends PHPUnit_Framework_TestCase
         $this->assertEquals( 'seventeen', util::number_to_word( 17 ) );
         $this->assertEquals( 'eighteen', util::number_to_word( 18 ) );
         $this->assertEquals( 'nineteen', util::number_to_word( 19 ) );
+        $this->assertEquals( 'one thousand', util::number_to_word( 1000 ) );
+        $this->assertEquals( 'one million', util::number_to_word( 1000000 ) );
+        $this->assertEquals( 'one billion', util::number_to_word( 1000000000 ) );
+        $this->assertEquals( 'one trillion', util::number_to_word( 1000000000000 ) );
+        $this->assertEquals( 'one quadrillion', util::number_to_word( '1000000000000000' ) );
+        $this->assertEquals( 'one quintrillion', util::number_to_word( '1000000000000000000' ) );
+        $this->assertEquals( 'one sextillion', util::number_to_word( '1000000000000000000000' ) );
+        $this->assertEquals( 'one septillion', util::number_to_word( '1000000000000000000000000' ) );
+        $this->assertEquals( 'one octillion', util::number_to_word( '1000000000000000000000000000' ) );
+        $this->assertEquals( 'one nonillion', util::number_to_word( '1000000000000000000000000000000' ) );
+        $this->assertEquals( 'one decillion', util::number_to_word( '1000000000000000000000000000000000' ) );
+        $this->assertEquals( 'one', util::number_to_word( '1000000000000000000000000000000000000000000' ) );
 
     }
 
@@ -466,6 +487,18 @@ class UtilityPHPTest extends PHPUnit_Framework_TestCase
             $this->assertTrue( false );
         } catch (Exception $e) {
             $this->assertTrue( true );
+        }
+
+        // Test secure variant
+        $str = util::secure_random_string(16);
+        $this->assertTrue(strlen($str) === 16);
+
+        // Longer length than characters available
+        try {
+            $str = util::secure_random_string(0);
+            $this->assertTrue(false);
+        } catch (Exception $e) {
+            $this->assertTrue(true);
         }
     }
 
@@ -581,6 +614,17 @@ class UtilityPHPTest extends PHPUnit_Framework_TestCase
         $expect = 'benoitanewyorkjaipercu1quastugagnechezmvnoeldixfrancs';
 
         $this->assertEquals($expect, Util::sanitize_string($input));
+    }
+
+    public function test_get_gravatar()
+    {
+        $_SERVER['HTTPS'] = 'on';
+        $this->assertEquals('https://secure.gravatar.com/avatar/a4bf5bbb9feaa2713d99a3b52ab80024?s=32', util::get_gravatar('john.doe@example.org'));
+        $this->assertEquals('https://secure.gravatar.com/avatar/a4bf5bbb9feaa2713d99a3b52ab80024?s=128', util::get_gravatar('john.doe@example.org', 128));
+
+        $_SERVER['HTTPS'] = 'off';
+        $this->assertEquals('http://www.gravatar.com/avatar/a4bf5bbb9feaa2713d99a3b52ab80024?s=32', util::get_gravatar('john.doe@example.org'));
+        $this->assertEquals('http://www.gravatar.com/avatar/a4bf5bbb9feaa2713d99a3b52ab80024?s=128', util::get_gravatar('john.doe@example.org', 128));
     }
 
     public function test_array_clean()

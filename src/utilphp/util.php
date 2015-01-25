@@ -695,10 +695,10 @@ class util
     public static function is_https()
     {
         if ( isset( $_SERVER['HTTPS'] ) && ! empty( $_SERVER['HTTPS'] ) && $_SERVER['HTTPS'] != 'off' ) {
-            return TRUE;
+            return true;
         }
 
-        return FALSE;
+        return false;
     }
 
     /**
@@ -1179,10 +1179,10 @@ class util
         if ( $number[0] == '0' ) {
             $output .= 'zero';
         } else {
-            $number = str_pad( $number, 36, '0', STR_PAD_LEFT );
+            $length = 19;
+            $number = str_pad( $number, 60, '0', STR_PAD_LEFT );
             $group  = rtrim( chunk_split( $number, 3, ' ' ), ' ' );
             $groups = explode( ' ', $group );
-
             $groups2 = array();
 
             foreach ( $groups as $group ) {
@@ -1191,8 +1191,8 @@ class util
 
             for ( $z = 0; $z < count( $groups2 ); $z++ ) {
                 if ( $groups2[$z] != '' ) {
-                    $output .= $groups2[$z] . self::_number_to_word_convert_group( 11 - $z );
-                    $output .= ( $z < 11 && ! array_search( '', array_slice( $groups2, $z + 1, -1 ) ) && $groups2[11] != '' && $groups[11][0] == '0' ? ' and ' : ', ' );
+                    $output .= $groups2[$z] . self::_number_to_word_convert_group( $length - $z );
+                    $output .= ( $z < $length && ! array_search( '', array_slice( $groups2, $z + 1, -1 ) ) && $groups2[$length] != '' && $groups[$length][0] == '0' ? ' and ' : ', ' );
                 }
             }
 
@@ -1238,6 +1238,8 @@ class util
             case 0:
                 return '';
         }
+
+        return '';
     }
 
     protected static function _number_to_word_three_digits( $digit1, $digit2, $digit3 )
@@ -1330,6 +1332,8 @@ class util
                     return "ninety-{$second_digit}";
             }
         }
+
+        return '';
     }
 
     protected static function _number_to_word_convert_digit( $digit )
