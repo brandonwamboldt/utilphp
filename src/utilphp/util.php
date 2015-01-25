@@ -866,7 +866,7 @@ class util
      * Check if a string contains another string. This version is case
      * insensitive.
      *
-     * @param  string $haystack
+     * @param  string $haystackre
      * @param  string $needle
      * @return boolean
      */
@@ -895,7 +895,7 @@ class util
      *   Defaults to `false`, meaning the content of the symlinked directory would not be deleted.
      *   Only symlink would be removed in that default case.
      */
-    function removeDirectory($dir, $options = array())
+    public static function removeDirectory($dir, $options = array())
     {
         if (!is_dir($dir)) {
             throw new Exception('Directory not exists');
@@ -907,7 +907,7 @@ class util
                 $currentPath = $item->getPathname();
     
                 if (is_dir($currentPath)) {
-                    removeDirectory($currentPath, $options);
+                    self::removeDirectory($currentPath, $options);
                 } else {
                     unlink($currentPath);
                 }
