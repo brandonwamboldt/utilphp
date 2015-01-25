@@ -569,7 +569,13 @@ class UtilityPHPTest extends PHPUnit_Framework_TestCase
     {
         $input = 'var';
         $expect = '<pre style="margin-bottom: 18px;background: #f7f7f9;border: 1px solid #e1e1e8;padding: 8px;border-radius: 4px;-moz-border-radius: 4px;-webkit-border radius: 4px;display: block;font-size: 12.05px;white-space: pre-wrap;word-wrap: break-word;color: #333;font-family: Menlo,Monaco,Consolas,\'Courier New\',monospace;"><span style="color:#588bff;">string</span><span style="color:#999;">(</span>3<span style="color:#999;">)</span> <strong>"var"</strong></pre>';
+
+        // Ensure the proper output is returned
         $this->assertEquals($expect, Util::var_dump($input, true));
+
+        // Ensure the proper output is actually outputted
+        $this->expectOutputString($expect);
+        util::var_dump($input);
 
         // Ensure we avoid infinite recursion on recursive arrays
         $a = array('a' => 'value a', 'b' => 'value b');
@@ -586,9 +592,6 @@ class UtilityPHPTest extends PHPUnit_Framework_TestCase
         $a->c = &$c;
         $b->c = &$c;
         $this->assertContains('*RECURSION DETECTED*', Util::var_dump($c, true));
-
-        $this->expectOutputString($expect);
-        util::var_dump($input);
     }
 
     public function test_linkify()
