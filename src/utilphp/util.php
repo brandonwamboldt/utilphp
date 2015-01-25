@@ -885,6 +885,44 @@ class util
     {
         return pathinfo($filename, PATHINFO_EXTENSION);
     }
+    
+    /**
+     * Removes a directory (and all its content) recursively.
+     * @param string $dir the directory to be deleted recursively.
+     * @param array $options options for directory remove. Valid options are:
+     *
+     * - traverseSymlinks: boolean, whether symlinks to the directories should be traversed too.
+     *   Defaults to `false`, meaning the content of the symlinked directory would not be deleted.
+     *   Only symlink would be removed in that default case.
+     */
+    public static function removeDirectory($dir, $options = [])
+    {
+        if (!is_dir($dir)) {
+            return;
+        }
+        if (!is_link($dir) || isset($options['traverseSymlinks']) && $options['traverseSymlinks']) {
+            if (!($handle = opendir($dir))) {
+                return;
+            }
+            while (($file = readdir($handle)) !== false) {
+                if ($file === '.' || $file === '..') {
+                    continue;
+                }
+                $path = $dir . DIRECTORY_SEPARATOR . $file;
+                if (is_dir($path)) {
+                    static::removeDirectory($path, $options);
+                } else {
+                    unlink($path);
+                }
+            }
+            closedir($handle);
+        }
+        if (is_link($dir)) {
+            unlink($dir);
+        } else {
+            rmdir($dir);
+        }
+    }
 
     /**
      * Convert entities, while preserving already-encoded entities.
