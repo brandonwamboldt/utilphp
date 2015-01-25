@@ -1843,9 +1843,11 @@ class util
      * @param   string $file The name of the file to get permissions form
      * @return  string
      */
-    public static function full_permissions( $file )
+    public static function full_permissions( $file, $perms = null )
     {
-        $perms = fileperms( $file );
+        if (is_null($perms)) {
+            $perms = fileperms( $file );
+        }
 
         if ( ( $perms & 0xC000 ) == 0xC000 ) {
             // Socket

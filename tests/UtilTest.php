@@ -627,6 +627,39 @@ class UtilityPHPTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('http://www.gravatar.com/avatar/a4bf5bbb9feaa2713d99a3b52ab80024?s=128', util::get_gravatar('john.doe@example.org', 128));
     }
 
+    public function test_get_client_ip()
+    {
+        $_SERVER['REMOTE_ADDR'] = '192.168.30.152';
+        $_SERVER['HTTP_CLIENT_IP'] = '192.168.30.153';
+        $_SERVER['HTTP_X_FORWARDED_FOR'] = '192.168.30.154';
+        $this->assertEquals('192.168.30.152', util::get_client_ip());
+        $this->assertEquals('192.168.30.153', util::get_client_ip(true));
+
+        unset($_SERVER['HTTP_CLIENT_IP']);
+        $this->assertEquals('192.168.30.154', util::get_client_ip(true));
+        unset($_SERVER['HTTP_X_FORWARDED_FOR']);
+        $this->assertEquals('192.168.30.152', util::get_client_ip(true));
+    }
+
+    public function test_full_permissions()
+    {
+        $this->assertEquals('lr--r--r--', util::full_permissions('/tmp/file.txt', octdec('120444')));
+        $this->assertEquals('ur--r--r--', util::full_permissions('/tmp/file.txt', octdec('000444')));
+        $this->assertEquals('srwxr-xr-x', util::full_permissions('/tmp/file.txt', octdec('140755')));
+        $this->assertEquals('drwxr-xr-x', util::full_permissions('/tmp/file.txt', octdec('40755')));
+        $this->assertEquals('brw-rw----', util::full_permissions('/tmp/file.txt', octdec('60660')));
+        $this->assertEquals('crw-rw----', util::full_permissions('/tmp/file.txt', octdec('20660')));
+        $this->assertEquals('prw-rw----', util::full_permissions('/tmp/file.txt', octdec('10660')));
+        $this->assertEquals('---x------', util::full_permissions('/tmp/file.txt', octdec('100100')));
+        $this->assertEquals('--w-------', util::full_permissions('/tmp/file.txt', octdec('100200')));
+        $this->assertEquals('--wx------', util::full_permissions('/tmp/file.txt', octdec('100300')));
+        $this->assertEquals('-r--------', util::full_permissions('/tmp/file.txt', octdec('100400')));
+        $this->assertEquals('-r-x------', util::full_permissions('/tmp/file.txt', octdec('100500')));
+        $this->assertEquals('-rw-------', util::full_permissions('/tmp/file.txt', octdec('100600')));
+        $this->assertEquals('-rwx------', util::full_permissions('/tmp/file.txt', octdec('100700')));
+        $this->assertEquals('drwxr-xr-x', util::full_permissions('/'));
+    }
+
     public function test_array_clean()
     {
         $input = array( 'a', 'b', '', null, false, 0);
