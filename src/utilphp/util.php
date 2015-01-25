@@ -1146,7 +1146,6 @@ class util
         if ( strpos( $number, '.' ) !== FALSE ) {
             list( $number, $decimal ) = explode( '.', $number );
         } else {
-            $number = $number;
             $decimal = FALSE;
         }
 
