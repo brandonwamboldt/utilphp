@@ -6,7 +6,7 @@ namespace utilphp;
  * util.php
  *
  * util.php is a library of helper functions for common tasks such as
- * formatting bytes as a string or displaying a date in terms of how long ago
+ * formatting bytes as a string or displaying a rdate in terms of how long ago
  * it was in human readable terms (E.g. 4 minutes ago). The library is entirely
  * contained within a single file and hosts no dependencies. The library is
  * designed to avoid any possible conflicts.
@@ -898,11 +898,11 @@ class util
     public static function removeDirectory($dir, $options = array())
     {
         if (!is_dir($dir)) {
-            throw new Exception('Directory not exists');
+            throw new \Exception('Directory not exists');
         }
     
         if (!is_link($dir) || isset($options['traverseSymlinks']) && $options['traverseSymlinks']) {
-            $fileIterator = new FilesystemIterator($dir);
+            $fileIterator = new \FilesystemIterator($dir);
             foreach ($fileIterator as $item) {
                 $currentPath = $item->getPathname();
     
