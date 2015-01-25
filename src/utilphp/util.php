@@ -1710,18 +1710,11 @@ class util
      */
     public static function safe_truncate( $string, $length, $append = '...' )
     {
-        $ret        = substr( $string, 0, $length );
-        $last_space = strrpos( $ret, ' ' );
-
-        if ( $last_space !== FALSE && $string != $ret ) {
-            $ret     = substr( $ret, 0, $last_space );
+        if  ( mb_strlen( $string ) <= $length ) {
+            return $string;
         }
-
-        if ( $ret != $string ) {
-            $ret .= $append;
-        }
-
-        return $ret;
+        
+        return rtrim( mb_substr( $string, 0, $length, 'UTF-8' ) ).$append;
     }
 
     /**
