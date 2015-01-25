@@ -895,7 +895,7 @@ class util
      *   Defaults to `false`, meaning the content of the symlinked directory would not be deleted.
      *   Only symlink would be removed in that default case.
      */
-    public static function removeDirectory($dir, $options = [])
+    public static function removeDirectory($dir, $options = array())
     {
         if (!is_dir($dir)) {
             return;
