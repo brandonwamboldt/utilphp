@@ -73,8 +73,8 @@ me to maintain quality of the code-base.
 
 ### PHP Style
 
-All code must match the style of the existing code-base. An official style
-guide will be added on a future date.
+Please ensure all new contributions match the [PSR-2](http://www.php-fig.org/psr/psr-2/)
+coding style guide.
 
 ### Documentation
 
@@ -84,10 +84,24 @@ constants, etc are all things that will require a change to documentation. The
 change-log must also be updated for every change. Also PHPDoc blocks must be
 maintained.
 
-### Compatibility
+### PHP Version Compatibility
 
 UtilityPHP is compatible with PHP 5.3.3 so all code supplied must stick to this
 requirement.
+
+Of particular note is avoiding short array notation like this:
+
+```
+$var = [];
+```
+
+Please use the old notation instead:
+
+```
+$var = array();
+```
+
+I know it's uglier, but PHP 5.3 while EOL'd, still isn't that old.
 
 ### Branching
 
