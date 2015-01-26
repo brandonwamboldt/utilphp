@@ -345,17 +345,17 @@ class Util
 
         if (is_bool($var)) {
             $html .= '<span style="color:#588bff;">bool</span><span style="color:#999;">(</span><strong>' . (($var) ? 'true' : 'false') . '</strong><span style="color:#999;">)</span>';
-        } else if (is_int($var)) {
+        } elseif (is_int($var)) {
             $html .= '<span style="color:#588bff;">int</span><span style="color:#999;">(</span><strong>' . $var . '</strong><span style="color:#999;">)</span>';
-        } else if (is_float($var)) {
+        } elseif (is_float($var)) {
             $html .= '<span style="color:#588bff;">float</span><span style="color:#999;">(</span><strong>' . $var . '</strong><span style="color:#999;">)</span>';
-        } else if (is_string($var)) {
+        } elseif (is_string($var)) {
             $html .= '<span style="color:#588bff;">string</span><span style="color:#999;">(</span>' . strlen($var) . '<span style="color:#999;">)</span> <strong>"' . self::htmlentities($var) . '"</strong>';
-        } else if (is_null($var)) {
+        } elseif (is_null($var)) {
             $html .= '<strong>NULL</strong>';
-        } else if (is_resource($var)) {
+        } elseif (is_resource($var)) {
             $html .= '<span style="color:#588bff;">resource</span>("' . get_resource_type($var) . '") <strong>"' . $var . '"</strong>';
-        } else if (is_array($var)) {
+        } elseif (is_array($var)) {
             // Check for recursion
             if ($depth > 0) {
                 foreach ($done as $prev) {
@@ -409,7 +409,7 @@ class Util
 
                 $html .= ']</span>';
             }
-        } else if (is_object($var)) {
+        } elseif (is_object($var)) {
             // Check for recursion
             foreach ($done as $prev) {
                 if ($prev === $var) {
@@ -436,7 +436,7 @@ class Util
                     unset($varArray[$key]);
                     $key = 'protected:' . substr($key, 2);
                     $varArray[$key] = $value;
-                } else if (substr($key, 0, 1) == "\0") {
+                } elseif (substr($key, 0, 1) == "\0") {
                     unset($varArray[$key]);
                     $key = 'private:' . substr($key, 1, strpos(substr($key, 1), "\0")) . ':' . substr($key, strpos(substr($key, 1), "\0") + 1);
                     $varArray[$key] = $value;
@@ -565,15 +565,15 @@ class Util
 
         if ($bytes < 1024) {
             return $bytes . ' B';
-        } else if ($bytes < pow(1024, 2)) {
+        } elseif ($bytes < pow(1024, 2)) {
             return number_format($bytes / 1024, $decimals, '.', '') . ' KiB';
-        } else if ($bytes < pow(1024, 3)) {
+        } elseif ($bytes < pow(1024, 3)) {
             return number_format($bytes / pow(1024, 2), $decimals, '.', '') . ' MiB';
-        } else if ($bytes < pow(1024, 4)) {
+        } elseif ($bytes < pow(1024, 4)) {
             return number_format($bytes / pow(1024, 3), $decimals, '.', '') . ' GiB';
-        } else if ($bytes < pow(1024, 5)) {
+        } elseif ($bytes < pow(1024, 5)) {
             return number_format($bytes / pow(1024, 4), $decimals, '.', '') . ' TiB';
-        } else if ($bytes < pow(1024, 6)) {
+        } elseif ($bytes < pow(1024, 6)) {
             return number_format($bytes / pow(1024, 5), $decimals, '.', '') . ' PiB';
         } else {
             return number_format($bytes / pow(1024, 5), $decimals, '.', '') . ' PiB';
@@ -730,7 +730,7 @@ class Util
             // Was the URL passed as an argument?
             if (func_num_args() == 2 && func_get_arg(1)) {
                 $uri = func_get_arg(1);
-            } else if (func_num_args() == 3 && func_get_arg(2)) {
+            } elseif (func_num_args() == 3 && func_get_arg(2)) {
                 $uri = func_get_arg(2);
             } else {
                 $uri = $_SERVER['REQUEST_URI'];
@@ -764,7 +764,7 @@ class Util
             $parts = explode('?', $uri, 2);
             $base  = $parts[0] . '?';
             $query = $parts[1];
-        } else if (! empty($protocol) || strpos($uri, '=') === false) {
+        } elseif (! empty($protocol) || strpos($uri, '=') === false) {
             $base  = $uri . '?';
             $query = '';
         } else {
@@ -837,7 +837,7 @@ class Util
 
         if (preg_match('/^(' . $yes_words . ')$/i', $string)) {
             return true;
-        } else if (preg_match('/^(' . $no_words . ')$/i', $string)) {
+        } elseif (preg_match('/^(' . $no_words . ')$/i', $string)) {
             return false;
         }
 
@@ -1124,29 +1124,29 @@ class Util
 
         if ($diff->y > 1) {
             $text = $diff->y . ' years';
-        } else if ($diff->y == 1) {
+        } elseif ($diff->y == 1) {
             $text = '1 year';
-        } else if ($diff->m > 1) {
+        } elseif ($diff->m > 1) {
             $text = $diff->m . ' months';
-        } else if ($diff->m == 1) {
+        } elseif ($diff->m == 1) {
             $text = '1 month';
-        } else if ($diff->d > 7) {
+        } elseif ($diff->d > 7) {
             $text = ceil($diff->d / 7) . ' weeks';
-        } else if ($diff->d == 7) {
+        } elseif ($diff->d == 7) {
             $text = '1 week';
-        } else if ($diff->d > 1) {
+        } elseif ($diff->d > 1) {
             $text = $diff->d . ' days';
-        } else if ($diff->d == 1) {
+        } elseif ($diff->d == 1) {
             $text = '1 day';
-        } else if ($diff->h > 1) {
+        } elseif ($diff->h > 1) {
             $text = $diff->h . ' hours';
-        } else if ($diff->h == 1) {
+        } elseif ($diff->h == 1) {
             $text = ' 1 hour';
-        } else if ($diff->i > 1) {
+        } elseif ($diff->i > 1) {
             $text = $diff->i . ' minutes';
-        } else if ($diff->i == 1) {
+        } elseif ($diff->i == 1) {
             $text = '1 minute';
-        } else if ($diff->s > 1) {
+        } elseif ($diff->s > 1) {
             $text = $diff->s . ' seconds';
         } else {
             $text = '1 second';
@@ -1182,7 +1182,7 @@ class Util
         if ($number[0] == '-') {
             $output = 'negative ';
             $number = ltrim($number, '-');
-        } else if ($number[0] == '+') {
+        } elseif ($number[0] == '+') {
             $output = 'positive ';
             $number = ltrim($number, '+');
         }
@@ -1197,12 +1197,12 @@ class Util
             $groups2 = array();
 
             foreach ($groups as $group) {
-                $groups2[] = self::_number_to_word_three_digits($group[0], $group[1], $group[2]);
+                $groups2[] = self::number_to_word_three_digits($group[0], $group[1], $group[2]);
             }
 
             for ($z = 0; $z < count($groups2); $z++) {
                 if ($groups2[$z] != '') {
-                    $output .= $groups2[$z] . self::_number_to_word_convert_group($length - $z);
+                    $output .= $groups2[$z] . self::number_to_word_convert_group($length - $z);
                     $output .= ($z < $length && ! array_search('', array_slice($groups2, $z + 1, -1)) && $groups2[$length] != '' && $groups[$length][0] == '0' ? ' and ' : ', ');
                 }
             }
@@ -1214,14 +1214,14 @@ class Util
             $output .= ' point';
 
             for ($i = 0; $i < strlen($decimal); $i++) {
-                $output .= ' ' . self::_number_to_word_convert_digit($decimal[$i]);
+                $output .= ' ' . self::number_to_word_convert_digit($decimal[$i]);
             }
         }
 
         return $output;
     }
 
-    protected static function _number_to_word_convert_group($index)
+    protected static function number_to_word_convert_group($index)
     {
         switch($index) {
             case 11:
@@ -1253,7 +1253,7 @@ class Util
         return '';
     }
 
-    protected static function _number_to_word_three_digits($digit1, $digit2, $digit3)
+    protected static function number_to_word_three_digits($digit1, $digit2, $digit3)
     {
         $output = '';
 
@@ -1262,22 +1262,22 @@ class Util
         }
 
         if ($digit1 != '0') {
-            $output .= self::_number_to_word_convert_digit($digit1) . ' hundred';
+            $output .= self::number_to_word_convert_digit($digit1) . ' hundred';
 
             if ($digit2 != '0' || $digit3 != '0') {
                 $output .= ' and ';
             }
         }
         if ($digit2 != '0') {
-            $output .= self::_number_to_word_two_digits($digit2, $digit3);
+            $output .= self::number_to_word_two_digits($digit2, $digit3);
         } elseif ($digit3 != '0') {
-            $output .= self::_number_to_word_convert_digit($digit3);
+            $output .= self::number_to_word_convert_digit($digit3);
         }
 
         return $output;
     }
 
-    protected static function _number_to_word_two_digits($digit1, $digit2)
+    protected static function number_to_word_two_digits($digit1, $digit2)
     {
         if ($digit2 == '0') {
             switch ($digit1) {
@@ -1322,7 +1322,7 @@ class Util
                     return 'nineteen';
             }
         } else {
-            $second_digit = self::_number_to_word_convert_digit($digit2);
+            $second_digit = self::number_to_word_convert_digit($digit2);
 
             switch ($digit1) {
                 case '2':
@@ -1347,7 +1347,7 @@ class Util
         return '';
     }
 
-    protected static function _number_to_word_convert_digit($digit)
+    protected static function number_to_word_convert_digit($digit)
     {
         switch ($digit) {
             case '0':
@@ -1620,7 +1620,7 @@ class Util
              )                              # End $2:
             %ix';
 
-        return preg_replace_callback($section_html_pattern, array(__CLASS__, '_linkify_callback'), $text);
+        return preg_replace_callback($section_html_pattern, array(__CLASS__, 'linkify_callback'), $text);
     }
 
     /**
@@ -1629,7 +1629,7 @@ class Util
      * @param  array  $matches Matches from the preg_ function
      * @return string
      */
-    protected static function _linkify($text)
+    protected static function linkify($text)
     {
         $url_pattern = '/# Rev:20100913_0900 github.com\/jmrware\/LinkifyURL
             # Match http & ftp URL that is not already linkified.
@@ -1683,13 +1683,13 @@ class Util
      * @param  array  $matches Matches from the preg_ function
      * @return string
      */
-    protected static function _linkify_callback($matches)
+    protected static function linkify_callback($matches)
     {
         if (isset($matches[2])) {
             return $matches[2];
         }
 
-        return self::_linkify($matches[1]);
+        return self::linkify($matches[1]);
     }
 
     /**
@@ -1768,7 +1768,7 @@ class Util
 
         if (! empty($_SERVER['HTTP_CLIENT_IP'])) {
             $ip = $_SERVER['HTTP_CLIENT_IP'];
-        } else if (! empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+        } elseif (! empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
             $ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
         } else {
             $ip = $_SERVER['REMOTE_ADDR'];
@@ -1867,22 +1867,22 @@ class Util
         if (($perms & 0xC000) == 0xC000) {
             // Socket
             $info = 's';
-        } else if (($perms & 0xA000) == 0xA000) {
+        } elseif (($perms & 0xA000) == 0xA000) {
             // Symbolic Link
             $info = 'l';
-        } else if (($perms & 0x8000) == 0x8000) {
+        } elseif (($perms & 0x8000) == 0x8000) {
             // Regular
             $info = '-';
-        } else if (($perms & 0x6000) == 0x6000) {
+        } elseif (($perms & 0x6000) == 0x6000) {
             // Block special
             $info = 'b';
-        } else if (($perms & 0x4000) == 0x4000) {
+        } elseif (($perms & 0x4000) == 0x4000) {
             // Directory
             $info = 'd';
-        } else if (($perms & 0x2000) == 0x2000) {
+        } elseif (($perms & 0x2000) == 0x2000) {
             // Character special
             $info = 'c';
-        } else if (($perms & 0x1000) == 0x1000) {
+        } elseif (($perms & 0x1000) == 0x1000) {
             // FIFO pipe
             $info = 'p';
         } else {
@@ -2012,7 +2012,7 @@ class Util
                     } else {
                         $new_list[] = $value->{$field};
                     }
-                } else if (! $remove_nomatches) {
+                } elseif (! $remove_nomatches) {
                     $new_list[$key] = $value;
                 }
             } else {
@@ -2022,7 +2022,7 @@ class Util
                     } else {
                         $new_list[] = $value[$field];
                     }
-                } else if (! $remove_nomatches) {
+                } elseif (! $remove_nomatches) {
                     $new_list[$key] = $value;
                 }
             }
@@ -2054,9 +2054,9 @@ class Util
             if ($field) {
                 if (is_object($elem) && $elem->{$field} === $search) {
                     return $key;
-                } else if (is_array($elem) && $elem[$field] === $search) {
+                } elseif (is_array($elem) && $elem[$field] === $search) {
                     return $key;
-                } else if (is_scalar($elem) && $elem === $search) {
+                } elseif (is_scalar($elem) && $elem === $search) {
                     return $key;
                 }
             } else {
@@ -2066,9 +2066,9 @@ class Util
                     if (in_array($search, $elem)) {
                         return $key;
                     }
-                } else if (is_array($elem) && in_array($search, $elem)) {
+                } elseif (is_array($elem) && in_array($search, $elem)) {
                     return $key;
-                } else if (is_scalar($elem) && $elem === $search) {
+                } elseif (is_scalar($elem) && $elem === $search) {
                     return $key;
                 }
             }
@@ -2096,7 +2096,7 @@ class Util
             if (is_array($value)) {
                 $args = array($value, $callback, $on_nonscalar);
                 $array[$key] = call_user_func_array(array(__CLASS__, __FUNCTION__), $args);
-            } else if (is_scalar($value) || $on_nonscalar) {
+            } elseif (is_scalar($value) || $on_nonscalar) {
                 $array[$key] = call_user_func($callback, $value);
             }
         }
