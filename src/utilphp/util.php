@@ -1629,7 +1629,7 @@ class Util
      * @param  array  $matches Matches from the preg_ function
      * @return string
      */
-    protected static function linkify($text)
+    protected static function linkifyRegex($text)
     {
         $url_pattern = '/# Rev:20100913_0900 github.com\/jmrware\/LinkifyURL
             # Match http & ftp URL that is not already linkified.
@@ -1689,7 +1689,7 @@ class Util
             return $matches[2];
         }
 
-        return self::linkify($matches[1]);
+        return self::linkifyRegex($matches[1]);
     }
 
     /**
