@@ -1380,6 +1380,7 @@ class util
      */
     public static function utf8_headers( $content_type = 'text/html' )
     {
+        // @codeCoverageIgnoreStart
         if ( ! headers_sent() ) {
             header( 'Content-type: ' . $content_type . '; charset=utf-8' );
 
@@ -1387,6 +1388,7 @@ class util
         }
 
         return FALSE;
+        // @codeCoverageIgnoreEnd
     }
 
     /**
@@ -1403,6 +1405,7 @@ class util
      */
     public static function force_download( $filename, $content = FALSE )
     {
+        // @codeCoverageIgnoreStart
         if ( ! headers_sent() ) {
             // Required for some browsers
             if ( ini_get( 'zlib.output_compression' ) ) {
@@ -1435,6 +1438,7 @@ class util
         }
 
         return FALSE;
+        // @codeCoverageIgnoreEnd
     }
 
     /**
@@ -1448,6 +1452,7 @@ class util
      */
     public static function nocache_headers()
     {
+        // @codeCoverageIgnoreStart
         if ( ! headers_sent() ) {
             header( 'Expires: Wed, 11 Jan 1984 05:00:00 GMT' );
             header( 'Last-Modified: ' . gmdate( 'D, d M Y H:i:s' ) . ' GMT' );
@@ -1458,6 +1463,7 @@ class util
         }
 
         return FALSE;
+        // @codeCoverageIgnoreEnd
     }
 
     /**

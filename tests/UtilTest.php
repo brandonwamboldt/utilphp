@@ -672,12 +672,27 @@ class UtilityPHPTest extends PHPUnit_Framework_TestCase
         $input = 'var';
         $expect = '<span style="color:#588bff;">string</span><span style="color:#999;">(</span>3<span style="color:#999;">)</span> <strong>"var"</strong>';
         $this->assertEquals($expect, Util::var_dump_plain($input, true));
+
         $input = true;
         $expect = '<span style="color:#588bff;">bool</span><span style="color:#999;">(</span><strong>true</strong><span style="color:#999;">)</span>';
         $this->assertEquals($expect, Util::var_dump_plain($input, true));
+
         $input = 1;
         $expect = '<span style="color:#588bff;">int</span><span style="color:#999;">(</span><strong>1</strong><span style="color:#999;">)</span>';
         $this->assertEquals($expect, Util::var_dump_plain($input, true));
+
+        $input = 1.5;
+        $expect = '<span style="color:#588bff;">float</span><span style="color:#999;">(</span><strong>1.5</strong><span style="color:#999;">)</span>';
+        $this->assertEquals($expect, Util::var_dump_plain($input, true));
+
+        $input = null;
+        $expect = '<strong>NULL</strong>';
+        $this->assertEquals($expect, Util::var_dump_plain($input, true));
+
+        $input = fopen('/tmp', 'r');
+        $expect = '<span style="color:#588bff;">resource</span>("stream") <strong>"' . $input . '"</strong>';
+        $this->assertEquals($expect, Util::var_dump_plain($input, -1));
+        fclose($input);
     }
 
     public function test_var_dump()
