@@ -816,5 +816,26 @@ class UtilityPHPTest extends PHPUnit_Framework_TestCase
             $this->assertFalse(is_file($file1));
             $this->assertFalse(is_file($file2));
         }
+
+        // Test symlink traversal.
+        $dir = $dirname . '/test6';
+        $nestedDir = "$dir/nested";
+        $symlink = "$dir/nested-symlink";
+
+        mkdir($dir);
+        mkdir($nestedDir);
+
+        $symlinkStatus = symlink($nestedDir, $symlink);
+        $this->assertTrue($symlinkStatus, 'The test system does not support making symlinks.');
+
+        if (!$symlink) {
+            return;
+        }
+
+        $this->assertTrue(util::rmdir($symlink, true), 'Could not delete a symlinked directory.');
+        $this->assertFalse(file_exists($symlink), 'Could not delete a symlinked directory.');
+        util::rmdir($dir, true);
+        $this->assertFalse(is_dir($dir), 'Could not delete a directory with a symlinked directory inside of it.');
+
     }
 }
