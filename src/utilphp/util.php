@@ -266,7 +266,7 @@ class Util
      *                         present in the array
      * @return mixed
      */
-    public static function array_get(& $var, $default = null)
+    public static function array_get(&$var, $default = null)
     {
         if (isset($var)) {
             return $var;
