@@ -909,13 +909,14 @@ class util
      * @param  string $dir              The directory to be deleted recursively
      * @param  bool   $traverseSymlinks Delete contents of symlinks recursively
      * @return bool
+     * @throws \RuntimeException
      */
     public static function rmdir($dir, $traverseSymlinks = false)
     {
         if (!file_exists($dir)) {
             return true;
         } elseif (!is_dir($dir)) {
-            throw new \Exception('Given path is not a directory');
+            throw new \RuntimeException('Given path is not a directory');
         }
 
         if (!is_link($dir) || $traverseSymlinks) {
@@ -929,20 +930,29 @@ class util
                 if (is_dir($currentPath)) {
                     self::rmdir($currentPath, $traverseSymlinks);
                 } elseif (!unlink($currentPath)) {
-                    throw new \Exception('Unable to delete ' . $currentPath);
+                    // @codeCoverageIgnoreStart
+                    throw new \RuntimeException('Unable to delete ' . $currentPath);
+                    // @codeCoverageIgnoreEnd
                 }
             }
         }
 
-        if (is_link($dir)) {
+        // Windows treats removing directory symlinks identically to removing directories.
+        if (is_link($dir) && !defined('PHP_WINDOWS_VERSION_MAJOR')) {
             if (!unlink($dir)) {
-                throw new \Exception('Unable to delete ' . $dir);
+                // @codeCoverageIgnoreStart
+                throw new \RuntimeException('Unable to delete ' . $dir);
+                // @codeCoverageIgnoreEnd
             }
         } else {
             if (!rmdir($dir)) {
-                throw new \Exception('Unable to delete ' . $dir);
+                // @codeCoverageIgnoreStart
+                throw new \RuntimeException('Unable to delete ' . $dir);
+                // @codeCoverageIgnoreEnd
             }
         }
+
+        return true;
     }
 
     /**
