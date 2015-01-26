@@ -12,9 +12,11 @@ matrix:
     - php: hhvm
 
 before_script:
+  - pyrus install pear/PHP_CodeSniffer
   - wget -nc http://getcomposer.org/composer.phar
   - php composer.phar install --dev --no-interaction
   - mkdir -p build/logs
+  - phpenv rehash
 
 after_script:
   - php vendor/bin/coveralls
