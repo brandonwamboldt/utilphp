@@ -352,7 +352,7 @@ class Util
         } else if (is_string($var)) {
             $html .= '<span style="color:#588bff;">string</span><span style="color:#999;">(</span>' . strlen($var) . '<span style="color:#999;">)</span> <strong>"' . self::htmlentities($var) . '"</strong>';
         } else if (is_null($var)) {
-            $html .= '<strong>null</strong>';
+            $html .= '<strong>NULL</strong>';
         } else if (is_resource($var)) {
             $html .= '<span style="color:#588bff;">resource</span>("' . get_resource_type($var) . '") <strong>"' . $var . '"</strong>';
         } else if (is_array($var)) {
