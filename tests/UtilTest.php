@@ -80,9 +80,9 @@ class UtilityPHPTest extends PHPUnit_Framework_TestCase
             $this->assertFalse( util::seems_utf8( $ucsChar) );
 
             // Test the worker method.
-            $method = self::getMethod('seems_utf8_worker');
-            $this->assertFalse($method->invoke(null, $invalidUTF8), 'util::seems_utf8_worker did not properly detect invalid UTF-8.');
-            $this->assertTrue($method->invoke(null, $validUTF8), 'util::seems_utf8_worker did not properly detect valid UTF-8.');
+            $method = self::getMethod('seemsUtf8Regex');
+            $this->assertFalse($method->invoke(null, $invalidUTF8), 'util::seemsUtf8Regex did not properly detect invalid UTF-8.');
+            $this->assertTrue($method->invoke(null, $validUTF8), 'util::seemsUtf8Regex did not properly detect valid UTF-8.');
         }
     }
 

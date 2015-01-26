@@ -521,7 +521,7 @@ class Util
         }
 
         // @codeCoverageIgnoreStart
-        return self::seems_utf8_worker($string);
+        return self::seemsUtf8Regex($string);
         // @codeCoverageIgnoreEnd
     }
 
@@ -531,7 +531,7 @@ class Util
      * @param $string
      * @return bool
      */
-    protected static function seems_utf8_worker($string)
+    protected static function seemsUtf8Regex($string)
     {
         // Obtained from http://stackoverflow.com/a/11709412/430062 with permission.
         $regex = '/(
@@ -968,14 +968,14 @@ class Util
             if (defined('HHVM_VERSION')) {
                 $translation_table = get_html_translation_table(HTML_ENTITIES, ENT_QUOTES);
             } else {
-                $translation_table = get_html_translation_table(HTML_ENTITIES, ENT_QUOTES, self::mb_internal_encoding());
+                $translation_table = get_html_translation_table(HTML_ENTITIES, ENT_QUOTES, self::mbInternalEncoding());
             }
 
             $translation_table[chr(38)] = '&';
             return preg_replace('/&(?![A-Za-z]{0,4}\w{2,3};|#[0-9]{2,3};)/', '&amp;', strtr($string, $translation_table));
         }
 
-        return htmlentities($string, ENT_QUOTES, self::mb_internal_encoding());
+        return htmlentities($string, ENT_QUOTES, self::mbInternalEncoding());
     }
 
     /**
@@ -991,7 +991,7 @@ class Util
             if (defined('HHVM_VERSION')) {
                 $translation_table = get_html_translation_table(HTML_SPECIALCHARS, ENT_QUOTES);
             } else {
-                $translation_table = get_html_translation_table(HTML_SPECIALCHARS, ENT_QUOTES, self::mb_internal_encoding());
+                $translation_table = get_html_translation_table(HTML_SPECIALCHARS, ENT_QUOTES, self::mbInternalEncoding());
             }
 
             $translation_table[chr(38)] = '&';
@@ -999,7 +999,7 @@ class Util
             return preg_replace('/&(?![A-Za-z]{0,4}\w{2,3};|#[0-9]{2,3};)/', '&amp;', strtr($string, $translation_table));
         }
 
-        return htmlentities($string, ENT_QUOTES, self::mb_internal_encoding());
+        return htmlentities($string, ENT_QUOTES, self::mbInternalEncoding());
     }
 
     /**
@@ -1197,12 +1197,12 @@ class Util
             $groups2 = array();
 
             foreach ($groups as $group) {
-                $groups2[] = self::number_to_word_three_digits($group[0], $group[1], $group[2]);
+                $groups2[] = self::numberToWordThreeDigits($group[0], $group[1], $group[2]);
             }
 
             for ($z = 0; $z < count($groups2); $z++) {
                 if ($groups2[$z] != '') {
-                    $output .= $groups2[$z] . self::number_to_word_convert_group($length - $z);
+                    $output .= $groups2[$z] . self::numberToWordConvertGroup($length - $z);
                     $output .= ($z < $length && ! array_search('', array_slice($groups2, $z + 1, -1)) && $groups2[$length] != '' && $groups[$length][0] == '0' ? ' and ' : ', ');
                 }
             }
@@ -1214,14 +1214,14 @@ class Util
             $output .= ' point';
 
             for ($i = 0; $i < strlen($decimal); $i++) {
-                $output .= ' ' . self::number_to_word_convert_digit($decimal[$i]);
+                $output .= ' ' . self::numberToWordConvertDigit($decimal[$i]);
             }
         }
 
         return $output;
     }
 
-    protected static function number_to_word_convert_group($index)
+    protected static function numberToWordConvertGroup($index)
     {
         switch($index) {
             case 11:
@@ -1253,7 +1253,7 @@ class Util
         return '';
     }
 
-    protected static function number_to_word_three_digits($digit1, $digit2, $digit3)
+    protected static function numberToWordThreeDigits($digit1, $digit2, $digit3)
     {
         $output = '';
 
@@ -1262,7 +1262,7 @@ class Util
         }
 
         if ($digit1 != '0') {
-            $output .= self::number_to_word_convert_digit($digit1) . ' hundred';
+            $output .= self::numberToWordConvertDigit($digit1) . ' hundred';
 
             if ($digit2 != '0' || $digit3 != '0') {
                 $output .= ' and ';
@@ -1271,7 +1271,7 @@ class Util
         if ($digit2 != '0') {
             $output .= self::number_to_word_two_digits($digit2, $digit3);
         } elseif ($digit3 != '0') {
-            $output .= self::number_to_word_convert_digit($digit3);
+            $output .= self::numberToWordConvertDigit($digit3);
         }
 
         return $output;
@@ -1322,7 +1322,7 @@ class Util
                     return 'nineteen';
             }
         } else {
-            $second_digit = self::number_to_word_convert_digit($digit2);
+            $second_digit = self::numberToWordConvertDigit($digit2);
 
             switch ($digit1) {
                 case '2':
@@ -1347,7 +1347,7 @@ class Util
         return '';
     }
 
-    protected static function number_to_word_convert_digit($digit)
+    protected static function numberToWordConvertDigit($digit)
     {
         switch ($digit) {
             case '0':
@@ -1620,7 +1620,7 @@ class Util
              )                              # End $2:
             %ix';
 
-        return preg_replace_callback($section_html_pattern, array(__CLASS__, 'linkify_callback'), $text);
+        return preg_replace_callback($section_html_pattern, array(__CLASS__, 'linkifyCallback'), $text);
     }
 
     /**
@@ -1683,7 +1683,7 @@ class Util
      * @param  array  $matches Matches from the preg_ function
      * @return string
      */
-    protected static function linkify_callback($matches)
+    protected static function linkifyCallback($matches)
     {
         if (isset($matches[2])) {
             return $matches[2];
@@ -2116,7 +2116,7 @@ class Util
      * @param  string $encoding
      * @return string
      */
-    protected static function mb_internal_encoding($encoding = null)
+    protected static function mbInternalEncoding($encoding = null)
     {
         if (function_exists('mb_internal_encoding')) {
             return $encoding ? mb_internal_encoding($encoding) : mb_internal_encoding();
