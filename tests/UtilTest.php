@@ -471,15 +471,16 @@ class UtilityPHPTest extends PHPUnit_Framework_TestCase
 
         // Make sure the generated string is 30 characters long
         $str = util::random_string( 30, false, true );
-        $this->assertTrue( strlen( $str ) === 30 );
+        $this->assertTrue( strlen( $str ) === 30, 'random_string produced an invalid length string' );
 
         // Make sure the generated string is 120 characters long
         $str = util::random_string( 120 );
-        $this->assertTrue( strlen( $str ) === 120 );
+        $this->assertTrue(strlen( $str ) === 120, 'random_string produced an invalid length string');
 
         // Make sure the string doesn't contain duplicate letters
         $str = util::random_string( 53, true, false, true );
-        $this->assertFalse( (bool) preg_match('/(.)\\1{2}/', $str ) );
+        $this->assertTrue(strlen($str) === 53, 'random_string produced an invalid length string');
+        $this->assertTrue(count(array_unique(str_split($str))) === strlen($str), 'random_string produced a string with duplicate characters');
 
         // Longer length than characters available
         try {

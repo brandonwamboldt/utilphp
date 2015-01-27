@@ -1522,7 +1522,7 @@ class Util
         // Generate our string
         for ($i = 0; $i < $length; $i++) {
             if ($no_duplicate_chars) {
-                $string = $pool[$rand];
+                $string .= $pool[$rand];
 
                 // Remove the character from the array to avoid duplicates
                 array_splice($pool, $rand, 1);
