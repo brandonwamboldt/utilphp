@@ -2121,4 +2121,134 @@ class util
 
         return 'UTF-8';
     }
+
+    /**
+     * Setter for writable bit of a file.
+     *
+     * @param string $file File
+     * @param boolean $mode
+     * @return boolean
+     */
+    public static function set_writable($file, $mode)
+    {
+        $stat = stat($file);
+        if ($stat === false) return false;
+        if ($stat['uid'] == 0) // windows
+            return true;
+        list($myuid, $mygid) = array(
+            getmyuid() ,
+            getmygid()
+        );
+        if ((bool)$mode) {
+            if ($stat['uid'] == $myuid) return chmod($file, (fileperms($file) & 0777) | 0200);
+            if ($stat['gid'] == $mygid) return chmod($file, (fileperms($file) & 0777) | 0220);
+            return chmod($file, (fileperms($file) & 0777) | 0222);
+        }
+        else {
+            if ($stat['uid'] == $myuid) return chmod($file, (fileperms($file) & 0777) ^ 0200);
+            if ($stat['gid'] == $mygid) return chmod($file, (fileperms($file) & 0777) ^ 0220);
+            return chmod($file, (fileperms($file) & 0777) ^ 0222);
+        }
+    }
+
+    /**
+     * Setter for readable bit of a file.
+     *
+     * @param string $file File
+     * @param boolean $mode
+     * @return boolean
+     */
+    public static function set_readable($file, $mode)
+    {
+        $stat = stat($file);
+        if ($stat === false) return false;
+        if ($stat['uid'] == 0) // windows
+            return true;
+        list($myuid, $mygid) = array(
+            getmyuid() ,
+            getmygid()
+        );
+        if ((bool)$mode) {
+            if ($stat['uid'] == $myuid) return chmod($file, (fileperms($file) & 0777) | 0400);
+            if ($stat['gid'] == $mygid) return chmod($file, (fileperms($file) & 0777) | 0440);
+            return chmod($file, (fileperms($file) & 0777) | 0444);
+        }
+        else {
+            if ($stat['uid'] == $myuid) return chmod($file, (fileperms($file) & 0777) ^ 0400);
+            if ($stat['gid'] == $mygid) return chmod($file, (fileperms($file) & 0777) ^ 0440);
+            return chmod($file, (fileperms($file) & 0777) ^ 0444);
+        }
+    }
+
+    /**
+     * Setter for execuable bit of a file.
+     *
+     * @param string $file File
+     * @param boolean $mode
+     * @return boolean
+     */
+    public static function set_executable($file, $mode)
+    {
+        $stat = stat($file);
+        if ($stat === false) return false;
+        if ($stat['uid'] == 0) // windows
+            return true;
+        list($myuid, $mygid) = array(
+            getmyuid() ,
+            getmygid()
+        );
+        if ((bool)$mode) {
+            if ($stat['uid'] == $myuid) return chmod($file, (fileperms($file) & 0777) | 0100);
+            if ($stat['gid'] == $mygid) return chmod($file, (fileperms($file) & 0777) | 0110);
+            if (true) return chmod($file, (fileperms($file) & 0777) | 0111);
+        }
+        else {
+            if ($stat['uid'] == $myuid) return chmod($file, (fileperms($file) & 0777) ^ 0100);
+            if ($stat['gid'] == $mygid) return chmod($file, (fileperms($file) & 0777) ^ 0110);
+            if (true) return chmod($file, (fileperms($file) & 0777) ^ 0111);
+        }
+    }
+
+    /**
+     * Returns size of a given directory in bytes.
+     *
+     * @param string $dir
+     * @return integer
+     */
+    public static function directory_size($dir)
+    {
+        $size = 0;
+        foreach(new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($dir, \FilesystemIterator::CURRENT_AS_FILEINFO | \FilesystemIterator::SKIP_DOTS)) as $file => $key) {
+            if ($key->isFile()) {
+                $size += $key->getSize();
+            }
+        }
+        return $size;
+    }
+
+    /**
+     * Returns a home directory of current user.
+     *
+     * @return string
+     */
+    public static function get_user_directory()
+    {
+        if (isset($_SERVER['HOMEDRIVE'])) return $_SERVER['HOMEDRIVE'] . $_SERVER['HOMEPATH'];
+        else return $_SERVER['HOME'];
+    }
+
+    /**
+     * Returns all paths inside a directory.
+     *
+     * @param string $dir
+     * @return array
+     */
+    public static function directory_contents($dir)
+    {
+        $contents = array();
+        foreach(new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($dir, \FilesystemIterator::KEY_AS_PATHNAME | \FilesystemIterator::CURRENT_AS_FILEINFO | \FilesystemIterator::SKIP_DOTS)) as $pathname => $fi) {
+            $contents[] = $pathname;
+        }
+        return $contents;
+    }
 }
