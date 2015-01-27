@@ -1515,10 +1515,26 @@ class util
         if ( $no_duplicate_chars && strlen( $pool ) < $length ) {
             throw new \LengthException( '$length exceeds the size of the pool and $no_duplicate_chars is enabled' );
         }
+        
+        // Convert the pool of characters into an array of characters and
+        // shuffle the array
+        $pool       = str_split($pool);
+        $poolLength = count($pool);
+        $rand       = mt_rand(0, $poolLength - 1);
 
         // Generate our string
         for ($i = 0; $i < $length; $i++) {
-            $string .= $pool[mt_rand(0, strlen($pool) - 1)];
+            $string .= $pool[$rand];
+
+            // Remove the character from the array to avoid duplicates
+            array_splice($pool, $rand, 1);
+
+            // Generate a new number
+            if (($poolLength - 2 - $i) > 0) {
+                $rand = mt_rand(0, $poolLength - 2 - $i);
+            } else {
+                $rand = 0;
+            }
         }
 
         return $string;
