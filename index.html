@@ -112,7 +112,7 @@
         </p>
 
         <p>
-            Included are 35+ functions that provide you with the ability to do common tasks much easier and more efficiently,
+            Included are 55+ functions that provide you with the ability to do common tasks much easier and more efficiently,
             without having to find that one comment on php.net where you know its been done already. Access superglobals
             without checking to see if certain indexes are set first and pass default values, use a nicely formatted var dump,
             validate emails, generate random strings, flatten an array, pull a single column out of a multidimensional array
@@ -133,17 +133,36 @@
 
         <h2>Downloads <i style="padding-left: 12px; font-size:12px;">(Right-click, and use "Save As")</i></h2>
 
-        <table>
-            <tbody>
-                <tr>
-                    <td><a href="https://github.com/brandonwamboldt/utilphp/archive/1.0.7.zip">Stable Version (1.0.7)</a></td>
-                </tr>
+        <p>
+            <a href="https://github.com/brandonwamboldt/utilphp/archive/1.0.7.zip">Stable Version (1.0.7)</a><br>
+            <a href="https://github.com/brandonwamboldt/utilphp/zipball/master">Unstable Version (master)</a>
+        </p>
 
-                <tr>
-                    <td><a href="https://github.com/brandonwamboldt/utilphp/zipball/master">Unstable Version (master)</a></td>
-                </tr>
-            </tbody>
-        </table><br />
+        <h2>Installation</h2>
+
+        <span class="header">Server Requirements</span><br>
+
+        <ul>
+            <li>PHP 5.3.3+</li>
+        </ul>
+
+        <span class="header">Standalone File</span><br>
+
+        <p class="desc-text">
+            Simply drop <code>util.php</code> in any project and call <code>include 'util.php';</code> in your project.
+            You can then access the <code>Util</code> class.
+        </p>
+
+        <span class="header">Composer</span><br>
+
+        <p class="desc-text">
+            Add the following dependency to your composer.json:
+
+            <pre>"brandonwamboldt/utilphp": "1.0.*"</pre>
+
+            When used with composer, the class is namespaced (<code>\utilphp\util</code>) instead of
+            just <code>util</code>.
+        </p>
 
         <div id="documentation">
             <h2 id="debug_functions">Debugging Functions</h2>
@@ -974,7 +993,7 @@ util::validate_email( 'not an email' );
 
             <h2 id="changelog">Change Log</h2>
 
-            <p class="changelog">
+            <p class="desc-text">
                 <span class="header">1.0.7</span><br>
                 - Added <code>fix_broken_serialization</code> to fix broken serialized strings (Thanks to @hopeseekr via <a href="https://github.com/brandonwamboldt/utilphp/pull/48">Pull Request #48</a>)<br>
                 - Fixed <code>get_current_url</code> appending port 80 or 443 when not needed (Thanks to @scottchiefbaker via <a href="https://github.com/brandonwamboldt/utilphp/pull/49">Pull Request #49</a>)<br>
@@ -984,7 +1003,7 @@ util::validate_email( 'not an email' );
                 - <code>remove_accents</code> was completely rewritten and is now ~4x faster<br>
             </p>
 
-            <p class="changelog">
+            <p class="desc-text">
                 <span class="header">1.0.6</span><br>
                 - Added <code>start_with</code> function<br>
                 - Added <code>ends_with</code> function<br>
@@ -995,7 +1014,7 @@ util::validate_email( 'not an email' );
                 - Fixing a bug with the include path of util.php<br>
             </p>
 
-            <p class="changelog">
+            <p class="desc-text">
                 <span class="header">1.0.5</span><br>
                 - <a href="https://github.com/brandonwamboldt/utilphp/issues/29">Issue #29</a> Fixed error in <code>var_dump</code> if mbstring extension wasn't present<br>
                 -  Adding Composer support<br>
@@ -1004,7 +1023,7 @@ util::validate_email( 'not an email' );
                 -  Bumping minimum version to PHP 5.3.3<br>
             </p>
 
-            <p class="changelog">
+            <p class="desc-text">
                 <span class="header">1.0.4</span><br />
                 - <a href="https://github.com/brandonwamboldt/utilphp/issues/22">Issue #22</a> Removed all superglobal *_get functions, you can use the modified <code>array_get</code> now<br />
                 - <a href="https://github.com/brandonwamboldt/utilphp/issues/22">Issue #22</a> Modifed the behaviour of <code>array_get</code>, see documentation<br />
@@ -1015,7 +1034,7 @@ util::validate_email( 'not an email' );
                 - Updated PHPUnit tests to use PHPUnit 3.6
             </p>
 
-            <p class="changelog">
+            <p class="desc-text">
                 <span class="header">1.0.3</span><br />
                 - <a href="https://github.com/brandonwamboldt/utilphp/issues/16">Issue #16</a> Improved performance of <code>slugify</code><br />
                 - <a href="https://github.com/brandonwamboldt/utilphp/issues/14">Issue #14</a> Modified the regex for <code>seems_utf8</code> to be more accurate<br />
@@ -1024,14 +1043,14 @@ util::validate_email( 'not an email' );
                 - <code>str_to_bool</code> matches no followed by any number of 'o's
             </p>
 
-            <p class="changelog">
+            <p class="desc-text">
                 <span class="header">1.0.2</span><br />
                 - <a href="https://github.com/brandonwamboldt/utilphp/issues/12">Issue #12</a> <code>get_current_url</code> now includes the port and user/password if required<br />
                 - <a href="https://github.com/brandonwamboldt/utilphp/issues/11">Issue #11</a> <code>human_time_diff</code> now uses the DateTime functions<br />
                 - <a href="https://github.com/brandonwamboldt/utilphp/issues/10">Issue #10</a> <code>is_https</code> no longer checks the port as well
             </p>
 
-            <p class="changelog">
+            <p class="desc-text">
                 <span class="header">1.0.1</span><br />
                 - <a href="https://github.com/brandonwamboldt/utilphp/issues/7">Issue #7</a> Added the <code style="color:#DA72F3">$trust_proxy_headers</code> parameter to <code>get_client_ip</code><br />
                 - <a href="https://github.com/brandonwamboldt/utilphp/issues/6">Issue #6</a> Removed <code>is_isset</code> as the function did not work as intended<br />
@@ -1039,8 +1058,8 @@ util::validate_email( 'not an email' );
                 - Fixed a bug with <code>get_gravatar</code>
             </p>
 
-            <p class="changelog">
-                <span class="header">1.0.000</span><br />
+            <p class="desc-text">
+                <span class="header">1.0.0</span><br />
                 Initial release of util.php.
             </p>
         </div>
