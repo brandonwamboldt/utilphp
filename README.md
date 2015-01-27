@@ -5,7 +5,7 @@ collection of useful functions and snippets that you need or could use every
 day. It's implemented as a class with static methods, to avoid conflicts with
 your existing code-base. Just drop it in and start using it immediately.
 
-Included are 40-odd functions that provide you with the ability to do common
+Included are 55+ functions that provide you with the ability to do common
 tasks much easier and more efficiently, without having to find that one comment
 on php.net where you know it's been done already. Access superglobals without
 checking to see if certain indexes are set first and pass default values, use a
@@ -26,16 +26,18 @@ current stable branch. Development code is contained in the develop branch.
 You can find a list of all changes for each release in the
 [official documentation](http://brandonwamboldt.github.com/utilphp/#changelog)
 
-## Server Requirements
+## Installation
+
+### Server Requirements
 
 * PHP version 5.3.3 or higher.
 
-## Installation
+### Standalone File
 
-Simple drop `util.php` in any project and call `include 'util.php';` in your
+Simply drop `util.php` in any project and call `include 'util.php';` in your
 project. You can then access the `Util` class.
 
-## Composer
+### Composer
 
 Add the following dependency to your composer.json:
 

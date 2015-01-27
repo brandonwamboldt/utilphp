@@ -80,7 +80,7 @@ span.header {
     line-height: 30px;
 }
 
-.changelog code {
+.desc-text code {
     margin-left: 0;
     font-size: 18px;
     color: #0E04C8;
