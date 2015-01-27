@@ -1507,6 +1507,10 @@ class util
             }
         }
 
+        if (!$no_duplicate_chars) {
+            return substr(str_shuffle(str_repeat($pool, $length)), 0, $length);
+        }
+
         // Don't allow duplicate letters to be disabled if the length is
         // longer than the available characters
         if ($no_duplicate_chars && strlen($pool) < $length) {
@@ -1521,23 +1525,16 @@ class util
 
         // Generate our string
         for ($i = 0; $i < $length; $i++) {
-            if ($no_duplicate_chars) {
-                $string .= $pool[$rand];
+            $string .= $pool[$rand];
 
-                // Remove the character from the array to avoid duplicates
-                array_splice($pool, $rand, 1);
+            // Remove the character from the array to avoid duplicates
+            array_splice($pool, $rand, 1);
 
-                // Generate a new number
-                if (($poolLength - 2 - $i) > 0) {
-                    $rand = mt_rand(0, $poolLength - 2 - $i);
-                } else {
-                    $rand = 0;
-                }
+            // Generate a new number
+            if (($poolLength - 2 - $i) > 0) {
+                $rand = mt_rand(0, $poolLength - 2 - $i);
             } else {
-                $string .= $pool[$rand];
-
-                // Generate a new number
-                $rand = mt_rand(0, $poolLength - 1);
+                $rand = 0;
             }
         }
 
