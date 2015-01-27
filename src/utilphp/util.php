@@ -14,7 +14,7 @@ namespace utilphp;
  * @author Brandon Wamboldt <brandon.wamboldt@gmail.com>
  * @link   http://github.com/brandonwamboldt/utilphp/ Official Documentation
  */
-class Util
+class util
 {
     /**
      * A constant representing the number of seconds in a minute, for
