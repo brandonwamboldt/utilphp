@@ -488,9 +488,9 @@ class util
      *                            CSS classes/IDs (Default to false)
      * @return  string
      */
-    public static function slugify($string, $css_mode = false)
+    public static function slugify($string, $separator = '-', $css_mode = false)
     {
-        $slug = preg_replace('/([^a-z0-9]+)/', '-', strtolower(self::remove_accents($string)));
+        $slug = preg_replace('/([^a-z0-9]+)/', $separator, strtolower(self::remove_accents($string)));
 
         if ($css_mode) {
             $digits = array('zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine');
