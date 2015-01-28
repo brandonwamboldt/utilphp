@@ -483,13 +483,26 @@ class util
      * as the second parameter, it will create strings safe for use as CSS
      * classes or IDs.
      *
-     * @param   string  $string   A string to convert to a slug
-     * @param   boolean $css_mode Whether or not to generate strings safe for
-     *                            CSS classes/IDs (Default to false)
+     * @param   string  $string    A string to convert to a slug
+     * @param   string  $separator The string to separate words with
+     * @param   boolean $css_mode  Whether or not to generate strings safe for
+     *                             CSS classes/IDs (Default to false)
      * @return  string
      */
     public static function slugify($string, $separator = '-', $css_mode = false)
     {
+        // Compatibility with 1.0.* parameter ordering for semvar
+        if ($separator === true || $separator === false) {
+            $css_mode = $separator;
+            $separator = '-';
+
+            // Raise deprecation error
+            trigger_error(
+                'util::slugify() now takes $css_mode as the third parameter, please update your code',
+                E_USER_DEPRECATED
+            );
+        }
+
         $slug = preg_replace('/([^a-z0-9]+)/', $separator, strtolower(self::remove_accents($string)));
 
         if ($css_mode) {

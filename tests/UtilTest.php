@@ -47,23 +47,28 @@ class UtilityPHPTest extends PHPUnit_Framework_TestCase
         $this->assertEquals( 'a-simple-title', util::slugify( 'A simple title' ) );
         $this->assertEquals( 'this-post-it-has-a-dash', util::slugify( 'This post -- it has a dash' ) );
         $this->assertEquals( '123-1251251', util::slugify( '123----1251251' ) );
-        $this->assertEquals( 'one23-1251251', util::slugify( '123----1251251', '-', $css_mode = TRUE ) );
+        $this->assertEquals( 'one23-1251251', util::slugify( '123----1251251', '-', true ) );
 
         $this->assertEquals( 'a-simple-title', util::slugify( 'A simple title', '-' ) );
         $this->assertEquals( 'this-post-it-has-a-dash', util::slugify( 'This post -- it has a dash', '-' ) );
         $this->assertEquals( '123-1251251', util::slugify( '123----1251251', '-' ) );
-        $this->assertEquals( 'one23-1251251', util::slugify( '123----1251251', '-', TRUE ) );
+        $this->assertEquals( 'one23-1251251', util::slugify( '123----1251251', '-', true ) );
 
         $this->assertEquals( 'a_simple_title', util::slugify( 'A simple title', '_' ) );
         $this->assertEquals( 'this_post_it_has_a_dash', util::slugify( 'This post -- it has a dash', '_' ) );
         $this->assertEquals( '123_1251251', util::slugify( '123----1251251', '_' ) );
-        $this->assertEquals( 'one23_1251251', util::slugify( '123----1251251', '_', TRUE ) );
+        $this->assertEquals( 'one23_1251251', util::slugify( '123----1251251', '_', true ) );
 
         // Blank seperator test
         $this->assertEquals( 'asimpletitle', util::slugify( 'A simple title', '' ) );
         $this->assertEquals( 'thispostithasadash', util::slugify( 'This post -- it has a dash', '' ) );
         $this->assertEquals( '1231251251', util::slugify( '123----1251251', '' ) );
-        $this->assertEquals( 'one231251251', util::slugify( '123----1251251', '', TRUE ) );
+        $this->assertEquals( 'one231251251', util::slugify( '123----1251251', '', true ) );
+
+        // Test old parameter ordering for backwards compatability
+        error_reporting(E_ALL ^ E_USER_DEPRECATED);
+        $this->assertEquals( 'one23-1251251', util::slugify( '123----1251251', true ) );
+        $this->assertEquals( '123-1251251', util::slugify( '123----1251251', false ) );
     }
 
     public function test_seems_utf8()
