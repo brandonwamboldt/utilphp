@@ -1,6 +1,16 @@
 Change Log
 ==========
 
+1.1.0
+-----
+
+* Changed parameter ordering for `slugify`, `$css_mode` is now the third argument. For backwards compatibility, the old order will still work but it will generate an `E_USER_DEPRECATED` warning. Thanks to @abhimanyusharma003 via [Pull Request #71](https://github.com/brandonwamboldt/utilphp/pull/71)
+* Added `rmdir` method to recursively delete a directory. Thanks to @ARACOOOL via [Pull Request #56](https://github.com/brandonwamboldt/utilphp/pull/56)
+* Added `limit_characters` and `limit_words` functions. Thanks to @abhimanyusharma003 via [Pull Request #55](https://github.com/brandonwamboldt/utilphp/pull/55)
+* Added a cryptographically secure random string function `secure_random_string`. Thanks to @abhimanyusharma003 via [Pull Request #53](https://github.com/brandonwamboldt/utilphp/pull/53)
+* Renamed internal methods (protected ones) for PSR-2 compliance
+* General performance improvements
+
 1.0.7
 -----
 
