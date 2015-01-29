@@ -524,6 +524,15 @@ class UtilityPHPTest extends PHPUnit_Framework_TestCase
         }
     }
 
+    public function test_match_string()
+    {
+        $this->assertTrue( util::match_string('a', 'a') );
+        $this->assertFalse( util::match_string('a', ' a') );
+        $this->assertFalse( util::match_string('/', '/something') );
+        $this->assertTrue( util::match_string('test/*', 'test/first/second') );
+        $this->assertTrue( util::match_string('*/test', 'first/second/test') );
+    }
+
     public function test_validate_email()
     {
         $this->assertTrue( util::validate_email( 'john.smith@gmail.com' ) );
