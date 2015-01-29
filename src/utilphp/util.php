@@ -2200,12 +2200,12 @@ class util
         if ((bool)$mode) {
             if ($stat['uid'] == $myuid) return chmod($file, (fileperms($file) & 0777) | 0100);
             if ($stat['gid'] == $mygid) return chmod($file, (fileperms($file) & 0777) | 0110);
-            if (true) return chmod($file, (fileperms($file) & 0777) | 0111);
+            return chmod($file, (fileperms($file) & 0777) | 0111);
         }
         else {
             if ($stat['uid'] == $myuid) return chmod($file, (fileperms($file) & 0777) ^ 0100);
             if ($stat['gid'] == $mygid) return chmod($file, (fileperms($file) & 0777) ^ 0110);
-            if (true) return chmod($file, (fileperms($file) & 0777) ^ 0111);
+            return chmod($file, (fileperms($file) & 0777) ^ 0111);
         }
     }
 

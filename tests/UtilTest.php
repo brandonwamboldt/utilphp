@@ -854,4 +854,72 @@ class UtilityPHPTest extends PHPUnit_Framework_TestCase
         $this->assertFalse(is_dir($dir), 'Could not delete a directory with a symlinked directory inside of it.');
 
     }
+
+    public function test_set_writable() {
+        if (strncasecmp(PHP_OS, 'WIN', 3) === 0)
+            $this->markTestSkipped('Writability is not a problem on Windows');
+        $dirname = dirname(__FILE__);
+        $file = $dirname . '/test1';
+        touch($file);
+        $this->assertTrue(is_writable($file));
+        util::set_writable($file, false);
+        $this->assertFalse(is_writable($file));
+        unlink($file);
+    }
+
+    public function test_set_readable() {
+        if (strncasecmp(PHP_OS, 'WIN', 3) === 0)
+            $this->markTestSkipped('Readability is not a problem on Windows');
+        $dirname = dirname(__FILE__);
+        $file = $dirname . '/test1';
+        touch($file);
+        $this->assertTrue(is_readable($file));
+        util::set_readable($file, false);
+        $this->assertFalse(is_readable($file));
+        unlink($file);
+    }
+
+    public function test_set_executable() {
+        if (strncasecmp(PHP_OS, 'WIN', 3) === 0)
+            $this->markTestSkipped('Executability is not a problem on Windows');
+        $dirname = dirname(__FILE__);
+        $file = $dirname . '/test1';
+        touch($file);
+        $this->assertTrue(is_executable($file));
+        util::set_executable($file, false);
+        $this->assertFalse(is_executable($file));
+        unlink($file);
+    }
+
+    public function test_directory_size() {
+        $dirname = dirname(__FILE__);
+        $dir = $dirname .'/dir1';
+        mkdir($dir);
+        $file1 = $dir .'/file1';
+        file_put_contents($file1, '1234567890');
+        $file2 = $dir .'/file2';
+        file_put_contents($file2, range('a', 'z'));
+        $this->assertEquals(10 + 26, util::directory_size($dir));
+        util::rmdir($dir);
+    }
+
+    public function test_get_user_directory() {
+        $this->assertTrue(is_writable(util::get_user_directory()));
+    }
+
+    public function test_directory_contents() {
+        $dirname = dirname(__FILE__);
+        $dir = $dirname . DIRECTORY_SEPARATOR .'dir1';
+        mkdir($dir);
+        $file1 = $dir . DIRECTORY_SEPARATOR .'file1';
+        touch($file1);
+        $file2 = $dir . DIRECTORY_SEPARATOR .'file2';
+        touch($file2);
+        $dir1 = $dir . DIRECTORY_SEPARATOR .'dir1';
+        mkdir($dir1);
+        $file3 = $dir1 . DIRECTORY_SEPARATOR .'file3';
+        touch($file3);
+        $this->assertEquals(array($file3, $file1, $file2), util::directory_contents($dir));
+        util::rmdir($dir);
+    }
 }
