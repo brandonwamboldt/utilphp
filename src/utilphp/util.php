@@ -1578,6 +1578,26 @@ class util
     }
 
     /**
+     * Check if a given string matches a given pattern.
+     *
+     * @param  string $pattern Parttern of string exptected
+     * @param  string $string String that need to be matched
+     * @return bool
+     */
+    public static function match_string($pattern, $string)
+    {
+        if ($pattern == $string) {
+            return TRUE;
+        }
+
+        $pattern = preg_quote($pattern, '#');
+
+        $pattern = str_replace('\*', '.*', $pattern).'\z';
+
+        return (bool) preg_match('#^'.$pattern.'#', $string);
+    }
+
+    /**
      * Validate an email address.
      *
      * @param  string $possible_email An email address to validate
