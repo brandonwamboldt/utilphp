@@ -1584,17 +1584,22 @@ class util
      * @param  string $string String that need to be matched
      * @return bool
      */
-    public static function match_string($pattern, $string)
+    public static function match_string($pattern, $string, $caseSensitive = true)
     {
         if ($pattern == $string) {
-            return TRUE;
+            return true;
         }
 
+        // Preg flags
+        $flags = $caseSensitive ? '' : 'i';
+
+        // Escape any regex special characters
         $pattern = preg_quote($pattern, '#');
 
-        $pattern = str_replace('\*', '.*', $pattern).'\z';
+        // Unescape * which is our wildcard character and change it to .*
+        $pattern = str_replace('\*', '.*', $pattern) . '\z';
 
-        return (bool) preg_match('#^'.$pattern.'#', $string);
+        return (bool) preg_match('#^' . $pattern . '$#' . $flags, $string);
     }
 
     /**
