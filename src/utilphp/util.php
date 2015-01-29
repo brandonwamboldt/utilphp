@@ -1597,7 +1597,7 @@ class util
         $pattern = preg_quote($pattern, '#');
 
         // Unescape * which is our wildcard character and change it to .*
-        $pattern = str_replace('\*', '.*', $pattern) . '\z';
+        $pattern = str_replace('\*', '.*', $pattern);
 
         return (bool) preg_match('#^' . $pattern . '$#' . $flags, $string);
     }
