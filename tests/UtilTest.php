@@ -384,7 +384,13 @@ class UtilityPHPTest extends PHPUnit_Framework_TestCase
 
     public function test_number_to_word()
     {
+        // Decimals
+        $this->assertEquals( 'five point zero five', util::number_to_word('5.05') );
+        $this->assertEquals( 'zero point eight', util::number_to_word( 0.8 ) );
+
+        // Integers
         $this->assertEquals( 'positive one', util::number_to_word( '+1' ) );
+        $this->assertEquals( 'negative twelve', util::number_to_word( -12 ) );
         $this->assertEquals( 'one', util::number_to_word( 1 ) );
         $this->assertEquals( 'five', util::number_to_word( 5 ) );
         $this->assertEquals( 'fifteen', util::number_to_word( 15 ) );
@@ -397,8 +403,6 @@ class UtilityPHPTest extends PHPUnit_Framework_TestCase
         $this->assertEquals( 'eighty-eight', util::number_to_word( 88 ) );
         $this->assertEquals( 'ninety-nine', util::number_to_word( 99 ) );
         $this->assertEquals( 'one hundred and thirty-six', util::number_to_word( 136 ) );
-        $this->assertEquals( 'negative twelve', util::number_to_word( -12 ) );
-        $this->assertEquals( 'zero point eight', util::number_to_word( 0.8 ) );
         $this->assertEquals( 'ten', util::number_to_word( 10 ) );
         $this->assertEquals( 'twenty', util::number_to_word( 20 ) );
         $this->assertEquals( 'thirty', util::number_to_word( 30 ) );

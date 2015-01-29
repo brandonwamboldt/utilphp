@@ -978,11 +978,13 @@ class util
     public static function htmlentities($string, $preserve_encoded_entities = false)
     {
         if ($preserve_encoded_entities) {
+            // @codeCoverageIgnoreStart
             if (defined('HHVM_VERSION')) {
                 $translation_table = get_html_translation_table(HTML_ENTITIES, ENT_QUOTES);
             } else {
                 $translation_table = get_html_translation_table(HTML_ENTITIES, ENT_QUOTES, self::mbInternalEncoding());
             }
+            // @codeCoverageIgnoreEnd
 
             $translation_table[chr(38)] = '&';
             return preg_replace('/&(?![A-Za-z]{0,4}\w{2,3};|#[0-9]{2,3};)/', '&amp;', strtr($string, $translation_table));
@@ -1001,11 +1003,13 @@ class util
     public static function htmlspecialchars($string, $preserve_encoded_entities = false)
     {
         if ($preserve_encoded_entities) {
+            // @codeCoverageIgnoreStart
             if (defined('HHVM_VERSION')) {
                 $translation_table = get_html_translation_table(HTML_SPECIALCHARS, ENT_QUOTES);
             } else {
                 $translation_table = get_html_translation_table(HTML_SPECIALCHARS, ENT_QUOTES, self::mbInternalEncoding());
             }
+            // @codeCoverageIgnoreEnd
 
             $translation_table[chr(38)] = '&';
 
@@ -1282,7 +1286,7 @@ class util
             }
         }
         if ($digit2 != '0') {
-            $output .= self::number_to_word_two_digits($digit2, $digit3);
+            $output .= self::numberToWordTwoDigits($digit2, $digit3);
         } elseif ($digit3 != '0') {
             $output .= self::numberToWordConvertDigit($digit3);
         }
@@ -1290,7 +1294,7 @@ class util
         return $output;
     }
 
-    protected static function number_to_word_two_digits($digit1, $digit2)
+    protected static function numberToWordTwoDigits($digit1, $digit2)
     {
         if ($digit2 == '0') {
             switch ($digit1) {
@@ -1356,8 +1360,6 @@ class util
                     return "ninety-{$second_digit}";
             }
         }
-
-        return '';
     }
 
     protected static function numberToWordConvertDigit($digit)
@@ -1574,7 +1576,9 @@ class util
             return substr(str_replace(array('/', '+', '='), '', base64_encode($bytes)), 0, $length);
         }
 
+        // @codeCoverageIgnoreStart
         return static::random_string($length);
+        // @codeCoverageIgnoreEnd
     }
 
     /**
@@ -2157,6 +2161,8 @@ class util
             return $encoding ? mb_internal_encoding($encoding) : mb_internal_encoding();
         }
 
+        // @codeCoverageIgnoreStart
         return 'UTF-8';
+        // @codeCoverageIgnoreEnd
     }
 }
