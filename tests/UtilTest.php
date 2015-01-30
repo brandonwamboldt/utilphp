@@ -916,11 +916,9 @@ class UtilityPHPTest extends PHPUnit_Framework_TestCase
         touch($file1);
         $file2 = $dir . DIRECTORY_SEPARATOR .'file2';
         touch($file2);
-        $dir1 = $dir . DIRECTORY_SEPARATOR .'dir1';
-        mkdir($dir1);
-        $file3 = $dir1 . DIRECTORY_SEPARATOR .'file3';
+        $file3 = $dir . DIRECTORY_SEPARATOR .'file3';
         touch($file3);
-        $this->assertEquals(array($file3, $file1, $file2), util::directory_contents($dir));
+        $this->assertEquals(array($file1, $file2, $file3), util::directory_contents($dir));
         util::rmdir($dir);
     }
 }
