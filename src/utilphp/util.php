@@ -2249,6 +2249,7 @@ class util
         foreach(new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($dir, \FilesystemIterator::KEY_AS_PATHNAME | \FilesystemIterator::CURRENT_AS_FILEINFO | \FilesystemIterator::SKIP_DOTS)) as $pathname => $fi) {
             $contents[] = $pathname;
         }
+        natsort($contents);
         return $contents;
     }
 }

@@ -885,6 +885,7 @@ class UtilityPHPTest extends PHPUnit_Framework_TestCase
         $dirname = dirname(__FILE__);
         $file = $dirname . '/test1';
         touch($file);
+        util::set_executable($file, true);
         $this->assertTrue(is_executable($file));
         util::set_executable($file, false);
         $this->assertFalse(is_executable($file));
