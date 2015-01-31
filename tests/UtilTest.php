@@ -690,7 +690,7 @@ class UtilityPHPTest extends PHPUnit_Framework_TestCase
         $expect = '<strong>NULL</strong>';
         $this->assertEquals($expect, Util::var_dump_plain($input, true));
 
-        $input = fopen('/tmp', 'r');
+        $input = fopen('php://memory', 'r');
         $expect = '<span style="color:#588bff;">resource</span>("stream") <strong>"' . $input . '"</strong>';
         $this->assertEquals($expect, Util::var_dump_plain($input, -1));
         fclose($input);
