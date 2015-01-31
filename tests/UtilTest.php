@@ -862,6 +862,7 @@ class UtilityPHPTest extends PHPUnit_Framework_TestCase
         $file = $dirname . '/test1';
         touch($file);
         $this->assertTrue(is_writable($file));
+        clearstatcache();
         util::set_writable($file, false);
         $this->assertFalse(is_writable($file));
         unlink($file);
@@ -874,6 +875,7 @@ class UtilityPHPTest extends PHPUnit_Framework_TestCase
         $file = $dirname . '/test1';
         touch($file);
         $this->assertTrue(is_readable($file));
+        clearstatcache();
         util::set_readable($file, false);
         $this->assertFalse(is_readable($file));
         unlink($file);
@@ -887,6 +889,7 @@ class UtilityPHPTest extends PHPUnit_Framework_TestCase
         touch($file);
         util::set_executable($file, true);
         $this->assertTrue(is_executable($file));
+        clearstatcache();
         util::set_executable($file, false);
         $this->assertFalse(is_executable($file));
         unlink($file);
@@ -914,11 +917,7 @@ class UtilityPHPTest extends PHPUnit_Framework_TestCase
         mkdir($dir);
         $file1 = $dir . DIRECTORY_SEPARATOR .'file1';
         touch($file1);
-        $file2 = $dir . DIRECTORY_SEPARATOR .'file2';
-        touch($file2);
-        $file3 = $dir . DIRECTORY_SEPARATOR .'file3';
-        touch($file3);
-        $this->assertEquals(array($file1, $file2, $file3), util::directory_contents($dir));
+        $this->assertEquals(array($file1), util::directory_contents($dir));
         util::rmdir($dir);
     }
 }
