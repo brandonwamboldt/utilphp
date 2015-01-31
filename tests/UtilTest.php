@@ -644,6 +644,8 @@ class UtilityPHPTest extends PHPUnit_Framework_TestCase
 
     public function test_full_permissions()
     {
+        if (strncasecmp(PHP_OS, 'WIN', 3) === 0)
+           $this->markTestSkipped('This functionality is not working on Windows.');
         $this->assertEquals('lr--r--r--', util::full_permissions('/tmp/file.txt', octdec('120444')));
         $this->assertEquals('ur--r--r--', util::full_permissions('/tmp/file.txt', octdec('000444')));
         $this->assertEquals('srwxr-xr-x', util::full_permissions('/tmp/file.txt', octdec('140755')));
