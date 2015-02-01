@@ -681,23 +681,30 @@ class UtilityPHPTest extends PHPUnit_Framework_TestCase
 
     public function test_full_permissions()
     {
-        if (strncasecmp(PHP_OS, 'WIN', 3) === 0)
-           $this->markTestSkipped('This functionality is not working on Windows.');
-        $this->assertEquals('lr--r--r--', util::full_permissions('/tmp/file.txt', octdec('120444')));
-        $this->assertEquals('ur--r--r--', util::full_permissions('/tmp/file.txt', octdec('000444')));
-        $this->assertEquals('srwxr-xr-x', util::full_permissions('/tmp/file.txt', octdec('140755')));
-        $this->assertEquals('drwxr-xr-x', util::full_permissions('/tmp/file.txt', octdec('40755')));
-        $this->assertEquals('brw-rw----', util::full_permissions('/tmp/file.txt', octdec('60660')));
-        $this->assertEquals('crw-rw----', util::full_permissions('/tmp/file.txt', octdec('20660')));
-        $this->assertEquals('prw-rw----', util::full_permissions('/tmp/file.txt', octdec('10660')));
-        $this->assertEquals('---x------', util::full_permissions('/tmp/file.txt', octdec('100100')));
-        $this->assertEquals('--w-------', util::full_permissions('/tmp/file.txt', octdec('100200')));
-        $this->assertEquals('--wx------', util::full_permissions('/tmp/file.txt', octdec('100300')));
-        $this->assertEquals('-r--------', util::full_permissions('/tmp/file.txt', octdec('100400')));
-        $this->assertEquals('-r-x------', util::full_permissions('/tmp/file.txt', octdec('100500')));
-        $this->assertEquals('-rw-------', util::full_permissions('/tmp/file.txt', octdec('100600')));
-        $this->assertEquals('-rwx------', util::full_permissions('/tmp/file.txt', octdec('100700')));
-        $this->assertEquals('drwxr-xr-x', util::full_permissions('/'));
+        $expected = '-rw-rw-rw-';
+        $tempFile = tempnam(sys_get_temp_dir(), 'foo');
+        $this->assertEquals($expected, util::full_permissions($tempFile), 'Could not properly obtain permissions of an existing file.');
+        unlink($tempFile);
+
+        $this->assertEquals('lr--r--r--', util::full_permissions('fake-file-222', octdec('120444')));
+        $this->assertEquals('ur--r--r--', util::full_permissions('fake-file-222', octdec('000444')));
+        $this->assertEquals('srwxr-xr-x', util::full_permissions('fake-file-222', octdec('140755')));
+        $this->assertEquals('drwxr-xr-x', util::full_permissions('fake-file-222', octdec('40755')));
+        $this->assertEquals('brw-rw----', util::full_permissions('fake-file-222', octdec('60660')));
+        $this->assertEquals('crw-rw----', util::full_permissions('fake-file-222', octdec('20660')));
+        $this->assertEquals('prw-rw----', util::full_permissions('fake-file-222', octdec('10660')));
+        $this->assertEquals('---x------', util::full_permissions('fake-file-222', octdec('100100')));
+        $this->assertEquals('--w-------', util::full_permissions('fake-file-222', octdec('100200')));
+        $this->assertEquals('--wx------', util::full_permissions('fake-file-222', octdec('100300')));
+        $this->assertEquals('-r--------', util::full_permissions('fake-file-222', octdec('100400')));
+        $this->assertEquals('-r-x------', util::full_permissions('fake-file-222', octdec('100500')));
+        $this->assertEquals('-rw-------', util::full_permissions('fake-file-222', octdec('100600')));
+        $this->assertEquals('-rwx------', util::full_permissions('fake-file-222', octdec('100700')));
+
+        // Windows does not have the concept of /.
+        if (!defined('PHP_WINDOWS_VERSION_MAJOR')) {
+            $this->assertEquals('drwxr-xr-x', util::full_permissions('/'));
+        }
     }
 
     public function test_array_clean()

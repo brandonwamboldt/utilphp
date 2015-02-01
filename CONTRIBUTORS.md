@@ -34,5 +34,7 @@ The following developers and/or companies helped contribute to building util.php
 * Laravel Project )https://github.com/laravel/laravel_
   - `secure_random_string()`: http://trac.allenjb.me.uk/php/browser/tagi/vendor/laravel/framework/src/Illuminate/Support/Str.php?rev=87#L127
 * Abhimanyu Sharma ([@abhimanyusharma003](https://github.com/abhimanyusharma003))
+  - `limit_characters()`
+  - `limit_words()`
   - `match_string()`
 * Scott Baker ([@scottchiefbaker](https://github.com/scottchiefbaker))

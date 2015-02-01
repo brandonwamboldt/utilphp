@@ -2045,14 +2045,19 @@ class util
     }
 
     /**
-     * Returns the file permissions as a nice string, like -rw-r--r--
+     * Returns the file permissions as a nice string, like -rw-r--r-- or false
+     * if the file is not found.
      *
      * @param   string $file The name of the file to get permissions form
+     * @param   int $perms Numerical value of permissions to display as text.
      * @return  string
      */
     public static function full_permissions($file, $perms = null)
     {
         if (is_null($perms)) {
+            if (!file_exists($file)) {
+                return false;
+            }
             $perms = fileperms($file);
         }
 
