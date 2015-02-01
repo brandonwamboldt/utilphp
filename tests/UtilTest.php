@@ -235,7 +235,7 @@ class UtilityPHPTest extends PHPUnit_Framework_TestCase
         $this->assertEquals( '/app/admin/users?user=5#test', util::add_query_arg( 'user', 5, '/app/admin/users#test' ) );
 
         // Full URL
-        $this->assertEquals( 'http://example.com?a=b', util::add_query_arg( 'a', 'b', 'http://example.com' ) );
+        $this->assertEquals( 'http://example.com/?a=b', util::add_query_arg( 'a', 'b', 'http://example.com' ) );
 
         // Only the query string
         $this->assertEquals( '?a=b&c=d', util::add_query_arg( 'c', 'd', '?a=b' ) );

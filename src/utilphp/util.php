@@ -66,6 +66,24 @@ class util
     const SECONDS_IN_A_YEAR = 31536000;
 
     /**
+     * URL constants as defined in the PHP Manual under "Constants usable with
+     * http_build_url()".
+     *
+     * @see http://us2.php.net/manual/en/http.constants.php#http.constants.url
+     */
+    const HTTP_URL_REPLACE = 1;
+    const HTTP_URL_JOIN_PATH = 2;
+    const HTTP_URL_JOIN_QUERY = 4;
+    const HTTP_URL_STRIP_USER = 8;
+    const HTTP_URL_STRIP_PASS = 16;
+    const HTTP_URL_STRIP_AUTH = 32;
+    const HTTP_URL_STRIP_PORT = 64;
+    const HTTP_URL_STRIP_PATH = 128;
+    const HTTP_URL_STRIP_QUERY = 256;
+    const HTTP_URL_STRIP_FRAGMENT = 512;
+    const HTTP_URL_STRIP_ALL = 1024;
+
+    /**
      * A collapse icon, using in the dump_var function to allow collapsing
      * an array or object
      *
@@ -732,58 +750,44 @@ class util
             $uri = is_null($arg3) ? self::array_get($_SERVER['REQUEST_URI'], '') : $arg3;
         }
 
-        // Set the defaults for these
-        $protocol = '';
-        $frag     = '';
-        $base     = '';
-        $query    = $uri;
+        // Parse the URI into it's components
+        $puri = parse_url($uri);
 
-        // Does the URI contain a fragment section (The part after the #)
-        if ($frag = strstr($uri, '#')) {
-            $uri = substr($uri, 0, -strlen($frag));
+        if (isset($puri['query'])) {
+            parse_str($puri['query'], $queryParams);
+            $queryParams = array_merge($queryParams, $newParams);
+        } elseif (isset($puri['path']) && strstr($puri['path'], '=') !== false) {
+            $puri['query'] = $puri['path'];
+            unset($puri['path']);
+            parse_str($puri['query'], $queryParams);
+            $queryParams = array_merge($queryParams, $newParams);
+        } else {
+            $queryParams = $newParams;
         }
-
-        // Get the URI protocol if possible
-        if (substr($uri, 0, 7) === 'http://') {
-            $protocol = 'http://';
-            $uri = substr($uri, 7);
-        } elseif (substr($uri, 0, 8) === 'https://') {
-            $protocol = 'https://';
-            $uri = substr($uri, 8);
-        }
-
-        // Does the URI contain a query string?
-        if (strpos($uri, '?') !== false) {
-            $parts = explode('?', $uri, 2);
-            $base  = $parts[0] . '?';
-            $query = $parts[1];
-        } elseif (!empty($protocol) || strpos($uri, '=') === false) {
-            $base  = $uri . '?';
-            $query = '';
-        }
-
-        // Parse the query string into an array
-        parse_str($query, $qs);
-
-        // This re-URL-encodes things that were already in the query string
-        $qs = self::array_map_deep($qs, 'urlencode');
-        $qs = array_merge($qs, $newParams);
 
         // Strip out any query params that are set to false
-        foreach ($qs as $k => $v) {
-            if ($v === false) {
-                unset($qs[$k]);
+        foreach ($queryParams as $param => $value) {
+            if ($value === false) {
+                unset($queryParams[$param]);
             }
         }
 
-        // Re-construct the URL
-        $url = http_build_query($qs);
-        $url = trim($url, '?');
-        $url = preg_replace('/=(&|$)/', '$1', $url);
-        $url = $protocol . $base . $url . $frag;
-        $url = rtrim($url, '?');
+        // Re-construct the query string
+        $puri['query'] = http_build_query($queryParams);
 
-        return $url;
+        // Re-construct the entire URL
+        $nuri = self::http_build_url($puri);
+
+        // Make the URI consistent with our input
+        if ($nuri[0] === '/' && strstr($uri, '/') === false) {
+            $nuri = substr($nuri, 1);
+        }
+
+        if ($nuri[0] === '?' && strstr($uri, '?') === false) {
+            $nuri = substr($nuri, 1);
+        }
+
+        return rtrim($nuri, '?');
     }
 
     /**
@@ -800,6 +804,139 @@ class util
         }
 
         return self::add_query_arg(array($keys => null), $uri);
+    }
+
+
+    /**
+     * Build a URL.
+     *
+     * The parts of the second URL will be merged into the first according to
+     * the flags argument.
+     *
+     * @see https://github.com/jakeasmith/http_build_url/blob/master/src/http_build_url.php
+     *
+     * @param mixed $url     (part(s) of) an URL in form of a string or
+     *                       associative array like parse_url() returns
+     * @param mixed $parts   same as the first argument
+     * @param int   $flags   a bitmask of binary or'ed HTTP_URL constants;
+     *                       HTTP_URL_REPLACE is the default
+     * @param array $new_url if set, it will be filled with the parts of the
+     *                       composed url like parse_url() would return
+     * @return string
+     */
+    public static function http_build_url($url, $parts = array(), $flags = self::HTTP_URL_REPLACE, &$new_url = array())
+    {
+        is_array($url) || $url = parse_url($url);
+        is_array($parts) || $parts = parse_url($parts);
+
+        isset($url['query']) && is_string($url['query']) || $url['query'] = null;
+        isset($parts['query']) && is_string($parts['query']) || $parts['query'] = null;
+
+        $keys = array('user', 'pass', 'port', 'path', 'query', 'fragment');
+
+        // HTTP_URL_STRIP_ALL and HTTP_URL_STRIP_AUTH cover several other flags.
+        if ($flags & self::HTTP_URL_STRIP_ALL) {
+            $flags |= self::HTTP_URL_STRIP_USER | self::HTTP_URL_STRIP_PASS
+                | self::HTTP_URL_STRIP_PORT | self::HTTP_URL_STRIP_PATH
+                | self::HTTP_URL_STRIP_QUERY | self::HTTP_URL_STRIP_FRAGMENT;
+        } elseif ($flags & self::HTTP_URL_STRIP_AUTH) {
+            $flags |= self::HTTP_URL_STRIP_USER | self::HTTP_URL_STRIP_PASS;
+        }
+
+        // Schema and host are alwasy replaced
+        foreach (array('scheme', 'host') as $part) {
+            if (isset($parts[$part])) {
+                $url[$part] = $parts[$part];
+            }
+        }
+
+        if ($flags & self::HTTP_URL_REPLACE) {
+            foreach ($keys as $key) {
+                if (isset($parts[$key])) {
+                    $url[$key] = $parts[$key];
+                }
+            }
+        } else {
+            if (isset($parts['path']) && ($flags & self::HTTP_URL_JOIN_PATH)) {
+                if (isset($url['path']) && substr($parts['path'], 0, 1) !== '/') {
+                    $url['path'] = rtrim(
+                            str_replace(basename($url['path']), '', $url['path']),
+                            '/'
+                        ) . '/' . ltrim($parts['path'], '/');
+                } else {
+                    $url['path'] = $parts['path'];
+                }
+            }
+
+            if (isset($parts['query']) && ($flags & self::HTTP_URL_JOIN_QUERY)) {
+                if (isset($url['query'])) {
+                    parse_str($url['query'], $url_query);
+                    parse_str($parts['query'], $parts_query);
+
+                    $url['query'] = http_build_query(
+                        array_replace_recursive(
+                            $url_query,
+                            $parts_query
+                        )
+                    );
+                } else {
+                    $url['query'] = $parts['query'];
+                }
+            }
+        }
+
+        if (isset($url['path']) && substr($url['path'], 0, 1) !== '/') {
+            $url['path'] = '/' . $url['path'];
+        }
+
+        foreach ($keys as $key) {
+            $strip = 'HTTP_URL_STRIP_' . strtoupper($key);
+            if ($flags & constant('utilphp\\util::' . $strip)) {
+                unset($url[$key]);
+            }
+        }
+
+        $parsed_string = '';
+
+        if (isset($url['scheme'])) {
+            $parsed_string .= $url['scheme'] . '://';
+        }
+
+        if (isset($url['user'])) {
+            $parsed_string .= $url['user'];
+
+            if (isset($url['pass'])) {
+                $parsed_string .= ':' . $url['pass'];
+            }
+
+            $parsed_string .= '@';
+        }
+
+        if (isset($url['host'])) {
+            $parsed_string .= $url['host'];
+        }
+
+        if (isset($url['port'])) {
+            $parsed_string .= ':' . $url['port'];
+        }
+
+        if (!empty($url['path'])) {
+            $parsed_string .= $url['path'];
+        } else {
+            $parsed_string .= '/';
+        }
+
+        if (isset($url['query'])) {
+            $parsed_string .= '?' . $url['query'];
+        }
+
+        if (isset($url['fragment'])) {
+            $parsed_string .= '#' . $url['fragment'];
+        }
+
+        $new_url = $url;
+
+        return $parsed_string;
     }
 
     /**
