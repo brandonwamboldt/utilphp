@@ -26,6 +26,8 @@ The following developers and/or companies helped contribute to building util.php
   - `seemsUtf8Regex()`: http://stackoverflow.com/a/11709412/430062
 * Askar ([@ARACOOOL](https://github.com/ARACOOOL))
   - `rmdir()`
+  - `limit_characters()`
+  - `limit_words()`
 * Anonymous (tmp1000@fastmail.fm)
   - `htmlspecialentities()`: http://php.timesoft.cc/manual/en/function.htmlentities.php
   - `htmlspecialchars()`
@@ -33,4 +35,4 @@ The following developers and/or companies helped contribute to building util.php
   - `secure_random_string()`: http://trac.allenjb.me.uk/php/browser/tagi/vendor/laravel/framework/src/Illuminate/Support/Str.php?rev=87#L127
 * Abhimanyu Sharma ([@abhimanyusharma003](https://github.com/abhimanyusharma003))
   - `match_string()`
-
+* Scott Baker ([@scottchiefbaker](https://github.com/scottchiefbaker))

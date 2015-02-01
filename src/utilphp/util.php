@@ -842,7 +842,8 @@ class util
      * The parts of the second URL will be merged into the first according to
      * the flags argument.
      *
-     * @see https://github.com/jakeasmith/http_build_url/blob/master/src/http_build_url.php
+     * @author Jake Smith <theman@jakeasmith.com>
+     * @see https://github.com/jakeasmith/http_build_url/
      *
      * @param mixed $url     (part(s) of) an URL in form of a string or
      *                       associative array like parse_url() returns
