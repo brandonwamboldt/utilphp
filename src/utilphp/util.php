@@ -633,12 +633,26 @@ class util
      */
     public static function maybe_unserialize($data)
     {
-         // Don't attempt to unserialize data that isn't serialized
-        if (self::is_serialized($data)) {
-            return @unserialize($data);
+        // $data is the serialized false value
+        if ($data === 'b:0;') {
+            return false;
         }
 
-        return $data;
+        // Don't attempt to unserialize data that isn't serialized
+        $uns = @unserialize($data);
+
+        // Data failed to unserialize?
+        if ($uns === false) {
+            $uns = @unserialize(self::fix_broken_serialization($data));
+
+            if ($uns === false) {
+                return $data;
+            } else {
+                return $uns;
+            }
+        } else {
+            return $uns;
+        }
     }
 
     /**
