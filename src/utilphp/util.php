@@ -716,16 +716,7 @@ class util
     }
 
     /**
-     * Retrieve a modified URL query string.
-     *
-     * You can rebuild the URL and append a new query variable to the URL
-     * query by using this function. You can also retrieve the full URL
-     * with query data.
-     *
-     * Adding a single key & value or an associative array. Setting a key
-     * value to an empty string removes the key. Omitting oldquery_or_uri
-     * uses the $_SERVER value. Additional values provided are expected
-     * to be encoded appropriately with urlencode() or rawurlencode().
+     * Add or remove query arguments to the URL.
      *
      * @param  mixed  $newkey          Either newkey or an associative
      *                                 array
@@ -733,42 +724,45 @@ class util
      * @param  mixed  $oldquery_or_uri Optionally the old query or uri
      * @return string
      */
-    public static function add_query_arg()
+    public static function add_query_arg($arg1, $arg2 = null, $arg3 = null)
     {
-        $ret = '';
-
         // Was an associative array of key => value pairs passed?
-        if (is_array(func_get_arg(0))) {
+        if (is_array($arg1)) {
+            $newParams = $arg1;
+
             // Was the URL passed as an argument?
-            if (func_num_args() == 2 && func_get_arg(1)) {
-                $uri = func_get_arg(1);
-            } elseif (func_num_args() == 3 && func_get_arg(2)) {
-                $uri = func_get_arg(2);
+            if (!is_null($arg2)) {
+                $uri = $arg2;
+            } elseif (!is_null($arg3)) {
+                $uri = $arg3;
             } else {
-                $uri = $_SERVER['REQUEST_URI'];
+                $uri = self::array_get($_SERVER['REQUEST_URI'], '');
             }
         } else {
+            $newParams = array($arg1 => $arg2);
+
             // Was the URL passed as an argument?
-            if (func_num_args() == 3 && func_get_arg(2)) {
-                $uri = func_get_arg(2);
-            } else {
-                $uri = $_SERVER['REQUEST_URI'];
-            }
+            $uri = is_null($arg3) ? self::array_get($_SERVER['REQUEST_URI'], '') : $arg3;
         }
+
+        // Set the defaults for these
+        $protocol = '';
+        $frag     = '';
+        $base     = '';
+        $query    = $uri;
 
         // Does the URI contain a fragment section (The part after the #)
         if ($frag = strstr($uri, '#')) {
             $uri = substr($uri, 0, -strlen($frag));
-        } else {
-            $frag = '';
         }
 
         // Get the URI protocol if possible
-        if (preg_match('|^https?://|i', $uri, $matches)) {
-            $protocol = $matches[0];
-            $uri = substr($uri, strlen($protocol));
-        } else {
-            $protocol = '';
+        if (substr($uri, 0, 7) === 'http://') {
+            $protocol = 'http://';
+            $uri = substr($uri, 7);
+        } elseif (substr($uri, 0, 8) === 'https://') {
+            $protocol = 'https://';
+            $uri = substr($uri, 8);
         }
 
         // Does the URI contain a query string?
@@ -776,12 +770,9 @@ class util
             $parts = explode('?', $uri, 2);
             $base  = $parts[0] . '?';
             $query = $parts[1];
-        } elseif (! empty($protocol) || strpos($uri, '=') === false) {
+        } elseif (!empty($protocol) || strpos($uri, '=') === false) {
             $base  = $uri . '?';
             $query = '';
-        } else {
-            $base  = '';
-            $query = $uri;
         }
 
         // Parse the query string into an array
@@ -789,27 +780,23 @@ class util
 
         // This re-URL-encodes things that were already in the query string
         $qs = self::array_map_deep($qs, 'urlencode');
+        $qs = array_merge($qs, $newParams);
 
-        if (is_array(func_get_arg(0))) {
-            $kayvees = func_get_arg(0);
-            $qs = array_merge($qs, $kayvees);
-        } else {
-            $qs[func_get_arg(0)] = func_get_arg(1);
-        }
-
-        foreach ((array) $qs as $k => $v) {
+        // Strip out any query params that are set to false
+        foreach ($qs as $k => $v) {
             if ($v === false) {
                 unset($qs[$k]);
             }
         }
 
-        $ret = http_build_query($qs);
-        $ret = trim($ret, '?');
-        $ret = preg_replace('#=(&|$)#', '$1', $ret);
-        $ret = $protocol . $base . $ret . $frag;
-        $ret = rtrim($ret, '?');
+        // Re-construct the URL
+        $url = http_build_query($qs);
+        $url = trim($url, '?');
+        $url = preg_replace('/=(&|$)/', '$1', $url);
+        $url = $protocol . $base . $url . $frag;
+        $url = rtrim($url, '?');
 
-        return $ret;
+        return $url;
     }
 
     /**
@@ -819,17 +806,13 @@ class util
      * @param  bool          $uri  When false uses the $_SERVER value
      * @return string
      */
-    public static function remove_query_arg($keys, $uri = false)
+    public static function remove_query_arg($keys, $uri = null)
     {
         if (is_array($keys)) {
-            foreach ($keys as $key) {
-                $uri = self::add_query_arg($key, false, $uri);
-            }
-
-            return $uri;
+            return self::add_query_arg(array_combine($keys, array_fill(0, count($keys), null)), $uri);
         }
 
-        return self::add_query_arg($keys, false, $uri);
+        return self::add_query_arg(array($keys => null), $uri);
     }
 
     /**
@@ -865,7 +848,7 @@ class util
      */
     public static function starts_with($string, $starts_with)
     {
-        return (strpos($string, $starts_with) === 0);
+        return strpos($string, $starts_with) === 0;
     }
 
     /**
@@ -889,7 +872,7 @@ class util
      */
     public static function str_contains($haystack, $needle)
     {
-        return (strpos($haystack, $needle) !== false);
+        return strpos($haystack, $needle) !== false;
     }
 
     /**
@@ -902,7 +885,7 @@ class util
      */
     public static function str_icontains($haystack, $needle)
     {
-        return (stripos($haystack, $needle) !== false);
+        return stripos($haystack, $needle) !== false;
     }
 
     /**
