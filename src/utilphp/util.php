@@ -310,7 +310,7 @@ class util
             $html = $jsCode . $html;
         }
 
-        if (! $return) {
+        if (!$return) {
             echo $html;
         }
 
@@ -372,7 +372,7 @@ class util
             $uuid = 'include-php-' . uniqid() . mt_rand(1, 1000000);
 
             $html .= (!empty($var) ? ' <img id="' . $uuid . '" src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs%3D" onclick="javascript:colToggle(this.id);" /><script>setImg("' . $uuid . '",'.$setImg.',1);</script>' : '') . '<span style="color:#588bff;">array</span>(' . count($var) . ')';
-            if (! empty($var)) {
+            if (!empty($var)) {
                 $html .= ' <span id="' . $uuid . '-collapsable" style="'.$setStyle.'"><br />[<br />';
 
                 $indent = 4;
@@ -635,60 +635,51 @@ class util
     public static function is_serialized($data)
     {
         // If it isn't a string, it isn't serialized
-        if (! is_string($data)) {
+        if (!is_string($data)) {
             return false;
         }
 
         $data = trim($data);
 
-        if ('N;' == $data) {
+        // Is it the serialized NULL value?
+        if ($data === 'N;') {
             return true;
         }
 
         $length = strlen($data);
 
-        if ($length < 4) {
+        // Check some basic requirements of all serialized strings
+        if ($length < 4 || $data[1] !== ':' || ($data[$length - 1] !== ';' && $data[$length - 1] !== '}')) {
             return false;
         }
 
-        if (':' !== $data[1]) {
-            return false;
-        }
-
-        $lastc = $data[$length - 1];
-
-        if (';' !== $lastc && '}' !== $lastc) {
-            return false;
-        }
-
-        $token = $data[0];
-
-        switch ($token) {
+        switch ($data[0]) {
             case 's':
-                if ('"' !== $data[$length-2]) {
+                if ('"' !== $data[$length - 2]) {
                     return false;
                 }
 
                 // Intentionally fall through
             case 'a':
             case 'O':
-                return (bool) preg_match("/^{$token}:[0-9]+:/s", $data);
+                return (bool) preg_match("/^{$data[0]}:[0-9]+:/s", $data);
             case 'b':
             case 'i':
             case 'd':
-                return (bool) preg_match("/^{$token}:[0-9.E-]+;\$/", $data);
+                return (bool) preg_match("/^{$data[0]}:[0-9.E-]+;\$/", $data);
         }
 
         return false;
     }
 
     /**
-     * Unserializes partially-corrupted arrays that occur sometimes. Addresses specifically the
-     * `unserialize(): Error at offset xxx of yyy bytes` error.
+     * Unserializes partially-corrupted arrays that occur sometimes. Addresses
+     * specifically the `unserialize(): Error at offset xxx of yyy bytes` error.
      *
-     * NOTE: This error can *frequently* occur with mismatched character sets and higher-than-ASCII characters.
+     * NOTE: This error can *frequently* occur with mismatched character sets
+     * and higher-than-ASCII characters.
      *
-     * @param $brokenSerializedData
+     * @param  string $brokenSerializedData
      * @return string
      */
     public static function fix_broken_serialization($brokenSerializedData)
@@ -708,11 +699,7 @@ class util
      */
     public static function is_https()
     {
-        if (isset($_SERVER['HTTPS']) && ! empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off') {
-            return true;
-        }
-
-        return false;
+        return isset($_SERVER['HTTPS']) && !empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off';
     }
 
     /**
@@ -1379,7 +1366,7 @@ class util
     public static function utf8_headers($content_type = 'text/html')
     {
         // @codeCoverageIgnoreStart
-        if (! headers_sent()) {
+        if (!headers_sent()) {
             header('Content-type: ' . $content_type . '; charset=utf-8');
 
             return true;
@@ -1404,7 +1391,7 @@ class util
     public static function force_download($filename, $content = false)
     {
         // @codeCoverageIgnoreStart
-        if (! headers_sent()) {
+        if (!headers_sent()) {
             // Required for some browsers
             if (ini_get('zlib.output_compression')) {
                 @ini_set('zlib.output_compression', 'Off');
@@ -1451,7 +1438,7 @@ class util
     public static function nocache_headers()
     {
         // @codeCoverageIgnoreStart
-        if (! headers_sent()) {
+        if (!headers_sent()) {
             header('Expires: Wed, 11 Jan 1984 05:00:00 GMT');
             header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT');
             header('Cache-Control: no-cache, must-revalidate, max-age=0');
@@ -1757,7 +1744,7 @@ class util
         }
 
         // Get the rest of the URL
-        if (! isset($_SERVER['REQUEST_URI'])) {
+        if (!isset($_SERVER['REQUEST_URI'])) {
             // Microsoft IIS doesn't set REQUEST_URI by default
             $url .= substr($_SERVER['PHP_SELF'], 1);
 
@@ -1783,13 +1770,13 @@ class util
      */
     public static function get_client_ip($trust_proxy_headers = false)
     {
-        if (! $trust_proxy_headers) {
+        if (!$trust_proxy_headers) {
             return $_SERVER['REMOTE_ADDR'];
         }
 
-        if (! empty($_SERVER['HTTP_CLIENT_IP'])) {
+        if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
             $ip = $_SERVER['HTTP_CLIENT_IP'];
-        } elseif (! empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+        } elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
             $ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
         } else {
             $ip = $_SERVER['REMOTE_ADDR'];
@@ -1838,7 +1825,7 @@ class util
             return $string;
         }
 
-        return rtrim(mb_substr($string, 0, $limit, 'UTF-8')).$append;
+        return rtrim(mb_substr($string, 0, $limit, 'UTF-8')) . $append;
     }
 
     /**
@@ -1851,8 +1838,9 @@ class util
      */
     public static function limit_words($string, $limit = 100, $append = '...')
     {
-        preg_match('/^\s*+(?:\S++\s*+){1,'.$limit.'}/u', $string, $matches);
-        if (! isset($matches[0]) || strlen($string) === strlen($matches[0])) {
+        preg_match('/^\s*+(?:\S++\s*+){1,' . $limit . '}/u', $string, $matches);
+
+        if (!isset($matches[0]) || strlen($string) === strlen($matches[0])) {
             return $string;
         }
 
@@ -2033,7 +2021,7 @@ class util
                     } else {
                         $new_list[] = $value->{$field};
                     }
-                } elseif (! $remove_nomatches) {
+                } elseif (!$remove_nomatches) {
                     $new_list[$key] = $value;
                 }
             } else {
@@ -2043,7 +2031,7 @@ class util
                     } else {
                         $new_list[] = $value[$field];
                     }
-                } elseif (! $remove_nomatches) {
+                } elseif (!$remove_nomatches) {
                     $new_list[$key] = $value;
                 }
             }
