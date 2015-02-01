@@ -671,23 +671,12 @@ class util
             return false;
         }
 
-        switch ($data[0]) {
-            case 's':
-                if ('"' !== $data[$length - 2]) {
-                    return false;
-                }
-
-                // Intentionally fall through
-            case 'a':
-            case 'O':
-                return (bool) preg_match("/^{$data[0]}:[0-9]+:/s", $data);
-            case 'b':
-            case 'i':
-            case 'd':
-                return (bool) preg_match("/^{$data[0]}:[0-9.E-]+;\$/", $data);
+        // Boolean values
+        if ($data === 'b:0;' || $data === 'b:1;') {
+            return true;
         }
 
-        return false;
+        return @unserialize($data) !== false;
     }
 
     /**
@@ -805,7 +794,6 @@ class util
 
         return self::add_query_arg(array($keys => null), $uri);
     }
-
 
     /**
      * Build a URL.
