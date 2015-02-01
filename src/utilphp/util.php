@@ -455,11 +455,11 @@ class util
             foreach ($varArray as $key => $value) {
                 if (substr($key, 0, 2) == "\0*") {
                     unset($varArray[$key]);
-                    $key = 'protected:' . substr($key, 2);
+                    $key = 'protected:' . substr($key, 3);
                     $varArray[$key] = $value;
                 } elseif (substr($key, 0, 1) == "\0") {
                     unset($varArray[$key]);
-                    $key = 'private:' . substr($key, 1, strpos(substr($key, 1), "\0")) . ':' . substr($key, strpos(substr($key, 1), "\0") + 1);
+                    $key = 'private:' . substr($key, 1, strpos(substr($key, 1), "\0")) . ':' . substr($key, strpos(substr($key, 1), "\0") + 2);
                     $varArray[$key] = $value;
                 }
 
