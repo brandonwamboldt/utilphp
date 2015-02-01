@@ -105,7 +105,7 @@ class util
      * Map of special non-ASCII characters and suitable ASCII replacement
      * characters.
      *
-     * Part of the URLify.php Project <https://github.com/knplabs/knpbundles>
+     * Part of the URLify.php Project <https://github.com/jbroadway/urlify/>
      *
      * @see https://github.com/jbroadway/urlify/blob/master/URLify.php
      */
@@ -242,7 +242,7 @@ class util
     /**
      * Initializes the character map.
      *
-     * Part of the URLify.php Project <https://github.com/knplabs/knpbundles>
+     * Part of the URLify.php Project <https://github.com/jbroadway/urlify/>
      *
      * @see https://github.com/jbroadway/urlify/blob/master/URLify.php
      */
@@ -1160,7 +1160,7 @@ class util
     /**
      * Transliterates characters to their ASCII equivalents.
      *
-     * Part of the URLify.php Project <https://github.com/knplabs/knpbundles>
+     * Part of the URLify.php Project <https://github.com/jbroadway/urlify/>
      *
      * @see https://github.com/jbroadway/urlify/blob/master/URLify.php
      *
