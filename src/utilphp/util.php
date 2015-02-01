@@ -105,6 +105,8 @@ class util
      * Map of special non-ASCII characters and suitable ASCII replacement
      * characters.
      *
+     * Part of the URLify.php Project <https://github.com/knplabs/knpbundles>
+     *
      * @see https://github.com/jbroadway/urlify/blob/master/URLify.php
      */
     public static $maps = array(
@@ -239,6 +241,8 @@ class util
 
     /**
      * Initializes the character map.
+     *
+     * Part of the URLify.php Project <https://github.com/knplabs/knpbundles>
      *
      * @see https://github.com/jbroadway/urlify/blob/master/URLify.php
      */
@@ -539,6 +543,8 @@ class util
      * NOTE: This function checks for 5-Byte sequences, UTF8
      *       has Bytes Sequences with a maximum length of 4.
      *
+     * Written by Tony Ferrara <http://blog.ircmaxwell.com>
+     *
      * @param  string $string The string to be checked
      * @return boolean
      */
@@ -718,6 +724,8 @@ class util
      *
      * NOTE: This error can *frequently* occur with mismatched character sets
      * and higher-than-ASCII characters.
+     *
+     * Contributed by Theodore R. Smith of PHP Experts, Inc. <http://www.phpexperts.pro/>
      *
      * @param  string $brokenSerializedData
      * @return string
@@ -1047,6 +1055,8 @@ class util
     /**
      * Removes a directory (and its contents) recursively.
      *
+     * Contributed by Askar (ARACOOL) <https://github.com/ARACOOOL>
+     *
      * @param  string $dir              The directory to be deleted recursively
      * @param  bool   $traverseSymlinks Delete contents of symlinks recursively
      * @return bool
@@ -1149,9 +1159,11 @@ class util
     /**
      * Transliterates characters to their ASCII equivalents.
      *
+     * Part of the URLify.php Project <https://github.com/knplabs/knpbundles>
+     *
      * @see https://github.com/jbroadway/urlify/blob/master/URLify.php
      *
-     * @param  string $string   Text that might have not-ASCII characters
+     * @param  string $text   Text that might have not-ASCII characters
      * @param  string $language Specifies a priority for a specific language.
      * @return string Filtered string with replaced "nice" characters
      */
@@ -1307,6 +1319,8 @@ class util
     /**
      * Converts a number into the text equivalent. For example, 456 becomes four
      * hundred and fifty-six.
+     *
+     * Part of the IntToWords Project.
      *
      * @param  int|float $number The number to convert into text
      * @return string
@@ -1688,6 +1702,8 @@ class util
      * If 'openssl_random_pseudo_bytes' is not available
      * then generate random string using default function
      *
+     * Part of the Laravel Project <https://github.com/laravel/laravel>
+     *
      * @param int $length length of string
      * @return bool
      */
@@ -1710,6 +1726,8 @@ class util
 
     /**
      * Check if a given string matches a given pattern.
+     *
+     * Contributed by Abhimanyu Sharma <https://github.com/abhimanyusharma003>
      *
      * @param  string $pattern Parttern of string exptected
      * @param  string $string String that need to be matched
@@ -1767,6 +1785,8 @@ class util
     /**
      * Turns all of the links in a string into HTML links.
      *
+     * Part of the LinkifyURL Project <https://github.com/jmrware/LinkifyURL>
+     *
      * @param  string $text The string to parse
      * @return string
      */
@@ -1791,6 +1811,8 @@ class util
 
     /**
      * Callback for the preg_replace in the linkify() method.
+     *
+     * Part of the LinkifyURL Project <https://github.com/jmrware/LinkifyURL>
      *
      * @param  array  $matches Matches from the preg_ function
      * @return string
@@ -1845,6 +1867,8 @@ class util
 
     /**
      * Callback for the preg_replace in the linkify() method.
+     *
+     * Part of the LinkifyURL Project <https://github.com/jmrware/LinkifyURL>
      *
      * @param  array  $matches Matches from the preg_ function
      * @return string
@@ -2131,6 +2155,8 @@ class util
 
     /**
      * Flatten a multi-dimensional array into a one dimensional array.
+     *
+     * Contributed by Theodore R. Smith of PHP Experts, Inc. <http://www.phpexperts.pro/>
      *
      * @param  array   $array         The array to flatten
      * @param  boolean $preserve_keys Whether or not to preserve array keys.
