@@ -633,6 +633,25 @@ class util
      */
     public static function maybe_unserialize($data)
     {
+        // If it isn't a string, it isn't serialized
+        if (!is_string($data)) {
+            return $data;
+        }
+
+        $data = trim($data);
+
+        // Is it the serialized NULL value?
+        if ($data === 'N;') {
+            return null;
+        }
+
+        $length = strlen($data);
+
+        // Check some basic requirements of all serialized strings
+        if ($length < 4 || $data[1] !== ':' || ($data[$length - 1] !== ';' && $data[$length - 1] !== '}')) {
+            return $data;
+        }
+
         // $data is the serialized false value
         if ($data === 'b:0;') {
             return false;
