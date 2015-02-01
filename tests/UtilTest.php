@@ -332,6 +332,11 @@ class UtilityPHPTest extends PHPUnit_Framework_TestCase
         $this->assertEquals( array( 'Bob', 'Fred', 'Jane', 'Brandon', array( 'age' => 41 ) ), util::array_pluck( $array, 'name', TRUE, FALSE ) );
         $this->assertEquals( $obj_array_expect, util::array_pluck( $obj_array, 'name' ) );
         $this->assertEquals( array( 'Bob', 'Fred', 'Jane', 'Brandon' ), util::array_pluck( $obj_array, 'name', FALSE ) );
+
+        $expected = array('Bob', 'Fred', 'Jane', 'Brandon', 'invalid' => (object)array('age' => 41));
+        $this->assertEquals($expected, util::array_pluck($obj_array, 'name', FALSE, FALSE));
+        $expected = array('Bob', 'Fred', 'Jane', 'Brandon', array('age' => 41));
+        $this->assertEquals($expected, util::array_pluck($array, 'name', false, false));
     }
 
     public function test_htmlentities()
