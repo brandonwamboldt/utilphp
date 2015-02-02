@@ -163,11 +163,30 @@ class UtilityPHPTest extends PHPUnit_Framework_TestCase
         $obj->prop1 = 'Hello';
         $obj->prop2 = 'World';
 
+        $this->assertNull(util::maybe_unserialize(serialize(null)));
+        $this->assertFalse(util::maybe_unserialize(serialize(false)));
+
         $this->assertEquals( 'This is a string', util::maybe_unserialize( 'This is a string' ) );
         $this->assertEquals( 5.81, util::maybe_unserialize( 5.81 ) );
         $this->assertEquals( array(), util::maybe_unserialize( 'a:0:{}' ) );
         $this->assertEquals( $obj, util::maybe_unserialize( 'O:8:"stdClass":2:{s:5:"prop1";s:5:"Hello";s:5:"prop2";s:5:"World";}' ) );
         $this->assertEquals( array( 'test', 'blah', 'hello' => 'world', 'array' => $obj ), util::maybe_unserialize( 'a:4:{i:0;s:4:"test";i:1;s:4:"blah";s:5:"hello";s:5:"world";s:5:"array";O:8:"stdClass":2:{s:5:"prop1";s:5:"Hello";s:5:"prop2";s:5:"World";}}' ) );
+
+        // Test a broken serialization.
+        $expectedData = array(
+            'Normal',
+            'High-value Char: '.chr(231).'a-va?',   // High-value Char:  ça-va? [in ISO-8859-1]
+        );
+
+        $brokenSerialization = 'a:2:{i:0;s:6:"Normal";i:1;s:23:"High-value Char: ▒a-va?";}';
+
+        $unserializedData = util::maybe_unserialize($brokenSerialization);
+        $this->assertEquals($expectedData[0], $unserializedData[0], 'Did not properly fix the broken serialized data.');
+        $this->assertEquals(substr($expectedData[1], 0, 10), substr($unserializedData[1], 0, 10), 'Did not properly fix the broken serialized data.');
+
+        // Test unfixable serialization.
+        $unfixableSerialization = 'a:2:{i:0;s:6:"Normal";}';
+        $this->assertEquals($unfixableSerialization, util::maybe_unserialize($unfixableSerialization), 'Somehow the [previously?] impossible happened and utilphp thinks it has unserialized an unfixable serialization.');
     }
 
     public function test_is_serialized()
