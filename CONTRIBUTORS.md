@@ -31,8 +31,15 @@ The following developers and/or companies helped contribute to building util.php
 * Anonymous (tmp1000@fastmail.fm)
   - `htmlspecialentities()`: http://php.timesoft.cc/manual/en/function.htmlentities.php
   - `htmlspecialchars()`
-* Laravel Project )https://github.com/laravel/laravel_
+* Laravel Project (https://github.com/laravel/laravel)
   - `secure_random_string()`: http://trac.allenjb.me.uk/php/browser/tagi/vendor/laravel/framework/src/Illuminate/Support/Str.php?rev=87#L127
 * Abhimanyu Sharma ([@abhimanyusharma003](https://github.com/abhimanyusharma003))
   - `match_string()`
 * Scott Baker ([@scottchiefbaker](https://github.com/scottchiefbaker))
+* [@sergserg](https://github.com/sergserg)
+  - `set_writable()`
+  - `set_executable()`
+  - `set_readable()`
+  - `directory_size()`
+  - `directory_contents()`
+  - `get_user_dir()`
