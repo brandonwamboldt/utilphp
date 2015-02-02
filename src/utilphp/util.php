@@ -2321,31 +2321,54 @@ class util
     }
 
     /**
-     * Setter for writable bit of a file.
+     * Set the writable bit on a file to the minimum value that allows the user
+     * running PHP to write to it.
      *
-     * @param string $file File
-     * @param boolean $mode
+     * @param  string  $filename The filename to set the writable bit on
+     * @param  boolean $writable Whether to make the file writable or not
      * @return boolean
      */
-    public static function set_writable($file, $mode)
+    public static function set_writable($filename, $writable = true)
     {
-        $stat = stat($file);
-        if ($stat === false) return false;
-        if ($stat['uid'] == 0) // windows
-            return true;
-        list($myuid, $mygid) = array(
-            getmyuid() ,
-            getmygid()
-        );
-        if ((bool)$mode) {
-            if ($stat['uid'] == $myuid) return chmod($file, (fileperms($file) & 0777) | 0200);
-            if ($stat['gid'] == $mygid) return chmod($file, (fileperms($file) & 0777) | 0220);
-            return chmod($file, (fileperms($file) & 0777) | 0222);
+        $stat = stat($filename);
+
+        if ($stat === false) {
+            return false;
         }
-        else {
-            if ($stat['uid'] == $myuid) return chmod($file, (fileperms($file) & 0777) ^ 0200);
-            if ($stat['gid'] == $mygid) return chmod($file, (fileperms($file) & 0777) ^ 0220);
-            return chmod($file, (fileperms($file) & 0777) ^ 0222);
+
+        // We're on Windows
+        if ($stat['uid'] == 0 || strncasecmp(PHP_OS, 'WIN', 3) === 0) {
+            return true;
+        }
+
+        list($myuid, $mygid) = array(posix_geteuid(), posix_getgid());
+
+        if ($writable) {
+            // Set only the user writable bit (file is owned by us)
+            if ($stat['uid'] == $myuid) {
+                return chmod($filename, (fileperms($filename) | 0222) | 0200);
+            }
+
+            // Set only the group writable bit (file group is the same as us)
+            if ($stat['gid'] == $mygid) {
+                return chmod($filename, (fileperms($filename) | 0222) | 0220);
+            }
+
+            // Set the world writable bit (file isn't owned or grouped by us)
+            return chmod($filename, (fileperms($filename) | 0222) | 0222);
+        } else {
+            // Set only the user writable bit (file is owned by us)
+            if ($stat['uid'] == $myuid) {
+                return chmod($filename, (fileperms($filename) | 0222) ^ 0222);
+            }
+
+            // Set only the group writable bit (file group is the same as us)
+            if ($stat['gid'] == $mygid) {
+                return chmod($filename, (fileperms($filename) | 0222) ^ 0022);
+            }
+
+            // Set the world writable bit (file isn't owned or grouped by us)
+            return chmod($filename, (fileperms($filename) | 0222) ^ 0002);
         }
     }
 
@@ -2362,10 +2385,7 @@ class util
         if ($stat === false) return false;
         if ($stat['uid'] == 0) // windows
             return true;
-        list($myuid, $mygid) = array(
-            getmyuid() ,
-            getmygid()
-        );
+        list($myuid, $mygid) = array(posix_geteuid(), posix_getgid());
         if ((bool)$mode) {
             if ($stat['uid'] == $myuid) return chmod($file, (fileperms($file) & 0777) | 0400);
             if ($stat['gid'] == $mygid) return chmod($file, (fileperms($file) & 0777) | 0440);
@@ -2391,10 +2411,7 @@ class util
         if ($stat === false) return false;
         if ($stat['uid'] == 0) // windows
             return true;
-        list($myuid, $mygid) = array(
-            getmyuid() ,
-            getmygid()
-        );
+        list($myuid, $mygid) = array(posix_geteuid(), posix_getgid());
         if ((bool)$mode) {
             if ($stat['uid'] == $myuid) return chmod($file, (fileperms($file) & 0777) | 0100);
             if ($stat['gid'] == $mygid) return chmod($file, (fileperms($file) & 0777) | 0110);

@@ -681,8 +681,10 @@ class UtilityPHPTest extends PHPUnit_Framework_TestCase
 
     public function test_full_permissions()
     {
-        if (strncasecmp(PHP_OS, 'WIN', 3) === 0)
+        if (strncasecmp(PHP_OS, 'WIN', 3) === 0) {
            $this->markTestSkipped('This functionality is not working on Windows.');
+        }
+
         $this->assertEquals('lr--r--r--', util::full_permissions('/tmp/file.txt', octdec('120444')));
         $this->assertEquals('ur--r--r--', util::full_permissions('/tmp/file.txt', octdec('000444')));
         $this->assertEquals('srwxr-xr-x', util::full_permissions('/tmp/file.txt', octdec('140755')));
@@ -894,16 +896,26 @@ class UtilityPHPTest extends PHPUnit_Framework_TestCase
 
     }
 
-    public function test_set_writable() {
-        if (strncasecmp(PHP_OS, 'WIN', 3) === 0)
-            $this->markTestSkipped('Writability is not a problem on Windows');
+    public function test_set_writable()
+    {
+        if (strncasecmp(PHP_OS, 'WIN', 3) === 0) {
+           $this->markTestSkipped('This functionality is not working on Windows.');
+        }
+
         $dirname = dirname(__FILE__);
-        $file = $dirname . '/test1';
+        $file = $dirname . '/test7';
         touch($file);
+
         $this->assertTrue(is_writable($file));
+
+        var_dump(util::set_writable($file, false));
         clearstatcache();
-        util::set_writable($file, false);
         $this->assertFalse(is_writable($file));
+
+        util::set_writable($file, true);
+        clearstatcache();
+        $this->assertTrue(is_writable($file));
+
         unlink($file);
     }
 
