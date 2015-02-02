@@ -1000,6 +1000,45 @@ class UtilityPHPTest extends PHPUnit_Framework_TestCase
         $this->assertFalse(file_exists($symlink), 'Could not delete a symlinked directory.');
         util::rmdir($dir, true);
         $this->assertFalse(is_dir($dir), 'Could not delete a directory with a symlinked directory inside of it.');
+    }
 
+    public function test_get_current_url()
+    {
+        $expected = 'http://test.dev/test.php?foo=bar';
+        $expectedAuth = 'http://admin:123@test.dev/test.php?foo=bar';
+        $expectedPort = 'http://test.dev:443/test.php?foo=bar';
+        $expectedPort2 = 'https://test.dev:80/test.php?foo=bar';
+        $expectedSSL = 'https://test.dev/test.php?foo=bar';
+
+        $_SERVER['HTTP_HOST'] = 'test.dev';
+        $_SERVER['SERVER_PORT'] = 80;
+        $_SERVER['REQUEST_URI'] = '/test.php?foo=bar';
+        $_SERVER['QUERY_STRING'] = 'foo=bar';
+        $_SERVER['PHP_SELF'] = '/test.php';
+
+        // Test regular.
+        $this->assertEquals($expected, util::get_current_url());
+
+        // Test server auth.
+        $_SERVER['PHP_AUTH_USER'] = 'admin';
+        $_SERVER['PHP_AUTH_PW'] = '123';
+        $this->assertEquals($expectedAuth, util::get_current_url());
+        unset($_SERVER['PHP_AUTH_USER']);
+        unset($_SERVER['PHP_AUTH_PW']);
+
+        // Test port.
+        $_SERVER['SERVER_PORT'] = 443;
+        $this->assertEquals($expectedPort, util::get_current_url());
+
+        // Test SSL.
+        $_SERVER['HTTPS'] = 'on';
+        $this->assertEquals($expectedSSL, util::get_current_url());
+        $_SERVER['SERVER_PORT'] = 80;
+        $this->assertEquals($expectedPort2, util::get_current_url());
+        unset($_SERVER['HTTPS']);
+
+        // Test no $_SERVER['REQUEST_URI'] (e.g., MS IIS).
+        unset($_SERVER['REQUEST_URI']);
+        $this->assertEquals($expected, util::get_current_url());
     }
 }
