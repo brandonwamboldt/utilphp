@@ -449,6 +449,16 @@ class UtilityPHPTest extends PHPUnit_Framework_TestCase
 
     public function test_number_to_word()
     {
+        try {
+            util::number_to_word('junk data');
+            $this->fail('Accepted junk data');
+        } catch(\LogicException $e) {
+            $this->assertEquals('Not a number', $e->getMessage());
+        }
+
+        // Partially numeric.
+        $this->assertEquals('', util::number_to_word('1a'));
+
         // Decimals
         $this->assertEquals( 'five point zero five', util::number_to_word('5.05') );
         $this->assertEquals( 'zero point eight', util::number_to_word( 0.8 ) );
