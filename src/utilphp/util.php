@@ -1355,6 +1355,8 @@ class util
             $groups2 = array();
 
             foreach ($groups as $group) {
+                $group[1] = isset($group[1]) ? $group[1] : null;
+                $group[2] = isset($group[2]) ? $group[2] : null;
                 $groups2[] = self::numberToWordThreeDigits($group[0], $group[1], $group[2]);
             }
 
@@ -1503,6 +1505,11 @@ class util
         }
     }
 
+    /**
+     * @param $digit
+     * @return string
+     * @throws \LogicException
+     */
     protected static function numberToWordConvertDigit($digit)
     {
         switch ($digit) {
@@ -1526,6 +1533,8 @@ class util
                 return 'eight';
             case '9':
                 return 'nine';
+            default:
+                throw new \LogicException('Not a number');
         }
     }
 
