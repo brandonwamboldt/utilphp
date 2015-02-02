@@ -702,17 +702,16 @@ class util
         if ($data === 'N;') {
             return true;
         }
+        // Is it a serialized boolean?
+        elseif ($data === 'b:0;' || $data === 'b:1;') {
+            return true;
+        }
 
         $length = strlen($data);
 
         // Check some basic requirements of all serialized strings
         if ($length < 4 || $data[1] !== ':' || ($data[$length - 1] !== ';' && $data[$length - 1] !== '}')) {
             return false;
-        }
-
-        // Boolean values
-        if ($data === 'b:0;' || $data === 'b:1;') {
-            return true;
         }
 
         return @unserialize($data) !== false;
