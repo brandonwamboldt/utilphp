@@ -9,36 +9,19 @@ and can be run in your web browser.
 
 PHP Unit >= 3.5.6
 
-    pear channel-discover pear.phpunit.de
-    pear install phpunit/PHPUnit
+#### Installation of PHPUnit 
 
-vfsStream
+    # Download the PHPUnit phar.
+    wget https://phar.phpunit.de/phpunit.phar
 
-    pear channel-discover pear.bovigo.org
-    pear install bovigo/vfsStream-beta
+    # You can just run it locally. (Preferred for Windows)
+    php phpunit.phar --version
 
-
-#### Installation of PEAR and PHPUnit on Ubuntu
-
-  Installation on Ubuntu requires a few steps. Depending on your setup you may
-  need to use 'sudo' to install these. Mileage may vary but these steps are a
-  good start.
-
-    # Install the PEAR package
-    sudo apt-get install php-pear
-
-    # Add a few sources to PEAR
-    pear channel-discover pear.phpunit.de
-    pear channel-discover pear.symfony-project.com
-    pear channel-discover components.ez.no
-    pear channel-discover pear.bovigo.org
-
-    # Finally install PHPUnit and vfsStream (including dependencies)
-    pear install --alldeps phpunit/PHPUnit
-    pear install --alldeps bovigo/vfsStream-beta
-
-    # Finally, run 'phpunit' from within the ./tests directory
-    # and you should be on your way!
+    # Or install it system-wide.
+    mv phpunit.phar phpunit
+    chmod +x phpunit
+    sudo mv phpunit /usr/local/bin
+    phpunit --version
 
 ## Test Suites:
 

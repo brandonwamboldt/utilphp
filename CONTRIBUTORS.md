@@ -22,6 +22,7 @@ The following developers and/or companies helped contribute to building util.php
 * PHP Experts, Inc. (http://www.phpexperts.pro/)
   - `array_flatten()`
   - `fix_broken_serialization()`
+  - Lots of unit tests.
 * Tony Ferrara (ircmaxwell, http://blog.ircmaxell.com/)
   - `seemsUtf8Regex()`: http://stackoverflow.com/a/11709412/430062
 * Askar ([@ARACOOOL](https://github.com/ARACOOOL))
@@ -34,6 +35,8 @@ The following developers and/or companies helped contribute to building util.php
 * Laravel Project (https://github.com/laravel/laravel)
   - `secure_random_string()`: http://trac.allenjb.me.uk/php/browser/tagi/vendor/laravel/framework/src/Illuminate/Support/Str.php?rev=87#L127
 * Abhimanyu Sharma ([@abhimanyusharma003](https://github.com/abhimanyusharma003))
+  - `limit_characters()`
+  - `limit_words()`
   - `match_string()`
 * Scott Baker ([@scottchiefbaker](https://github.com/scottchiefbaker))
 * [@sergserg](https://github.com/sergserg)

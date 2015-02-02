@@ -702,17 +702,16 @@ class util
         if ($data === 'N;') {
             return true;
         }
+        // Is it a serialized boolean?
+        elseif ($data === 'b:0;' || $data === 'b:1;') {
+            return true;
+        }
 
         $length = strlen($data);
 
         // Check some basic requirements of all serialized strings
         if ($length < 4 || $data[1] !== ':' || ($data[$length - 1] !== ';' && $data[$length - 1] !== '}')) {
             return false;
-        }
-
-        // Boolean values
-        if ($data === 'b:0;' || $data === 'b:1;') {
-            return true;
         }
 
         return @unserialize($data) !== false;
@@ -1355,6 +1354,8 @@ class util
             $groups2 = array();
 
             foreach ($groups as $group) {
+                $group[1] = isset($group[1]) ? $group[1] : null;
+                $group[2] = isset($group[2]) ? $group[2] : null;
                 $groups2[] = self::numberToWordThreeDigits($group[0], $group[1], $group[2]);
             }
 
@@ -1503,6 +1504,11 @@ class util
         }
     }
 
+    /**
+     * @param $digit
+     * @return string
+     * @throws \LogicException
+     */
     protected static function numberToWordConvertDigit($digit)
     {
         switch ($digit) {
@@ -1526,6 +1532,8 @@ class util
                 return 'eight';
             case '9':
                 return 'nine';
+            default:
+                throw new \LogicException('Not a number');
         }
     }
 
@@ -1928,7 +1936,7 @@ class util
         // Get the rest of the URL
         if (!isset($_SERVER['REQUEST_URI'])) {
             // Microsoft IIS doesn't set REQUEST_URI by default
-            $url .= substr($_SERVER['PHP_SELF'], 1);
+            $url .= $_SERVER['PHP_SELF'];
 
             if (isset($_SERVER['QUERY_STRING'])) {
                 $url .= '?' . $_SERVER['QUERY_STRING'];
@@ -2044,14 +2052,19 @@ class util
     }
 
     /**
-     * Returns the file permissions as a nice string, like -rw-r--r--
+     * Returns the file permissions as a nice string, like -rw-r--r-- or false
+     * if the file is not found.
      *
      * @param   string $file The name of the file to get permissions form
+     * @param   int $perms Numerical value of permissions to display as text.
      * @return  string
      */
     public static function full_permissions($file, $perms = null)
     {
         if (is_null($perms)) {
+            if (!file_exists($file)) {
+                return false;
+            }
             $perms = fileperms($file);
         }
 

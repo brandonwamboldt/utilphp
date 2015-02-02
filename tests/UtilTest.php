@@ -4,6 +4,19 @@ date_default_timezone_set('UTC');
 
 require_once dirname(__FILE__) . '/../util.php';
 
+class VarDumpExperiment
+{
+    public $public = 1;
+    protected $protected = 2;
+    private $private = 3;
+    public $data;
+
+    public function __construct()
+    {
+        $this->data = (object)array('a', 'b', 'c');
+    }
+}
+
 /**
  * PHPUnit test case for the util.php library
  *
@@ -150,15 +163,36 @@ class UtilityPHPTest extends PHPUnit_Framework_TestCase
         $obj->prop1 = 'Hello';
         $obj->prop2 = 'World';
 
+        $this->assertNull(util::maybe_unserialize(serialize(null)));
+        $this->assertFalse(util::maybe_unserialize(serialize(false)));
+
         $this->assertEquals( 'This is a string', util::maybe_unserialize( 'This is a string' ) );
         $this->assertEquals( 5.81, util::maybe_unserialize( 5.81 ) );
         $this->assertEquals( array(), util::maybe_unserialize( 'a:0:{}' ) );
         $this->assertEquals( $obj, util::maybe_unserialize( 'O:8:"stdClass":2:{s:5:"prop1";s:5:"Hello";s:5:"prop2";s:5:"World";}' ) );
         $this->assertEquals( array( 'test', 'blah', 'hello' => 'world', 'array' => $obj ), util::maybe_unserialize( 'a:4:{i:0;s:4:"test";i:1;s:4:"blah";s:5:"hello";s:5:"world";s:5:"array";O:8:"stdClass":2:{s:5:"prop1";s:5:"Hello";s:5:"prop2";s:5:"World";}}' ) );
+
+        // Test a broken serialization.
+        $expectedData = array(
+            'Normal',
+            'High-value Char: '.chr(231).'a-va?',   // High-value Char:  ça-va? [in ISO-8859-1]
+        );
+
+        $brokenSerialization = 'a:2:{i:0;s:6:"Normal";i:1;s:23:"High-value Char: ▒a-va?";}';
+
+        $unserializedData = util::maybe_unserialize($brokenSerialization);
+        $this->assertEquals($expectedData[0], $unserializedData[0], 'Did not properly fix the broken serialized data.');
+        $this->assertEquals(substr($expectedData[1], 0, 10), substr($unserializedData[1], 0, 10), 'Did not properly fix the broken serialized data.');
+
+        // Test unfixable serialization.
+        $unfixableSerialization = 'a:2:{i:0;s:6:"Normal";}';
+        $this->assertEquals($unfixableSerialization, util::maybe_unserialize($unfixableSerialization), 'Somehow the [previously?] impossible happened and utilphp thinks it has unserialized an unfixable serialization.');
     }
 
     public function test_is_serialized()
     {
+        $this->assertFalse( util::is_serialized(1) );
+        $this->assertFalse( util::is_serialized(null) );
         $this->assertFalse( util::is_serialized( 's:4:"test;' ) );
         $this->assertFalse( util::is_serialized( 'a:0:{}!' ) );
         $this->assertFalse( util::is_serialized( 'a:0' ) );
@@ -231,6 +265,9 @@ class UtilityPHPTest extends PHPUnit_Framework_TestCase
         $this->assertEquals( '/app/admin/users?action=edit&tab=personal&user=5', util::add_query_arg( 'user', 5, '/app/admin/users?action=edit&tab=personal' ) );
         $this->assertEquals( '/app/admin/users?action=edit&tab=personal&user=5', util::add_query_arg( array( 'user' => 5 ), '/app/admin/users?action=edit&tab=personal' ) );
 
+        // Ensure strips false.
+        $this->assertEquals('/index.php', util::add_query_arg('debug', false, '/index.php'));
+
         // With a URL fragment
         $this->assertEquals( '/app/admin/users?user=5#test', util::add_query_arg( 'user', 5, '/app/admin/users#test' ) );
 
@@ -244,7 +281,7 @@ class UtilityPHPTest extends PHPUnit_Framework_TestCase
         // Url encoding test
         $this->assertEquals( '/app/admin/users?param=containsa%26sym', util::add_query_arg( 'param', 'containsa&sym', '/app/admin/users' ) );
 
-        // Superglobal test
+        // If not provided, grab the URI from the server.
         $_SERVER['REQUEST_URI'] = '/app/admin/users';
         $this->assertEquals( '/app/admin/users?user=6', util::add_query_arg( array( 'user' => 6 ) ) );
         $this->assertEquals( '/app/admin/users?user=7', util::add_query_arg( 'user', 7 ) );
@@ -255,6 +292,29 @@ class UtilityPHPTest extends PHPUnit_Framework_TestCase
         $this->assertEquals( '/app/admin/users', util::remove_query_arg( 'user', '/app/admin/users?user=5' ) );
         $this->assertEquals( '/app/admin/users?action=edit', util::remove_query_arg( 'user', '/app/admin/users?action=edit&user=5' ) );
         $this->assertEquals( '/app/admin/users?user=5', util::remove_query_arg( array( 'tab', 'action' ), '/app/admin/users?action=edit&tab=personal&user=5' ) );
+    }
+
+    public function test_http_build_url()
+    {
+        $url = 'http://user:pass@example.com:8080/path/?query#fragment';
+
+        $expected = 'http://example.com/';
+        $actual = util::http_build_url($url, array(), util::HTTP_URL_STRIP_ALL);
+        $this->assertEquals($expected, $actual);
+
+        $expected = 'http://example.com:8080/path/?query#fragment';
+        $actual = util::http_build_url($url, array(), util::HTTP_URL_STRIP_AUTH);
+        $this->assertEquals($expected, $actual);
+
+        $this->assertEquals('https://dev.example.com/', util::http_build_url('http://example.com/', array('scheme' => 'https', 'host' => 'dev.example.com')));
+        $this->assertEquals('http://example.com/#hi', util::http_build_url('http://example.com/', array('fragment' => 'hi'), util::HTTP_URL_REPLACE));
+        $this->assertEquals('http://example.com/page', util::http_build_url('http://example.com/', array('path' => 'page'), util::HTTP_URL_JOIN_PATH));
+        $this->assertEquals('http://example.com/page', util::http_build_url('http://example.com', array('path' => 'page'), util::HTTP_URL_JOIN_PATH));
+        $this->assertEquals('http://example.com/?hi=Bro', util::http_build_url('http://example.com/', array('query' => 'hi=Bro'), util::HTTP_URL_JOIN_QUERY));
+        $this->assertEquals('http://example.com/?show=1&hi=Bro', util::http_build_url('http://example.com/?show=1', array('query' => 'hi=Bro'), util::HTTP_URL_JOIN_QUERY));
+
+        $this->assertEquals('http://admin@example.com/', util::http_build_url('http://example.com/', array('user' => 'admin')));
+        $this->assertEquals('http://admin:1@example.com/', util::http_build_url('http://example.com/', array('user' => 'admin', 'pass' => '1')));
     }
 
     public function test_str_to_bool()
@@ -332,6 +392,11 @@ class UtilityPHPTest extends PHPUnit_Framework_TestCase
         $this->assertEquals( array( 'Bob', 'Fred', 'Jane', 'Brandon', array( 'age' => 41 ) ), util::array_pluck( $array, 'name', TRUE, FALSE ) );
         $this->assertEquals( $obj_array_expect, util::array_pluck( $obj_array, 'name' ) );
         $this->assertEquals( array( 'Bob', 'Fred', 'Jane', 'Brandon' ), util::array_pluck( $obj_array, 'name', FALSE ) );
+
+        $expected = array('Bob', 'Fred', 'Jane', 'Brandon', 'invalid' => (object)array('age' => 41));
+        $this->assertEquals($expected, util::array_pluck($obj_array, 'name', FALSE, FALSE));
+        $expected = array('Bob', 'Fred', 'Jane', 'Brandon', array('age' => 41));
+        $this->assertEquals($expected, util::array_pluck($array, 'name', false, false));
     }
 
     public function test_htmlentities()
@@ -384,6 +449,16 @@ class UtilityPHPTest extends PHPUnit_Framework_TestCase
 
     public function test_number_to_word()
     {
+        try {
+            util::number_to_word('junk data');
+            $this->fail('Accepted junk data');
+        } catch(\LogicException $e) {
+            $this->assertEquals('Not a number', $e->getMessage());
+        }
+
+        // Partially numeric.
+        $this->assertEquals('', util::number_to_word('1a'));
+
         // Decimals
         $this->assertEquals( 'five point zero five', util::number_to_word('5.05') );
         $this->assertEquals( 'zero point eight', util::number_to_word( 0.8 ) );
@@ -681,25 +756,35 @@ class UtilityPHPTest extends PHPUnit_Framework_TestCase
 
     public function test_full_permissions()
     {
-        if (strncasecmp(PHP_OS, 'WIN', 3) === 0) {
-           $this->markTestSkipped('This functionality is not working on Windows.');
-        }
+        // Text a non-existant file.
+        $this->assertFalse(util::full_permissions('faker-123.blah'), 'Gave a permission value for a non-existant file.');
 
-        $this->assertEquals('lr--r--r--', util::full_permissions('/tmp/file.txt', octdec('120444')));
-        $this->assertEquals('ur--r--r--', util::full_permissions('/tmp/file.txt', octdec('000444')));
-        $this->assertEquals('srwxr-xr-x', util::full_permissions('/tmp/file.txt', octdec('140755')));
-        $this->assertEquals('drwxr-xr-x', util::full_permissions('/tmp/file.txt', octdec('40755')));
-        $this->assertEquals('brw-rw----', util::full_permissions('/tmp/file.txt', octdec('60660')));
-        $this->assertEquals('crw-rw----', util::full_permissions('/tmp/file.txt', octdec('20660')));
-        $this->assertEquals('prw-rw----', util::full_permissions('/tmp/file.txt', octdec('10660')));
-        $this->assertEquals('---x------', util::full_permissions('/tmp/file.txt', octdec('100100')));
-        $this->assertEquals('--w-------', util::full_permissions('/tmp/file.txt', octdec('100200')));
-        $this->assertEquals('--wx------', util::full_permissions('/tmp/file.txt', octdec('100300')));
-        $this->assertEquals('-r--------', util::full_permissions('/tmp/file.txt', octdec('100400')));
-        $this->assertEquals('-r-x------', util::full_permissions('/tmp/file.txt', octdec('100500')));
-        $this->assertEquals('-rw-------', util::full_permissions('/tmp/file.txt', octdec('100600')));
-        $this->assertEquals('-rwx------', util::full_permissions('/tmp/file.txt', octdec('100700')));
-        $this->assertEquals('drwxr-xr-x', util::full_permissions('/'));
+        // Test an existing file.
+        $expected = '-rw-rw-rw-';
+        $tempFile = tempnam(sys_get_temp_dir(), 'foo');
+        $this->assertTrue(chmod($tempFile, 0666), 'Oops. Could not change temp file\'s permissions to 0666.');
+        $this->assertEquals($expected, util::full_permissions($tempFile), 'Could not properly obtain permissions of an existing file.');
+        unlink($tempFile);
+
+        $this->assertEquals('lr--r--r--', util::full_permissions('fake-file-222', octdec('120444')));
+        $this->assertEquals('ur--r--r--', util::full_permissions('fake-file-222', octdec('000444')));
+        $this->assertEquals('srwxr-xr-x', util::full_permissions('fake-file-222', octdec('140755')));
+        $this->assertEquals('drwxr-xr-x', util::full_permissions('fake-file-222', octdec('40755')));
+        $this->assertEquals('brw-rw----', util::full_permissions('fake-file-222', octdec('60660')));
+        $this->assertEquals('crw-rw----', util::full_permissions('fake-file-222', octdec('20660')));
+        $this->assertEquals('prw-rw----', util::full_permissions('fake-file-222', octdec('10660')));
+        $this->assertEquals('---x------', util::full_permissions('fake-file-222', octdec('100100')));
+        $this->assertEquals('--w-------', util::full_permissions('fake-file-222', octdec('100200')));
+        $this->assertEquals('--wx------', util::full_permissions('fake-file-222', octdec('100300')));
+        $this->assertEquals('-r--------', util::full_permissions('fake-file-222', octdec('100400')));
+        $this->assertEquals('-r-x------', util::full_permissions('fake-file-222', octdec('100500')));
+        $this->assertEquals('-rw-------', util::full_permissions('fake-file-222', octdec('100600')));
+        $this->assertEquals('-rwx------', util::full_permissions('fake-file-222', octdec('100700')));
+
+        // Windows does not have the concept of /.
+        if (!defined('PHP_WINDOWS_VERSION_MAJOR')) {
+            $this->assertEquals('drwxr-xr-x', util::full_permissions('/'));
+        }
     }
 
     public function test_array_clean()
@@ -735,6 +820,18 @@ class UtilityPHPTest extends PHPUnit_Framework_TestCase
         $expect = '<span style="color:#588bff;">resource</span>("stream") <strong>"' . $input . '"</strong>';
         $this->assertEquals($expect, Util::var_dump_plain($input, -1));
         fclose($input);
+
+        // Test complex arrays.
+        $input = array(1, 2, 4, 6, 10 => 20, 100 => 200);
+        $actual = util::var_dump_plain($input, true);
+        $this->assertContains('<img id="include-php-', $actual);
+        $this->assertContains('<br />    100 => <span', $actual);
+        $this->assertContains('(</span><strong>200</strong><span style="color:#999;">)', $actual);
+
+        // Test complex objects.
+        $experiment = new VarDumpExperiment();
+        $actual = util::var_dump_plain($experiment, true);
+        $this->assertContains('1 => <span style="color:#588bff;">string</span><span style="color:#999;">(</span>1<span style="color:#999;">', $actual);
     }
 
     public function test_var_dump()
@@ -764,6 +861,15 @@ class UtilityPHPTest extends PHPUnit_Framework_TestCase
         $a->c = &$c;
         $b->c = &$c;
         $this->assertContains('*RECURSION DETECTED*', Util::var_dump($c, true));
+
+        // Test class scoping.
+        $experiment = new VarDumpExperiment();
+        $actual = util::var_dump($experiment, true);
+
+        $snippet = substr($actual, strrpos($actual, 'display:inline'));
+        $this->assertContains('"public"', $snippet);
+        $this->assertContains('"protected:protected"', $snippet);
+        $this->assertContains('"private:VarDumpExperiment:private"', $actual);
     }
 
     public function test_linkify()
@@ -771,6 +877,8 @@ class UtilityPHPTest extends PHPUnit_Framework_TestCase
         $input = 'great websites: http://www.google.com?param=test and http://yahoo.com/a/nested/folder';
         $expect = 'great websites: <a href="http://www.google.com?param=test">http://www.google.com?param=test</a> and <a href="http://yahoo.com/a/nested/folder">http://yahoo.com/a/nested/folder</a>';
         $this->assertEquals($expect, Util::linkify($input));
+
+        $this->assertEquals($expect, util::linkify($expect), 'linkify() tried to double linkify an href.');
     }
 
     public function test_start_with()
@@ -893,7 +1001,46 @@ class UtilityPHPTest extends PHPUnit_Framework_TestCase
         $this->assertFalse(file_exists($symlink), 'Could not delete a symlinked directory.');
         util::rmdir($dir, true);
         $this->assertFalse(is_dir($dir), 'Could not delete a directory with a symlinked directory inside of it.');
+    }
 
+    public function test_get_current_url()
+    {
+        $expected = 'http://test.dev/test.php?foo=bar';
+        $expectedAuth = 'http://admin:123@test.dev/test.php?foo=bar';
+        $expectedPort = 'http://test.dev:443/test.php?foo=bar';
+        $expectedPort2 = 'https://test.dev:80/test.php?foo=bar';
+        $expectedSSL = 'https://test.dev/test.php?foo=bar';
+
+        $_SERVER['HTTP_HOST'] = 'test.dev';
+        $_SERVER['SERVER_PORT'] = 80;
+        $_SERVER['REQUEST_URI'] = '/test.php?foo=bar';
+        $_SERVER['QUERY_STRING'] = 'foo=bar';
+        $_SERVER['PHP_SELF'] = '/test.php';
+
+        // Test regular.
+        $this->assertEquals($expected, util::get_current_url());
+
+        // Test server auth.
+        $_SERVER['PHP_AUTH_USER'] = 'admin';
+        $_SERVER['PHP_AUTH_PW'] = '123';
+        $this->assertEquals($expectedAuth, util::get_current_url());
+        unset($_SERVER['PHP_AUTH_USER']);
+        unset($_SERVER['PHP_AUTH_PW']);
+
+        // Test port.
+        $_SERVER['SERVER_PORT'] = 443;
+        $this->assertEquals($expectedPort, util::get_current_url());
+
+        // Test SSL.
+        $_SERVER['HTTPS'] = 'on';
+        $this->assertEquals($expectedSSL, util::get_current_url());
+        $_SERVER['SERVER_PORT'] = 80;
+        $this->assertEquals($expectedPort2, util::get_current_url());
+        unset($_SERVER['HTTPS']);
+
+        // Test no $_SERVER['REQUEST_URI'] (e.g., MS IIS).
+        unset($_SERVER['REQUEST_URI']);
+        $this->assertEquals($expected, util::get_current_url());
     }
 
     public function test_set_writable()
@@ -959,7 +1106,24 @@ class UtilityPHPTest extends PHPUnit_Framework_TestCase
     }
 
     public function test_get_user_directory() {
+        // Test for OS Default.
         $this->assertTrue(is_writable(util::get_user_directory()));
+
+        $oldServer = $_SERVER;
+        unset($_SERVER);
+        // Test for UNIX.
+        $_SERVER['HOME'] = '/home/unknown';
+        $this->assertEquals($_SERVER['HOME'], util::get_user_directory(), 'Could not get the user\'s home directory in UNIX.');
+        unset($_SERVER);
+
+        // Test for Windows.
+        $expected = 'X:\Users\ThisUser';
+        $_SERVER['HOMEDRIVE'] = 'X:';
+        $_SERVER['HOMEPATH'] = '\Users\ThisUser';
+        $this->assertEquals($expected, util::get_user_directory(), 'Could not get the user\'s home directory in Windows.');
+
+        // In case the tests are not being run in isolation.
+        $_SERVER = $oldServer;
     }
 
     public function test_directory_contents() {
