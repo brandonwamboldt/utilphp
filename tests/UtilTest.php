@@ -1095,13 +1095,19 @@ class UtilityPHPTest extends PHPUnit_Framework_TestCase
         }
 
         $dirname = dirname(__FILE__);
-        $file = $dirname . '/test1';
+        $file = $dirname . '/test9';
         touch($file);
-        util::set_executable($file, true);
-        $this->assertTrue(is_executable($file));
-        clearstatcache();
-        util::set_executable($file, false);
+
         $this->assertFalse(is_executable($file));
+
+        util::set_executable($file, true);
+        clearstatcache();
+        $this->assertTrue(is_executable($file));
+
+        util::set_executable($file, false);
+        clearstatcache();
+        $this->assertFalse(is_executable($file));
+
         unlink($file);
     }
 

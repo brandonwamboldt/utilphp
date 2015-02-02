@@ -2438,28 +2438,54 @@ class util
     }
 
     /**
-     * Setter for execuable bit of a file.
+     * Set the executable bit on a file to the minimum value that allows the
+     * user running PHP to read to it.
      *
-     * @param string $file File
-     * @param boolean $mode
+     * @param  string  $filename   The filename to set the executable bit on
+     * @param  boolean $executable Whether to make the file executable or not
      * @return boolean
      */
-    public static function set_executable($file, $mode)
+    public static function set_executable($filename, $executable = true)
     {
-        $stat = stat($file);
-        if ($stat === false) return false;
-        if ($stat['uid'] == 0) // windows
-            return true;
-        list($myuid, $mygid) = array(posix_geteuid(), posix_getgid());
-        if ((bool)$mode) {
-            if ($stat['uid'] == $myuid) return chmod($file, (fileperms($file) & 0777) | 0100);
-            if ($stat['gid'] == $mygid) return chmod($file, (fileperms($file) & 0777) | 0110);
-            return chmod($file, (fileperms($file) & 0777) | 0111);
+        $stat = stat($filename);
+
+        if ($stat === false) {
+            return false;
         }
-        else {
-            if ($stat['uid'] == $myuid) return chmod($file, (fileperms($file) & 0777) ^ 0100);
-            if ($stat['gid'] == $mygid) return chmod($file, (fileperms($file) & 0777) ^ 0110);
-            return chmod($file, (fileperms($file) & 0777) ^ 0111);
+
+        // We're on Windows
+        if ($stat['uid'] == 0 || strncasecmp(PHP_OS, 'WIN', 3) === 0) {
+            return true;
+        }
+
+        list($myuid, $mygid) = array(posix_geteuid(), posix_getgid());
+
+        if ($executable) {
+            // Set only the user readable bit (file is owned by us)
+            if ($stat['uid'] == $myuid) {
+                return chmod($filename, (fileperms($filename) | 0111) | 0100);
+            }
+
+            // Set only the group readable bit (file group is the same as us)
+            if ($stat['gid'] == $mygid) {
+                return chmod($filename, (fileperms($filename) | 0111) | 0110);
+            }
+
+            // Set the world readable bit (file isn't owned or grouped by us)
+            return chmod($filename, (fileperms($filename) | 0111) | 0111);
+        } else {
+            // Set only the user readable bit (file is owned by us)
+            if ($stat['uid'] == $myuid) {
+                return chmod($filename, (fileperms($filename) | 0111) ^ 0111);
+            }
+
+            // Set only the group readable bit (file group is the same as us)
+            if ($stat['gid'] == $mygid) {
+                return chmod($filename, (fileperms($filename) | 0111) ^ 0011);
+            }
+
+            // Set the world readable bit (file isn't owned or grouped by us)
+            return chmod($filename, (fileperms($filename) | 0111) ^ 0001);
         }
     }
 
