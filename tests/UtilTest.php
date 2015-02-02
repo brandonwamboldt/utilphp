@@ -172,6 +172,8 @@ class UtilityPHPTest extends PHPUnit_Framework_TestCase
 
     public function test_is_serialized()
     {
+        $this->assertFalse( util::is_serialized(1) );
+        $this->assertFalse( util::is_serialized(null) );
         $this->assertFalse( util::is_serialized( 's:4:"test;' ) );
         $this->assertFalse( util::is_serialized( 'a:0:{}!' ) );
         $this->assertFalse( util::is_serialized( 'a:0' ) );
