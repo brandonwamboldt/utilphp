@@ -2343,14 +2343,14 @@ class util
      */
     public static function set_writable($filename, $writable = true)
     {
-        $stat = stat($filename);
+        $stat = @stat($filename);
 
         if ($stat === false) {
             return false;
         }
 
         // We're on Windows
-        if ($stat['uid'] == 0 || strncasecmp(PHP_OS, 'WIN', 3) === 0) {
+        if (strncasecmp(PHP_OS, 'WIN', 3) === 0) {
             return true;
         }
 
@@ -2359,16 +2359,16 @@ class util
         if ($writable) {
             // Set only the user writable bit (file is owned by us)
             if ($stat['uid'] == $myuid) {
-                return chmod($filename, (fileperms($filename) | 0222) | 0200);
+                return chmod($filename, fileperms($filename) | 0200);
             }
 
             // Set only the group writable bit (file group is the same as us)
             if ($stat['gid'] == $mygid) {
-                return chmod($filename, (fileperms($filename) | 0222) | 0220);
+                return chmod($filename, fileperms($filename) | 0220);
             }
 
             // Set the world writable bit (file isn't owned or grouped by us)
-            return chmod($filename, (fileperms($filename) | 0222) | 0222);
+            return chmod($filename, fileperms($filename) | 0222);
         } else {
             // Set only the user writable bit (file is owned by us)
             if ($stat['uid'] == $myuid) {
@@ -2395,14 +2395,14 @@ class util
      */
     public static function set_readable($filename, $readable = true)
     {
-        $stat = stat($filename);
+        $stat = @stat($filename);
 
         if ($stat === false) {
             return false;
         }
 
         // We're on Windows
-        if ($stat['uid'] == 0 || strncasecmp(PHP_OS, 'WIN', 3) === 0) {
+        if (strncasecmp(PHP_OS, 'WIN', 3) === 0) {
             return true;
         }
 
@@ -2411,16 +2411,16 @@ class util
         if ($readable) {
             // Set only the user readable bit (file is owned by us)
             if ($stat['uid'] == $myuid) {
-                return chmod($filename, (fileperms($filename) | 0444) | 0400);
+                return chmod($filename, fileperms($filename) | 0400);
             }
 
             // Set only the group readable bit (file group is the same as us)
             if ($stat['gid'] == $mygid) {
-                return chmod($filename, (fileperms($filename) | 0444) | 0440);
+                return chmod($filename, fileperms($filename) | 0440);
             }
 
             // Set the world readable bit (file isn't owned or grouped by us)
-            return chmod($filename, (fileperms($filename) | 0444) | 0444);
+            return chmod($filename, fileperms($filename) | 0444);
         } else {
             // Set only the user readable bit (file is owned by us)
             if ($stat['uid'] == $myuid) {
@@ -2447,14 +2447,14 @@ class util
      */
     public static function set_executable($filename, $executable = true)
     {
-        $stat = stat($filename);
+        $stat = @stat($filename);
 
         if ($stat === false) {
             return false;
         }
 
         // We're on Windows
-        if ($stat['uid'] == 0 || strncasecmp(PHP_OS, 'WIN', 3) === 0) {
+        if (strncasecmp(PHP_OS, 'WIN', 3) === 0) {
             return true;
         }
 
@@ -2463,16 +2463,16 @@ class util
         if ($executable) {
             // Set only the user readable bit (file is owned by us)
             if ($stat['uid'] == $myuid) {
-                return chmod($filename, (fileperms($filename) | 0111) | 0100);
+                return chmod($filename, fileperms($filename) | 0100);
             }
 
             // Set only the group readable bit (file group is the same as us)
             if ($stat['gid'] == $mygid) {
-                return chmod($filename, (fileperms($filename) | 0111) | 0110);
+                return chmod($filename, fileperms($filename) | 0110);
             }
 
             // Set the world readable bit (file isn't owned or grouped by us)
-            return chmod($filename, (fileperms($filename) | 0111) | 0111);
+            return chmod($filename, fileperms($filename) | 0111);
         } else {
             // Set only the user readable bit (file is owned by us)
             if ($stat['uid'] == $myuid) {

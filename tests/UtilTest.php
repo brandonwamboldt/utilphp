@@ -1049,19 +1049,33 @@ class UtilityPHPTest extends PHPUnit_Framework_TestCase
            $this->markTestSkipped('This functionality is not working on Windows.');
         }
 
+        if (posix_geteuid() === 0) {
+           $this->markTestSkipped('These tests don\'t work when run as root');
+        }
+
+        $this->assertFalse(util::set_writable('/no/such/file'));
+
+        // Create a file to test with
         $dirname = dirname(__FILE__);
         $file = $dirname . '/test7';
         touch($file);
+        chmod($file, 0644);
 
+        // The file is owned by us so it should be writable
         $this->assertTrue(is_writable($file));
+        $this->assertEquals('-rw-r--r--', util::full_permissions($file));
 
+        // Toggle writable bit off for us
         util::set_writable($file, false);
         clearstatcache();
         $this->assertFalse(is_writable($file));
+        $this->assertEquals('-r--r--r--', util::full_permissions($file));
 
+        // Toggle writable bit back on for us
         util::set_writable($file, true);
         clearstatcache();
         $this->assertTrue(is_writable($file));
+        $this->assertEquals('-rw-r--r--', util::full_permissions($file));
 
         unlink($file);
     }
@@ -1071,6 +1085,12 @@ class UtilityPHPTest extends PHPUnit_Framework_TestCase
         if (strncasecmp(PHP_OS, 'WIN', 3) === 0) {
             $this->markTestSkipped('This functionality is not working on Windows.');
         }
+
+        if (posix_geteuid() === 0) {
+           $this->markTestSkipped('These tests don\'t work when run as root');
+        }
+
+        $this->assertFalse(util::set_readable('/no/such/file'));
 
         $dirname = dirname(__FILE__);
         $file = $dirname . '/test8';
@@ -1089,10 +1109,17 @@ class UtilityPHPTest extends PHPUnit_Framework_TestCase
         unlink($file);
     }
 
-    public function test_set_executable() {
+    public function test_set_executable()
+    {
         if (strncasecmp(PHP_OS, 'WIN', 3) === 0) {
             $this->markTestSkipped('This functionality is not working on Windows.');
         }
+
+        if (posix_geteuid() === 0) {
+           $this->markTestSkipped('These tests don\'t work when run as root');
+        }
+
+        $this->assertFalse(util::set_executable('/no/such/file'));
 
         $dirname = dirname(__FILE__);
         $file = $dirname . '/test9';
