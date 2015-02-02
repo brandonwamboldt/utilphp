@@ -752,31 +752,30 @@ class util
     /**
      * Add or remove query arguments to the URL.
      *
-     * @param  mixed  $newkey          Either newkey or an associative
-     *                                 array
-     * @param  mixed  $newvalue        Either newvalue or oldquery or uri
-     * @param  mixed  $oldquery_or_uri Optionally the old query or uri
+     * @param  mixed  $newKey          Either newkey or an associative array
+     * @param  mixed  $newValue        Either newvalue or oldquery or uri
+     * @param  mixed  $uri             URI or URL to append the queru/queries to.
      * @return string
      */
-    public static function add_query_arg($arg1, $arg2 = null, $arg3 = null)
+    public static function add_query_arg($newKey, $newValue = null, $uri = null)
     {
         // Was an associative array of key => value pairs passed?
-        if (is_array($arg1)) {
-            $newParams = $arg1;
+        if (is_array($newKey)) {
+            $newParams = $newKey;
 
             // Was the URL passed as an argument?
-            if (!is_null($arg2)) {
-                $uri = $arg2;
-            } elseif (!is_null($arg3)) {
-                $uri = $arg3;
+            if (!is_null($newValue)) {
+                $uri = $newValue;
+            } elseif (!is_null($uri)) {
+                $uri = $uri;
             } else {
                 $uri = self::array_get($_SERVER['REQUEST_URI'], '');
             }
         } else {
-            $newParams = array($arg1 => $arg2);
+            $newParams = array($newKey => $newValue);
 
             // Was the URL passed as an argument?
-            $uri = is_null($arg3) ? self::array_get($_SERVER['REQUEST_URI'], '') : $arg3;
+            $uri = is_null($uri) ? self::array_get($_SERVER['REQUEST_URI'], '') : $uri;
         }
 
         // Parse the URI into it's components
@@ -2332,5 +2331,153 @@ class util
         // @codeCoverageIgnoreStart
         return 'UTF-8';
         // @codeCoverageIgnoreEnd
+    }
+
+    /**
+     * Set the writable bit on a file to the minimum value that allows the user
+     * running PHP to write to it.
+     *
+     * @param  string  $filename The filename to set the writable bit on
+     * @param  boolean $writable Whether to make the file writable or not
+     * @return boolean
+     */
+    public static function set_writable($filename, $writable = true)
+    {
+        $stat = stat($filename);
+
+        if ($stat === false) {
+            return false;
+        }
+
+        // We're on Windows
+        if ($stat['uid'] == 0 || strncasecmp(PHP_OS, 'WIN', 3) === 0) {
+            return true;
+        }
+
+        list($myuid, $mygid) = array(posix_geteuid(), posix_getgid());
+
+        if ($writable) {
+            // Set only the user writable bit (file is owned by us)
+            if ($stat['uid'] == $myuid) {
+                return chmod($filename, (fileperms($filename) | 0222) | 0200);
+            }
+
+            // Set only the group writable bit (file group is the same as us)
+            if ($stat['gid'] == $mygid) {
+                return chmod($filename, (fileperms($filename) | 0222) | 0220);
+            }
+
+            // Set the world writable bit (file isn't owned or grouped by us)
+            return chmod($filename, (fileperms($filename) | 0222) | 0222);
+        } else {
+            // Set only the user writable bit (file is owned by us)
+            if ($stat['uid'] == $myuid) {
+                return chmod($filename, (fileperms($filename) | 0222) ^ 0222);
+            }
+
+            // Set only the group writable bit (file group is the same as us)
+            if ($stat['gid'] == $mygid) {
+                return chmod($filename, (fileperms($filename) | 0222) ^ 0022);
+            }
+
+            // Set the world writable bit (file isn't owned or grouped by us)
+            return chmod($filename, (fileperms($filename) | 0222) ^ 0002);
+        }
+    }
+
+    /**
+     * Setter for readable bit of a file.
+     *
+     * @param string $file File
+     * @param boolean $mode
+     * @return boolean
+     */
+    public static function set_readable($file, $mode)
+    {
+        $stat = stat($file);
+        if ($stat === false) return false;
+        if ($stat['uid'] == 0) // windows
+            return true;
+        list($myuid, $mygid) = array(posix_geteuid(), posix_getgid());
+        if ((bool)$mode) {
+            if ($stat['uid'] == $myuid) return chmod($file, (fileperms($file) & 0777) | 0400);
+            if ($stat['gid'] == $mygid) return chmod($file, (fileperms($file) & 0777) | 0440);
+            return chmod($file, (fileperms($file) & 0777) | 0444);
+        }
+        else {
+            if ($stat['uid'] == $myuid) return chmod($file, (fileperms($file) & 0777) ^ 0400);
+            if ($stat['gid'] == $mygid) return chmod($file, (fileperms($file) & 0777) ^ 0440);
+            return chmod($file, (fileperms($file) & 0777) ^ 0444);
+        }
+    }
+
+    /**
+     * Setter for execuable bit of a file.
+     *
+     * @param string $file File
+     * @param boolean $mode
+     * @return boolean
+     */
+    public static function set_executable($file, $mode)
+    {
+        $stat = stat($file);
+        if ($stat === false) return false;
+        if ($stat['uid'] == 0) // windows
+            return true;
+        list($myuid, $mygid) = array(posix_geteuid(), posix_getgid());
+        if ((bool)$mode) {
+            if ($stat['uid'] == $myuid) return chmod($file, (fileperms($file) & 0777) | 0100);
+            if ($stat['gid'] == $mygid) return chmod($file, (fileperms($file) & 0777) | 0110);
+            return chmod($file, (fileperms($file) & 0777) | 0111);
+        }
+        else {
+            if ($stat['uid'] == $myuid) return chmod($file, (fileperms($file) & 0777) ^ 0100);
+            if ($stat['gid'] == $mygid) return chmod($file, (fileperms($file) & 0777) ^ 0110);
+            return chmod($file, (fileperms($file) & 0777) ^ 0111);
+        }
+    }
+
+    /**
+     * Returns size of a given directory in bytes.
+     *
+     * @param string $dir
+     * @return integer
+     */
+    public static function directory_size($dir)
+    {
+        $size = 0;
+        foreach(new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($dir, \FilesystemIterator::CURRENT_AS_FILEINFO | \FilesystemIterator::SKIP_DOTS)) as $file => $key) {
+            if ($key->isFile()) {
+                $size += $key->getSize();
+            }
+        }
+        return $size;
+    }
+
+    /**
+     * Returns a home directory of current user.
+     *
+     * @return string
+     */
+    public static function get_user_directory()
+    {
+        if (isset($_SERVER['HOMEDRIVE'])) return $_SERVER['HOMEDRIVE'] . $_SERVER['HOMEPATH'];
+        else return $_SERVER['HOME'];
+    }
+
+    /**
+     * Returns all paths inside a directory.
+     *
+     * @param string $dir
+     * @return array
+     */
+    public static function directory_contents($dir)
+    {
+        $contents = array();
+        foreach(new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($dir, \FilesystemIterator::KEY_AS_PATHNAME | \FilesystemIterator::CURRENT_AS_FILEINFO | \FilesystemIterator::SKIP_DOTS)) as $pathname => $fi) {
+            $contents[] = $pathname;
+        }
+        natsort($contents);
+        return $contents;
     }
 }
