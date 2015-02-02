@@ -753,31 +753,30 @@ class util
     /**
      * Add or remove query arguments to the URL.
      *
-     * @param  mixed  $newkey          Either newkey or an associative
-     *                                 array
-     * @param  mixed  $newvalue        Either newvalue or oldquery or uri
-     * @param  mixed  $oldquery_or_uri Optionally the old query or uri
+     * @param  mixed  $newKey          Either newkey or an associative array
+     * @param  mixed  $newValue        Either newvalue or oldquery or uri
+     * @param  mixed  $uri             URI or URL to append the queru/queries to.
      * @return string
      */
-    public static function add_query_arg($arg1, $arg2 = null, $arg3 = null)
+    public static function add_query_arg($newKey, $newValue = null, $uri = null)
     {
         // Was an associative array of key => value pairs passed?
-        if (is_array($arg1)) {
-            $newParams = $arg1;
+        if (is_array($newKey)) {
+            $newParams = $newKey;
 
             // Was the URL passed as an argument?
-            if (!is_null($arg2)) {
-                $uri = $arg2;
-            } elseif (!is_null($arg3)) {
-                $uri = $arg3;
+            if (!is_null($newValue)) {
+                $uri = $newValue;
+            } elseif (!is_null($uri)) {
+                $uri = $uri;
             } else {
                 $uri = self::array_get($_SERVER['REQUEST_URI'], '');
             }
         } else {
-            $newParams = array($arg1 => $arg2);
+            $newParams = array($newKey => $newValue);
 
             // Was the URL passed as an argument?
-            $uri = is_null($arg3) ? self::array_get($_SERVER['REQUEST_URI'], '') : $arg3;
+            $uri = is_null($uri) ? self::array_get($_SERVER['REQUEST_URI'], '') : $uri;
         }
 
         // Parse the URI into it's components
