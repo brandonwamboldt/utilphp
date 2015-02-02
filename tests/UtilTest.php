@@ -1055,7 +1055,7 @@ class UtilityPHPTest extends PHPUnit_Framework_TestCase
 
         $this->assertTrue(is_writable($file));
 
-        var_dump(util::set_writable($file, false));
+        util::set_writable($file, false);
         clearstatcache();
         $this->assertFalse(is_writable($file));
 
@@ -1066,22 +1066,34 @@ class UtilityPHPTest extends PHPUnit_Framework_TestCase
         unlink($file);
     }
 
-    public function test_set_readable() {
-        if (strncasecmp(PHP_OS, 'WIN', 3) === 0)
-            $this->markTestSkipped('Readability is not a problem on Windows');
+    public function test_set_readable()
+    {
+        if (strncasecmp(PHP_OS, 'WIN', 3) === 0) {
+            $this->markTestSkipped('This functionality is not working on Windows.');
+        }
+
         $dirname = dirname(__FILE__);
-        $file = $dirname . '/test1';
+        $file = $dirname . '/test8';
         touch($file);
+
         $this->assertTrue(is_readable($file));
-        clearstatcache();
+
         util::set_readable($file, false);
+        clearstatcache();
         $this->assertFalse(is_readable($file));
+
+        util::set_readable($file, true);
+        clearstatcache();
+        $this->assertTrue(is_readable($file));
+
         unlink($file);
     }
 
     public function test_set_executable() {
-        if (strncasecmp(PHP_OS, 'WIN', 3) === 0)
-            $this->markTestSkipped('Executability is not a problem on Windows');
+        if (strncasecmp(PHP_OS, 'WIN', 3) === 0) {
+            $this->markTestSkipped('This functionality is not working on Windows.');
+        }
+
         $dirname = dirname(__FILE__);
         $file = $dirname . '/test1';
         touch($file);
