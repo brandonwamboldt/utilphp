@@ -294,6 +294,29 @@ class UtilityPHPTest extends PHPUnit_Framework_TestCase
         $this->assertEquals( '/app/admin/users?user=5', util::remove_query_arg( array( 'tab', 'action' ), '/app/admin/users?action=edit&tab=personal&user=5' ) );
     }
 
+    public function test_http_build_url()
+    {
+        $url = 'http://user:pass@example.com:8080/path/?query#fragment';
+
+        $expected = 'http://example.com/';
+        $actual = util::http_build_url($url, array(), util::HTTP_URL_STRIP_ALL);
+        $this->assertEquals($expected, $actual);
+
+        $expected = 'http://example.com:8080/path/?query#fragment';
+        $actual = util::http_build_url($url, array(), util::HTTP_URL_STRIP_AUTH);
+        $this->assertEquals($expected, $actual);
+
+        $this->assertEquals('https://dev.example.com/', util::http_build_url('http://example.com/', array('scheme' => 'https', 'host' => 'dev.example.com')));
+        $this->assertEquals('http://example.com/#hi', util::http_build_url('http://example.com/', array('fragment' => 'hi'), util::HTTP_URL_REPLACE));
+        $this->assertEquals('http://example.com/page', util::http_build_url('http://example.com/', array('path' => 'page'), util::HTTP_URL_JOIN_PATH));
+        $this->assertEquals('http://example.com/page', util::http_build_url('http://example.com', array('path' => 'page'), util::HTTP_URL_JOIN_PATH));
+        $this->assertEquals('http://example.com/?hi=Bro', util::http_build_url('http://example.com/', array('query' => 'hi=Bro'), util::HTTP_URL_JOIN_QUERY));
+        $this->assertEquals('http://example.com/?show=1&hi=Bro', util::http_build_url('http://example.com/?show=1', array('query' => 'hi=Bro'), util::HTTP_URL_JOIN_QUERY));
+
+        $this->assertEquals('http://admin@example.com/', util::http_build_url('http://example.com/', array('user' => 'admin')));
+        $this->assertEquals('http://admin:1@example.com/', util::http_build_url('http://example.com/', array('user' => 'admin', 'pass' => '1')));
+    }
+
     public function test_str_to_bool()
     {
         $this->assertTrue( util::str_to_bool( 'true' ) );
@@ -839,6 +862,8 @@ class UtilityPHPTest extends PHPUnit_Framework_TestCase
         $input = 'great websites: http://www.google.com?param=test and http://yahoo.com/a/nested/folder';
         $expect = 'great websites: <a href="http://www.google.com?param=test">http://www.google.com?param=test</a> and <a href="http://yahoo.com/a/nested/folder">http://yahoo.com/a/nested/folder</a>';
         $this->assertEquals($expect, Util::linkify($input));
+
+        $this->assertEquals($expect, util::linkify($expect), 'linkify() tried to double linkify an href.');
     }
 
     public function test_start_with()
