@@ -18,7 +18,7 @@
 
 <body>
     <div id="sidebar" class="interface">
-        <a class="toc_title" href="#">util.php <span class="version">(1.0.7)</span></a>
+        <a class="toc_title" href="#">util.php <span class="version">(1.1.0)</span></a>
 
         <a class="toc_title" href="#debug_functions">Debugging</a>
 
@@ -46,6 +46,7 @@
         <ul class="toc_section">
             <li>- <a href="#add_query_arg">add_query_arg</a></li>
             <li>- <a href="#get_current_url">get_current_url</a></li>
+            <li>- <a href="#http_build_url">http_build_url</a></li>
             <li>- <a href="#is_https">is_https</a></li>
             <li>- <a href="#remove_query_arg">remove_query_arg</a></li>
             <li>- <a href="#slugify">slugify</a></li>
@@ -57,10 +58,12 @@
             <li>- <a href="#htmlentities">htmlentities</a></li>
             <li>- <a href="#htmlspecialchars">htmlspecialchars</a></li>
             <li>- <a href="#linkify">linkify</a></li>
+            <li>- <a href="#match_string">match_string</a></li>
             <li>- <a href="#random_string">random_string</a></li>
             <li>- <a href="#number_to_word">number_to_word</a></li>
             <li>- <a href="#ordinal">ordinal</a></li>
             <li>- <a href="#remove_accents">remove_accents</a></li>
+            <li>- <a href="#secure_random_string">secure_random_string</a></li>
             <li>- <a href="#seems_utf8">seems_utf8</a></li>
             <li>- <a href="#safe_truncate">safe_truncate</a></li>
             <li>- <a href="#size_format">size_format</a></li>
@@ -70,17 +73,30 @@
             <li>- <a href="#sanitize_string">sanitize_string</a></li>
         </ul>
 
+
+        <a class="toc_title" href="#files">Files</a>
+
+        <ul class="toc_section">
+            <li>- <a href="#full_permissions">full_permissions</a></li>
+            <li>- <a href="#rmdir">rmdir</a></li>
+        </ul>
+
+        <a class="toc_title" href="#serialization">Serialization</a>
+
+        <ul class="toc_section">
+            <li>- <a href="#is_serialized">is_serialized</a></li>
+            <li>- <a href="#maybe_serialize">maybe_serialize</a></li>
+            <li>- <a href="#maybe_unserialize">maybe_unserialize</a></li>
+            <li>- <a href="#fix_broken_serialization">fix_broken_serialization</a></li>
+        </ul>
+
         <a class="toc_title" href="#other">Other</a>
 
         <ul class="toc_section">
             <li>- <a href="#force_download">force_download</a></li>
-            <li>- <a href="#full_permissions">full_permissions</a></li>
             <li>- <a href="#get_client_ip">get_client_ip</a></li>
             <li>- <a href="#get_gravatar">get_gravatar</a></li>
             <li>- <a href="#human_time_diff">human_time_diff</a></li>
-            <li>- <a href="#is_serialized">is_serialized</a></li>
-            <li>- <a href="#maybe_serialize">maybe_serialize</a></li>
-            <li>- <a href="#maybe_unserialize">maybe_unserialize</a></li>
             <li>- <a href="#nocache_headers">nocache_headers</a></li>
             <li>- <a href="#utf8_headers">utf8_headers</a></li>
             <li>- <a href="#validate_email">validate_email</a></li>
@@ -112,7 +128,7 @@
         </p>
 
         <p>
-            Included are 55+ functions that provide you with the ability to do common tasks much easier and more efficiently,
+            Included are 60+ functions that provide you with the ability to do common tasks much easier and more efficiently,
             without having to find that one comment on php.net where you know its been done already. Access superglobals
             without checking to see if certain indexes are set first and pass default values, use a nicely formatted var dump,
             validate emails, generate random strings, flatten an array, pull a single column out of a multidimensional array
@@ -134,7 +150,7 @@
         <h2>Downloads <i style="padding-left: 12px; font-size:12px;">(Right-click, and use "Save As")</i></h2>
 
         <p>
-            <a href="https://github.com/brandonwamboldt/utilphp/archive/1.0.7.zip">Stable Version (1.0.7)</a><br>
+            <a href="https://github.com/brandonwamboldt/utilphp/archive/1.1.0.zip">Stable Version (1.1.0)</a><br>
             <a href="https://github.com/brandonwamboldt/utilphp/zipball/master">Unstable Version (master)</a>
         </p>
 
@@ -158,7 +174,7 @@
         <p class="desc-text">
             Add the following dependency to your composer.json:
 
-            <pre>"brandonwamboldt/utilphp": "1.0.*"</pre>
+            <pre>"brandonwamboldt/utilphp": "1.1.*"</pre>
 
             When used with composer, the class is namespaced (<code>\utilphp\util</code>) instead of
             just <code>util</code>.
@@ -438,6 +454,52 @@ util::add_query_arg( [ 'user' => 5, 'action' => 'edit' ], '/admin/users' );
 =&gt; Returns false</pre>
                 </article>
 
+                <article id="http_build_url">
+                    <p>
+                        <span class="header">http_build_url</span>
+                        <code>
+                            <span class="util_class">util::</span><span class="func_name">http_build_url</span>([mixed $url[, mixed $parts[, int $flags = HTTP_URL_REPLACE[, array &amo;$new_url]]]])
+                        </code>
+                    </p>
+
+                    <p>
+                        Pure PHP implementation/polyfill for <a href="http://php.net/http_build_url">http_build_url</a>
+                        which requires pecl_http to be installed.
+                    </p>
+
+                    <p><strong>Usage:</strong></p>
+
+                    <pre>echo util::http_build_url("http://user@www.example.com/pub/index.php?a=b#files",
+    array(
+        "scheme" => "ftp",
+        "host" => "ftp.example.com",
+        "path" => "files/current/",
+        "query" => "a=c"
+    ),
+    HTTP_URL_STRIP_AUTH | HTTP_URL_JOIN_PATH | HTTP_URL_JOIN_QUERY | HTTP_URL_STRIP_FRAGMENT
+);</pre>
+
+                    <p>The above example will output:</p>
+
+                    <pre>ftp://ftp.example.com/pub/files/current/?a=c</pre>
+                </article>
+
+                <article id="is_https">
+                    <p>
+                        <span class="header">is_https</span>
+                        <code>
+                            <span class="util_class">util::</span><span class="func_name">is_https</span>()
+                        </code>
+                    </p>
+
+                    <p>Returns true if the current page is being loaded over https, false if it isn't</p>
+
+                    <p><strong>Usage:</strong></p>
+
+                    <pre>util::is_https();
+=&gt; Returns false</pre>
+                </article>
+
                 <article id="remove_query_arg">
                     <p>
                         <span class="header">remove_query_arg</span>
@@ -460,7 +522,7 @@ util::remove_query_arg( [ 'user', 'action'], '/admin/users?action=edit&amp;user=
                     <p>
                         <span class="header">slugify</span>
                         <code>
-                            <span class="util_class">util::</span><span class="func_name">slugify</span>(string <span class="param">$string</span>[, bool <span class="param">$css_mode</span> = FALSE])
+                            <span class="util_class">util::</span><span class="func_name">slugify</span>(string <span class="param">$string</span>[, string <span class="param">$separator</span> = "-", bool <span class="param">$css_mode</span> = FALSE])
                         </code>
                     </p>
 
@@ -475,7 +537,9 @@ util::remove_query_arg( [ 'user', 'action'], '/admin/users?action=edit&amp;user=
                     <p><strong>Usage:</strong></p>
 
                     <pre>util::slugify('This is a random --string with an Ãccent');
-=&gt; Returns 'this-is-a-random-string-with-an-accent'</pre>
+=&gt; Returns 'this-is-a-random-string-with-an-accent'
+util::slugify('Another String', '.');
+=&gt; Returns 'another.string'</pre>
                 </article>
             </section>
 
@@ -534,6 +598,26 @@ util::remove_query_arg( [ 'user', 'action'], '/admin/users?action=edit&amp;user=
 
                     <pre>util::linkify('this string has a link to www.google.com');
 =&gt; Returns 'this string has a link to &lt;a href="http://wwww.google.com/"&gt;www.google.com&lt;/a&gt;'</pre>
+                </article>
+
+                <article id="match_string">
+                    <p>
+                        <span class="header">match_string</span>
+                        <code>
+                            <span class="util_class">util::</span><span class="func_name">match_string</span>(string <span class="param">$pattern</span>, string <span class="param">$string</span>[, bool <span class="param">$caseSensitive</span> = true])
+                        </code>
+                    </p>
+
+                    <p>
+                        Check if a string matches a given pattern. You can use '*' as a wildcard character.
+                    </p>
+
+                    <p><strong>Usage:</strong></p>
+
+                    <pre>util::match_string("test/*", "test/my/test");
+=&gt; Returns true
+util::match_string("test/", "test/my/test");
+=&gt; Returns false</pre>
                 </article>
 
                 <article id="random_string">
@@ -600,6 +684,22 @@ util::remove_query_arg( [ 'user', 'action'], '/admin/users?action=edit&amp;user=
 
                     <pre>util::remove_accents('&#192;ccent');
 =&gt; Returns 'Accent'</pre>
+                </article>
+
+                <article id="secure_random_string">
+                    <p>
+                        <span class="header">secure_random_string</span>
+                        <code>
+                            <span class="util_class">util::</span><span class="func_name">secure_random_string</span>(int <span class="param">$length</span>)
+                        </code>
+                    </p>
+
+                    <p>Generate a random string of characters. Will attempt to use a secure source (openssl).</p>
+
+                    <p><strong>Usage:</strong></p>
+
+                    <pre>util::secure_random_string(16);
+=&gt; Returns '5bB1RJH0cQhNjviT'</pre>
                 </article>
 
                 <article id="seems_utf8">
@@ -723,6 +823,117 @@ util::remove_query_arg( [ 'user', 'action'], '/admin/users?action=edit&amp;user=
                 </article>
             </section>
 
+            <h2 id="files">Files</h2>
+
+            <section>
+                <article id="full_permissions">
+                    <p>
+                        <span class="header">full_permissions</span>
+                        <code>
+                            <span class="util_class">util::</span><span class="func_name">full_permissions</span>(string <span class="param">$file</span>)
+                        </code>
+                    </p>
+
+                    <p>Returns the file permissions as a nice string, like -rw-r--r--</p>
+
+                    <p><strong>Usage:</strong></p>
+
+                    <pre>util::full_permissions('/etc/passwd');
+=&gt; Returns '-rw-r--r--'</pre>
+                </article>
+
+                <article id="rmdir">
+                    <p>
+                        <span class="header">rmdir</span>
+                        <code>
+                            <span class="util_class">util::</span><span class="func_name">rmdir</span>(string <span class="param">$dir</span>[, bool <span class="param">$traverseSymlinks</span> = false])
+                        </code>
+                    </p>
+
+                    <p>Recursively deletes a directories (including all contents).</p>
+
+                    <p><strong>Usage:</strong></p>
+
+                    <pre>util::rmdir('/tmp/working/dir');
+=&gt; Returns true</pre>
+                </article>
+            </section>
+
+            <h2 id="serialization">Serialization</h2>
+
+            <section>
+                <article id="is_serialized">
+                    <p>
+                        <span class="header">is_serialized</span>
+                        <code>
+                            <span class="util_class">util::</span><span class="func_name">is_serialized</span>(mixed <span class="param">$data</span>)
+                        </code>
+                    </p>
+
+                    <p>Checks to see if a given variable is a seralized data structure</p>
+
+                    <p><strong>Usage:</strong></p>
+
+                    <pre>util::is_serialized( 'a:0:{}' );
+=&gt; Returns true</pre>
+                </article>
+
+                <article id="maybe_serialize">
+                    <p>
+                        <span class="header">maybe_serialize</span>
+                        <code>
+                            <span class="util_class">util::</span><span class="func_name">maybe_serialize</span>(mixed <span class="param">$data</span>)
+                        </code>
+                    </p>
+
+                    <p>Serialize data, if needed to store in plaintext (Arrays or objects)</p>
+
+                    <p><strong>Usage:</strong></p>
+
+                    <pre>util::maybe_serialize( 5 );
+=&gt; Returns 5
+util::maybe_serialize( array() );
+=&gt; Returns 'a:0:{}'</pre>
+                </article>
+
+                <article id="maybe_unserialize">
+                    <p>
+                        <span class="header">maybe_unserialize</span>
+                        <code>
+                            <span class="util_class">util::</span><span class="func_name">maybe_unserialize</span>(mixed <span class="param">$data</span>)
+                        </code>
+                    </p>
+
+                    <p>Unserialize data, if it's a serialized string</p>
+
+                    <p><strong>Usage:</strong></p>
+
+                    <pre>util::maybe_unserialize(5);
+=&gt; Returns 5
+util::maybe_unserialize("a:0:{}");
+=&gt; Returns array()</pre>
+                </article>
+
+                <article id="fix_broken_serialization">
+                    <p>
+                        <span class="header">fix_broken_serialization</span>
+                        <code>
+                            <span class="util_class">util::</span><span class="func_name">fix_broken_serialization</span>(mixed <span class="param">$data</span>)
+                        </code>
+                    </p>
+
+                    <p>
+                        Attempt to fix a broken serialization string (e.g. where string offsets are incorrect). Can fix
+                        errors that frequently occur with mismatched character sets or higher-than-ASCII characters.
+                    </p>
+
+                    <p><strong>Usage:</strong></p>
+
+                    <pre>util::fix_broken_serialization('a:1:{s:4:"test";s:4:"abc";}');
+=&gt; Returns 'a:1:{s:4:"test";s:3:"abc";}'</pre>
+                </article>
+            </section>
+
             <h2 id="other">Other</h2>
 
             <section>
@@ -743,22 +954,6 @@ util::remove_query_arg( [ 'user', 'action'], '/admin/users?action=edit&amp;user=
 
                     <pre>util::force_download( 'export.csv', file_get_contents( 'securefile.csv' ) );
 =&gt; The user will be prompted to download the file</pre>
-                </article>
-
-                <article id="full_permissions">
-                    <p>
-                        <span class="header">full_permissions</span>
-                        <code>
-                            <span class="util_class">util::</span><span class="func_name">full_permissions</span>(string <span class="param">$file</span>)
-                        </code>
-                    </p>
-
-                    <p>Returns the file permissions as a nice string, like -rw-r--r--</p>
-
-                    <p><strong>Usage:</strong></p>
-
-                    <pre>util::full_permissions('/etc/passwd');
-=&gt; Returns '-rw-r--r--'</pre>
                 </article>
 
                 <article id="get_client_ip">
@@ -812,58 +1007,6 @@ util::remove_query_arg( [ 'user', 'action'], '/admin/users?action=edit&amp;user=
 =&gt; Returns '2 hours ago'
 util::human_time_diff(time() - 7400, '', TRUE);
 =&gt; Returns 'two hours ago'</pre>
-                </article>
-
-                <article id="is_serialized">
-                    <p>
-                        <span class="header">is_serialized</span>
-                        <code>
-                            <span class="util_class">util::</span><span class="func_name">is_serialized</span>(mixed <span class="param">$data</span>)
-                        </code>
-                    </p>
-
-                    <p>Checks to see if a given variable is a seralized data structure</p>
-
-                    <p><strong>Usage:</strong></p>
-
-                    <pre>util::is_serialized( 'a:0:{}' );
-=&gt; Returns true</pre>
-                </article>
-
-                <article id="maybe_serialize">
-                    <p>
-                        <span class="header">maybe_serialize</span>
-                        <code>
-                            <span class="util_class">util::</span><span class="func_name">maybe_serialize</span>(mixed <span class="param">$data</span>)
-                        </code>
-                    </p>
-
-                    <p>Serialize data, if needed to store in plaintext (Arrays or objects)</p>
-
-                    <p><strong>Usage:</strong></p>
-
-                    <pre>util::maybe_serialize( 5 );
-=&gt; Returns 5
-util::maybe_serialize( array() );
-=&gt; Returns 'a:0:{}'</pre>
-                </article>
-
-                <article id="maybe_unserialize">
-                    <p>
-                        <span class="header">maybe_unserialize</span>
-                        <code>
-                            <span class="util_class">util::</span><span class="func_name">maybe_unserialize</span>(mixed <span class="param">$data</span>)
-                        </code>
-                    </p>
-
-                    <p>Unserialize data, if it's a serialized string</p>
-
-                    <p><strong>Usage:</strong></p>
-
-                    <pre>util::maybe_unserialize( 5 );
-=&gt; Returns 5
-util::maybe_unserialize( a:0:{} );
-=&gt; Returns array()</pre>
                 </article>
 
                 <article id="nocache_headers">
@@ -991,6 +1134,29 @@ util::validate_email( 'not an email' );
             </section>
 
             <h2 id="changelog">Change Log</h2>
+
+            <!--
+            Find: `(.*?)`
+            Replace: <code>\1<\/code>
+
+            Find: \[(.*?)\]\((.*?)\)
+            Replace: <a href="\2">\1</a>
+            -->
+
+            <p class="desc-text">
+                <span class="header">1.1.0</span><br>
+
+                This release introduces a deprecation notice for <code>slugify()</code>, please update your code.<br><br>
+
+                - Added a cryptographically secure random string function <code>secure_random_string</code>. Thanks to @abhimanyusharma003 via <a href="https://github.com/brandonwamboldt/utilphp/pull/53">Pull Request #53</a><br>
+                - Added <code>limit_characters</code> and <code>limit_words</code> functions. Thanks to @abhimanyusharma003 via <a href="https://github.com/brandonwamboldt/utilphp/pull/55">Pull Request #55</a><br>
+                - Added <code>rmdir</code> method to recursively delete a directory. Thanks to @ARACOOOL via <a href="https://github.com/brandonwamboldt/utilphp/pull/56">Pull Request #56</a><br>
+                - Added <code>set_executable</code>, <code>set_readable</code>, <code>set_writable</code>, <code>directory_size</code>, <code>directory_contents</code> and <code>get_user_dir</code> functions. Thanks to @sergserg via <a href="https://github.com/brandonwamboldt/utilphp/pull/70">Pull Request #70</a><br>
+                - Changed parameter ordering for <code>slugify</code>, <code>$css_mode</code> is now the third argument. For backwards compatibility, the old order will still work but it will generate an <code>E_USER_DEPRECATED</code> warning. Thanks to @abhimanyusharma003 via <a href="https://github.com/brandonwamboldt/utilphp/pull/71">Pull Request #71</a><br>
+                - Added <code>match_string</code> method. Thanks to @abhimanyusharma003 via <a href="https://github.com/brandonwamboldt/utilphp/pull/72">Pull Request #72</a><br>
+                - Renamed internal methods (protected ones) for PSR-2 compliance<br>
+                - General performance improvements, code quality improvements, and increased unit test coverage (special thanks to @hopeseekr for getting us near 100% coverage)<br>
+            </p>
 
             <p class="desc-text">
                 <span class="header">1.0.7</span><br>
