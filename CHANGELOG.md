@@ -4,6 +4,9 @@ Change Log
 1.2.0
 -----
 
+This release introduces a backwards incompatible change with `add_query_arg()`.
+
+- `add_query_arg` now adds a valueless parameter to the URL if the value for the parameter is `null`
 
 1.1.0
 -----
