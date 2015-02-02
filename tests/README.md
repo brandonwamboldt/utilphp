@@ -9,7 +9,7 @@ and can be run in your web browser.
 
 PHP Unit >= 3.5.6
 
-#### Installation of PHPUnit 
+#### Installation of PHPUnit
 
     # Download the PHPUnit phar.
     wget https://phar.phpunit.de/phpunit.phar
@@ -25,6 +25,15 @@ PHP Unit >= 3.5.6
 
 ## Test Suites:
 
-Since util.php is a library meant to just be dropped into any project, it is
-entirely self-contained and very easy to test. Just open tests/util.php in your
-web browser and the tests will run (Must be run from a web server).
+util.php includes a phpunit config file, so just run `phpunit` from the working
+directory to run the test suite.
+
+```
+phpunit
+```
+
+If you want code coverage reports, use the following:
+
+```
+phpunit --coverage-html ./report
+```
