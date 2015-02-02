@@ -1937,7 +1937,7 @@ class util
         // Get the rest of the URL
         if (!isset($_SERVER['REQUEST_URI'])) {
             // Microsoft IIS doesn't set REQUEST_URI by default
-            $url .= substr($_SERVER['PHP_SELF'], 1);
+            $url .= $_SERVER['PHP_SELF'];
 
             if (isset($_SERVER['QUERY_STRING'])) {
                 $url .= '?' . $_SERVER['QUERY_STRING'];
