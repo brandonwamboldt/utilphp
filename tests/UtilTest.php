@@ -799,6 +799,15 @@ class UtilityPHPTest extends PHPUnit_Framework_TestCase
         $a->c = &$c;
         $b->c = &$c;
         $this->assertContains('*RECURSION DETECTED*', Util::var_dump($c, true));
+
+        // Test class scoping.
+        $experiment = new VarDumpExperiment();
+        $actual = util::var_dump($experiment, true);
+
+        $snippet = substr($actual, strrpos($actual, 'display:inline'));
+        $this->assertContains('"public"', $snippet);
+        $this->assertContains('"protected:protected"', $snippet);
+        $this->assertContains('"private:VarDumpExperiment:private"', $actual);
     }
 
     public function test_linkify()
