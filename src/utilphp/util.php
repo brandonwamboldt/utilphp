@@ -795,15 +795,22 @@ class util
             $queryParams = $newParams;
         }
 
-        // Strip out any query params that are set to false
+        // Strip out any query params that are set to false.
+        // Properly handle valueless parameters.
         foreach ($queryParams as $param => $value) {
             if ($value === false) {
                 unset($queryParams[$param]);
+            } elseif ($value === null) {
+                $queryParams[$param] = '';
             }
         }
 
         // Re-construct the query string
         $puri['query'] = http_build_query($queryParams);
+
+        // Strip = from valueless parameters.
+        $puri['query'] = preg_replace('/=(?=&|$)/', '', $puri['query']);
+
 
         // Re-construct the entire URL
         $nuri = self::http_build_url($puri);
@@ -830,10 +837,10 @@ class util
     public static function remove_query_arg($keys, $uri = null)
     {
         if (is_array($keys)) {
-            return self::add_query_arg(array_combine($keys, array_fill(0, count($keys), null)), $uri);
+            return self::add_query_arg(array_combine($keys, array_fill(0, count($keys), false)), $uri);
         }
 
-        return self::add_query_arg(array($keys => null), $uri);
+        return self::add_query_arg(array($keys => false), $uri);
     }
 
     /**
