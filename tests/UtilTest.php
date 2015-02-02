@@ -1105,7 +1105,24 @@ class UtilityPHPTest extends PHPUnit_Framework_TestCase
     }
 
     public function test_get_user_directory() {
+        // Test for OS Default.
         $this->assertTrue(is_writable(util::get_user_directory()));
+
+        $oldServer = $_SERVER;
+        unset($_SERVER);
+        // Test for UNIX.
+        $_SERVER['HOME'] = '/home/unknown';
+        $this->assertEquals($_SERVER['HOME'], util::get_user_directory(), 'Could not get the user\'s home directory in UNIX.');
+        unset($_SERVER);
+
+        // Test for Windows.
+        $expected = 'X:\Users\ThisUser';
+        $_SERVER['HOMEDRIVE'] = 'X:';
+        $_SERVER['HOMEPATH'] = '\Users\ThisUser';
+        $this->assertEquals($expected, util::get_user_directory(), 'Could not get the user\'s home directory in Windows.');
+
+        // In case the tests are not being run in isolation.
+        $_SERVER = $oldServer;
     }
 
     public function test_directory_contents() {
