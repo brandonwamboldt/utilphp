@@ -746,6 +746,10 @@ class UtilityPHPTest extends PHPUnit_Framework_TestCase
 
     public function test_full_permissions()
     {
+        // Text a non-existant file.
+        $this->assertFalse(util::full_permissions('faker-123.blah'), 'Gave a permission value for a non-existant file.');
+
+        // Test an existing file.
         $expected = '-rw-rw-rw-';
         $tempFile = tempnam(sys_get_temp_dir(), 'foo');
         $this->assertEquals($expected, util::full_permissions($tempFile), 'Could not properly obtain permissions of an existing file.');
