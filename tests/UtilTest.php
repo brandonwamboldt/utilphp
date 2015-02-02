@@ -231,6 +231,10 @@ class UtilityPHPTest extends PHPUnit_Framework_TestCase
         $this->assertEquals( '/app/admin/users?action=edit&tab=personal&user=5', util::add_query_arg( 'user', 5, '/app/admin/users?action=edit&tab=personal' ) );
         $this->assertEquals( '/app/admin/users?action=edit&tab=personal&user=5', util::add_query_arg( array( 'user' => 5 ), '/app/admin/users?action=edit&tab=personal' ) );
 
+        // With valueless parameters.
+        $this->assertEquals( '/index.php?debug', util::add_query_arg( 'debug', null, '/index.php' ) );
+        $this->assertEquals( '/index.php?debug#hash', util::add_query_arg( 'debug', null, '/index.php#hash' ) );
+
         // With a URL fragment
         $this->assertEquals( '/app/admin/users?user=5#test', util::add_query_arg( 'user', 5, '/app/admin/users#test' ) );
 
