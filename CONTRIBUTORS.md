@@ -22,6 +22,7 @@ The following developers and/or companies helped contribute to building util.php
 * PHP Experts, Inc. (http://www.phpexperts.pro/)
   - `array_flatten()`
   - `fix_broken_serialization()`
+  - Lots of unit tests.
 * Tony Ferrara (ircmaxwell, http://blog.ircmaxell.com/)
   - `seemsUtf8Regex()`: http://stackoverflow.com/a/11709412/430062
 * Askar ([@ARACOOOL](https://github.com/ARACOOOL))

@@ -762,6 +762,7 @@ class UtilityPHPTest extends PHPUnit_Framework_TestCase
         // Test an existing file.
         $expected = '-rw-rw-rw-';
         $tempFile = tempnam(sys_get_temp_dir(), 'foo');
+        $this->assertTrue(chmod($tempFile, 0666), 'Oops. Could not change temp file\'s permissions to 0666.');
         $this->assertEquals($expected, util::full_permissions($tempFile), 'Could not properly obtain permissions of an existing file.');
         unlink($tempFile);
 
