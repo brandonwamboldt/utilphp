@@ -265,6 +265,9 @@ class UtilityPHPTest extends PHPUnit_Framework_TestCase
         $this->assertEquals( '/app/admin/users?action=edit&tab=personal&user=5', util::add_query_arg( 'user', 5, '/app/admin/users?action=edit&tab=personal' ) );
         $this->assertEquals( '/app/admin/users?action=edit&tab=personal&user=5', util::add_query_arg( array( 'user' => 5 ), '/app/admin/users?action=edit&tab=personal' ) );
 
+        // Ensure strips false.
+        $this->assertEquals('/index.php', util::add_query_arg('debug', false, '/index.php'));
+
         // With a URL fragment
         $this->assertEquals( '/app/admin/users?user=5#test', util::add_query_arg( 'user', 5, '/app/admin/users#test' ) );
 
@@ -278,7 +281,7 @@ class UtilityPHPTest extends PHPUnit_Framework_TestCase
         // Url encoding test
         $this->assertEquals( '/app/admin/users?param=containsa%26sym', util::add_query_arg( 'param', 'containsa&sym', '/app/admin/users' ) );
 
-        // Superglobal test
+        // If not provided, grab the URI from the server.
         $_SERVER['REQUEST_URI'] = '/app/admin/users';
         $this->assertEquals( '/app/admin/users?user=6', util::add_query_arg( array( 'user' => 6 ) ) );
         $this->assertEquals( '/app/admin/users?user=7', util::add_query_arg( 'user', 7 ) );
