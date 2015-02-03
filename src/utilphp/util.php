@@ -300,7 +300,7 @@ class util
      * Display a variable's contents using nice HTML formatting and will
      * properly display the value of booleans as true or false
      *
-     * @see var_dump_plain()
+     * @see recursiveVarDumpHelper()
      *
      * @param  mixed $var The variable to dump
      * @return string
@@ -325,7 +325,7 @@ class util
             'color: #333;' .
             'font-family: Menlo,Monaco,Consolas,\'Courier New\',monospace;">';
         $done  = array();
-        $html .= self::var_dump_plain($var, intval($expandLevel), 0, $done);
+        $html .= self::recursiveVarDumpHelper($var, intval($expandLevel), 0, $done);
         $html .= '</pre>';
 
         if (self::$hasArray) {
@@ -348,7 +348,7 @@ class util
      * @param  mixed $var The variable to dump
      * @return string
      */
-    public static function var_dump_plain($var, $expLevel, $depth = 0, $done = array())
+    protected static function recursiveVarDumpHelper($var, $expLevel, $depth = 0, $done = array())
     {
         $html = '';
 
@@ -417,7 +417,7 @@ class util
 
                     $html .= ' => ';
 
-                    $value = explode('<br />', self::var_dump_plain($value, $expLevel, $depth + 1, $done));
+                    $value = explode('<br />', self::recursiveVarDumpHelper($value, $expLevel, $depth + 1, $done));
 
                     foreach ($value as $line => $val) {
                         if ($line != 0) {
@@ -479,7 +479,7 @@ class util
 
                 $html .= ' => ';
 
-                $value = explode('<br />', self::var_dump_plain($value, $expLevel, $depth + 1, $done));
+                $value = explode('<br />', self::recursiveVarDumpHelper($value, $expLevel, $depth + 1, $done));
 
                 foreach ($value as $line => $val) {
                     if ($line != 0) {

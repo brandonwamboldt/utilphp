@@ -800,41 +800,43 @@ class UtilityPHPTest extends PHPUnit_Framework_TestCase
 
     public function test_var_dump_plain()
     {
+        $method = $this->getMethod('recursiveVarDumpHelper');
+
         $input = 'var';
         $expect = '<span style="color:#588bff;">string</span><span style="color:#999;">(</span>3<span style="color:#999;">)</span> <strong>"var"</strong>';
-        $this->assertEquals($expect, Util::var_dump_plain($input, true));
+        $this->assertEquals($expect, $method->invoke(null, $input, true));
 
         $input = true;
         $expect = '<span style="color:#588bff;">bool</span><span style="color:#999;">(</span><strong>true</strong><span style="color:#999;">)</span>';
-        $this->assertEquals($expect, Util::var_dump_plain($input, true));
+        $this->assertEquals($expect, $method->invoke(null, $input, true));
 
         $input = 1;
         $expect = '<span style="color:#588bff;">int</span><span style="color:#999;">(</span><strong>1</strong><span style="color:#999;">)</span>';
-        $this->assertEquals($expect, Util::var_dump_plain($input, true));
+        $this->assertEquals($expect, $method->invoke(null, $input, true));
 
         $input = 1.5;
         $expect = '<span style="color:#588bff;">float</span><span style="color:#999;">(</span><strong>1.5</strong><span style="color:#999;">)</span>';
-        $this->assertEquals($expect, Util::var_dump_plain($input, true));
+        $this->assertEquals($expect, $method->invoke(null, $input, true));
 
         $input = null;
         $expect = '<strong>NULL</strong>';
-        $this->assertEquals($expect, Util::var_dump_plain($input, true));
+        $this->assertEquals($expect, $method->invoke(null, $input, true));
 
         $input = fopen('php://memory', 'r');
         $expect = '<span style="color:#588bff;">resource</span>("stream") <strong>"' . $input . '"</strong>';
-        $this->assertEquals($expect, Util::var_dump_plain($input, -1));
+        $this->assertEquals($expect, $method->invoke(null, $input, -1));
         fclose($input);
 
         // Test complex arrays.
         $input = array(1, 2, 4, 6, 10 => 20, 100 => 200);
-        $actual = util::var_dump_plain($input, true);
+        $actual = $method->invoke(null, $input, true);
         $this->assertContains('<img id="include-php-', $actual);
         $this->assertContains('<br />    100 => <span', $actual);
         $this->assertContains('(</span><strong>200</strong><span style="color:#999;">)', $actual);
 
         // Test complex objects.
         $experiment = new VarDumpExperiment();
-        $actual = util::var_dump_plain($experiment, true);
+        $actual = $method->invoke(null, $experiment, true);
         $this->assertContains('1 => <span style="color:#588bff;">string</span><span style="color:#999;">(</span>1<span style="color:#999;">', $actual);
     }
 
