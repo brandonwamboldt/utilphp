@@ -2009,11 +2009,12 @@ class util
 
 
     /**
-     * Truncate the string to given length of charactes.
+     * Truncate the string to given length of characters.
      *
-     * @param $string
-     * @param $limit
-     * @param string $append
+     * @param string  $string The variable to truncate
+     * @param integer $limit  The length to truncate the string to
+     * @param string  $append Text to append to the string IF it gets
+     *                        truncated, defaults to '...'
      * @return string
      */
     public static function limit_characters($string, $limit = 100, $append = '...')
