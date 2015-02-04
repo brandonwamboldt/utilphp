@@ -1844,7 +1844,7 @@ class util
     /**
      * Truncate the string to given length of characters.
      *
-     * @param integer $string The variable to truncate
+     * @param string  $string The variable to truncate
      * @param integer $limit  The length to truncate the string to
      * @param string  $append Text to append to the string IF it gets
      *                        truncated, defaults to '...'
