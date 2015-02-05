@@ -1186,4 +1186,12 @@ class UtilityPHPTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(array($file1), util::directory_contents($dir));
         util::rmdir($dir);
     }
+
+    public function test_memory_usage_warning()
+    {
+        // 1% of 1000000000000000
+        $this->assertFalse(util::memory_usage_warning(1, 1000000000000000));
+        // 1% of 1
+        $this->assertTrue(util::memory_usage_warning(1, 1));
+    }
 }
