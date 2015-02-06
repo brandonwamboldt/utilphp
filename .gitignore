@@ -2,3 +2,4 @@ test.php
 build/*
 report/*
 tests/test*
+/nbproject/private/
