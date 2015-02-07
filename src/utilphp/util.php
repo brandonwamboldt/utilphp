@@ -1716,6 +1716,21 @@ class util
 
         return $string;
     }
+    
+    /**
+     * Calculates percentage of numerator and denominator with two 
+     * significant figures
+     * 
+     * @param int|float $numerator
+     * @param int| $denominator
+     * @return int|float
+     */
+    
+    public static function calculate_percentage($numerator, $denominator) 
+    {
+        $percentage = number_format(($numerator / $denominator) * 100, 2);
+        return $percentage;
+    }
 
     /**
      * Generate secure random string of given length
