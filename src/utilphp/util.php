@@ -1732,7 +1732,6 @@ class util
         return $string;
     }
 
-
     /**
      * Generate secure random string of given length
      * If 'openssl_random_pseudo_bytes' is not available
