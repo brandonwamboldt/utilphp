@@ -1550,6 +1550,21 @@ class util
     }
 
     /**
+     * Calculates percentage of numerator and denominator.
+     *
+     * @param int|float $numerator
+     * @param int|float $denominator
+     * @param int $decimals
+     * @param string $dec_point
+     * @param string $thousands_sep
+     * @return int|float
+     */
+    public static function calculate_percentage($numerator, $denominator, $decimals = 2, $dec_point = '.', $thousands_sep = ',') 
+    {
+        return number_format(($numerator / $denominator) * 100, $decimals, $dec_point, $thousands_sep);
+    }
+
+    /**
      * Transmit UTF-8 content headers if the headers haven't already been sent.
      *
      * @param  string  $content_type The content type to send out
@@ -1716,23 +1731,7 @@ class util
 
         return $string;
     }
-    
-    /**
-     * Calculates percentage of numerator and denominator with two 
-     * significant figures
-     * 
-     * @param int|float $numerator
-     * @param int|float $denominator
-     * @param int $decimals
-     * @param string $dec_point
-     * @param string $thousands_sep
-     * @return int|float
-     */
-    
-    public static function calculate_percentage($numerator, $denominator, $decimals = 2, $dec_point = '.', $thousands_sep = ',') 
-    {
-        return number_format(($numerator / $denominator) * 100, $decimals, $dec_point, $thousands_sep);
-    }
+
 
     /**
      * Generate secure random string of given length
