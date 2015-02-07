@@ -1722,7 +1722,10 @@ class util
      * significant figures
      * 
      * @param int|float $numerator
-     * @param int| $denominator
+     * @param int|float $denominator
+     * @param int $decimals
+     * @param string $dec_point
+     * @param string $thousands_sep
      * @return int|float
      */
     
