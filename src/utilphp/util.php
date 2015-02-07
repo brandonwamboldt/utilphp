@@ -1726,10 +1726,9 @@ class util
      * @return int|float
      */
     
-    public static function calculate_percentage($numerator, $denominator) 
+    public static function calculate_percentage($numerator, $denominator, $decimals = 2, $dec_point = '.', $thousands_sep = ',') 
     {
-        $percentage = number_format(($numerator / $denominator) * 100, 2);
-        return $percentage;
+        return number_format(($numerator / $denominator) * 100, $decimals, $dec_point, $thousands_sep);
     }
 
     /**
