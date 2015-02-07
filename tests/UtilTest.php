@@ -567,6 +567,26 @@ class UtilityPHPTest extends PHPUnit_Framework_TestCase
         $this->assertEquals( $expect, util::array_map_deep( $input, 'htmlentities' ) );
     }
 
+    public function test_calculate_percentage()
+    {
+        $this->assertEquals(100.00, util::calculate_percentage(100,100));
+        $this->assertEquals(50.00, util::calculate_percentage(50,100));
+        $this->assertEquals(0.00, util::calculate_percentage(0,100));
+        $this->assertEquals(200.00, util::calculate_percentage(200,100));
+        $this->assertEquals(50, util::calculate_percentage(50,100,0));
+        $this->assertEquals(50.0, util::calculate_percentage(50,100,1));
+        $this->assertEquals(50.00, util::calculate_percentage(50,100,2));
+        $this->assertEquals(50.0000, util::calculate_percentage(50,100,4));
+        $this->assertEquals(50, util::calculate_percentage(50,100,0,','));
+        $this->assertEquals('50,0', util::calculate_percentage(50,100,1,','));
+        $this->assertEquals('50,00', util::calculate_percentage(50,100,2,','));
+        $this->assertEquals('50,0000', util::calculate_percentage(50,100,4,','));
+        $this->assertEquals(50, util::calculate_percentage(50,100,0,','));
+        $this->assertEquals('50,0', util::calculate_percentage(50,100,1,','));
+        $this->assertEquals('50,00', util::calculate_percentage(50,100,2,','));
+        $this->assertEquals('50,0000', util::calculate_percentage(50,100,4,','));
+    }
+
     public function test_random_string()
     {
         // Make sure the generated string contains only human friendly characters and is 30 characters long
