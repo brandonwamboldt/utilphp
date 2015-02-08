@@ -7,7 +7,8 @@ and can be run in your web browser.
 
 ### Requirements
 
-PHP Unit >= 3.5.6
+- PHP Unit >= 3.5.6
+- Composer
 
 #### Installation of PHPUnit
 
@@ -23,7 +24,12 @@ PHP Unit >= 3.5.6
     sudo mv phpunit /usr/local/bin
     phpunit --version
 
-## Test Suites:
+#### Installation of Composer depencencies
+
+The unit test suite requires the Composer autoloader to be installed, so before
+running the tests, please run `composer install` from the project directory.
+
+## Test Suites
 
 util.php includes a phpunit config file, so just run `phpunit` from the working
 directory to run the test suite.
