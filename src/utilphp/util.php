@@ -517,7 +517,7 @@ class util
      */
     public static function slugify($string, $separator = '-', $css_mode = false)
     {
-        // Compatibility with 1.0.* parameter ordering for semvar
+        // Compatibility with 1.0.* parameter ordering for semver
         if ($separator === true || $separator === false) {
             $css_mode = $separator;
             $separator = '-';
@@ -1559,7 +1559,7 @@ class util
      * @param string $thousands_sep
      * @return int|float
      */
-    public static function calculate_percentage($numerator, $denominator, $decimals = 2, $dec_point = '.', $thousands_sep = ',') 
+    public static function calculate_percentage($numerator, $denominator, $decimals = 2, $dec_point = '.', $thousands_sep = ',')
     {
         return number_format(($numerator / $denominator) * 100, $decimals, $dec_point, $thousands_sep);
     }
