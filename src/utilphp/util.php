@@ -245,7 +245,7 @@ class util
      *
      *  @var int
      */
-    private static $warning_memory_limit = 90;
+    public static $warning_memory_limit = 90;
 
     /**
      * Initializes the character map.
