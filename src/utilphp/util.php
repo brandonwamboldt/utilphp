@@ -2569,10 +2569,6 @@ class util
         $threshold = intval(($warning_memory_limit * $php_memory_limit) / 100);
         $used_memory = memory_get_usage(true);
 
-        //Exceeded
-        if ($used_memory >= $threshold)
-            return true;
-        else
-            return false;
+        return $used_memory >= $threshold;
     }
 }
