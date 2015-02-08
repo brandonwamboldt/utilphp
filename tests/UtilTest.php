@@ -2,7 +2,7 @@
 
 date_default_timezone_set('UTC');
 
-require_once dirname(__FILE__) . '/../util.php';
+use utilphp\util;
 
 class VarDumpExperiment
 {
@@ -33,7 +33,7 @@ class UtilityPHPTest extends PHPUnit_Framework_TestCase
      */
     protected static function getMethod($name)
     {
-        $class = new \ReflectionClass('util');
+        $class = new \ReflectionClass('utilphp\util');
         $method = $class->getMethod($name);
         $method->setAccessible(true);
         return $method;
@@ -115,8 +115,8 @@ class UtilityPHPTest extends PHPUnit_Framework_TestCase
 
             // Test the worker method.
             $method = self::getMethod('seemsUtf8Regex');
-            $this->assertFalse($method->invoke(null, $invalidUTF8), 'util::seemsUtf8Regex did not properly detect invalid UTF-8.');
-            $this->assertTrue($method->invoke(null, $validUTF8), 'util::seemsUtf8Regex did not properly detect valid UTF-8.');
+            $this->assertFalse($method->invoke(null, $invalidUTF8), 'utilphp\util::seemsUtf8Regex did not properly detect invalid UTF-8.');
+            $this->assertTrue($method->invoke(null, $validUTF8), 'utilphp\util::seemsUtf8Regex did not properly detect valid UTF-8.');
         }
     }
 
