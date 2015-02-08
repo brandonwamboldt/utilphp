@@ -1,5 +1,7 @@
-test.php
-build/*
-report/*
-tests/test*
-/nbproject/private/
+/.gitignore/
+/build/*
+/composer.lock
+/report/*
+/test.php
+/tests/test*
+/vendor/
