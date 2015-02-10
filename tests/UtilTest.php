@@ -25,6 +25,8 @@ class VarDumpExperiment
  */
 class UtilityPHPTest extends PHPUnit_Framework_TestCase
 {
+    protected $hasAutoloader = false;
+
     /**
      * Allows for the testing of private and protected methods.
      *
@@ -37,6 +39,25 @@ class UtilityPHPTest extends PHPUnit_Framework_TestCase
         $method = $class->getMethod($name);
         $method->setAccessible(true);
         return $method;
+    }
+
+    public function setup()
+    {
+        $dir = dirname(__FILE__) . '/..';
+
+        if (file_exists("{$dir}/vendor/autoload.php")) {
+            require_once "{$dir}/vendor/autoload.php";
+            $this->hasAutoloader = true;
+        } else {
+            require_once "{$dir}/util.php";
+        }
+    }
+
+    public function test_autoloader()
+    {
+        if (!$this->hasAutoloader) {
+            $this->markTestSkipped('Composer autoloader is not present, tests will be skipped');
+        }
     }
 
     public function test_array_get()
