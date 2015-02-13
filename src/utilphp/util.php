@@ -279,7 +279,28 @@ class util
 
         self::$regex = '/[' . self::$chars . ']/u';
     }
+	
+	/**
+	 * Remove the duplicates from an array.
+     *
+	 * This is faster version than the builtin array_unique().
+	 *
+	 * Notes on time requirements:
+	 *   array_unique -> O(n log n)
+	 *   array_flip -> O(n)
+	 *
+	 * http://stackoverflow.com/questions/8321620/array-unique-vs-array-flip
+	 * http://php.net/manual/en/function.array-unique.php
+	 *
+	 * @param  $array
+	 * @return $array
+	 */
+	public static function fast_array_unique($array)
+	{
+		$array = array_keys(array_flip($array));
 
+		return $array;
+	}
 
     /**
      * Access an array index, retrieving the value stored there if it

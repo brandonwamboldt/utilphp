@@ -359,7 +359,16 @@ class UtilityPHPTest extends PHPUnit_Framework_TestCase
         $this->assertFalse( util::str_to_bool( 'test' , false) );
 
     }
+	
+	public function fast_array_unique()
+	{
+        $array = array(10, 100, 1231, 10, 600, 20, 40, 1231, 20, 6, 1);
+        $this->assertEquals(array(10, 100, 1231, 600, 20, 40, 6, 1), util::integerarray_remove_duplicates($array));
 
+        $array = array('hello', 'world', 'this', 'is', 'a', 'test', 'hello', 'is', 'a', 'word');
+        $this->assertEquals(array('hello', 'world', 'this', 'is', 'a', 'test', 'word'), util::integerarray_remove_duplicates($array));
+	}
+	
     public function test_array_pluck()
     {
         $array = array(
