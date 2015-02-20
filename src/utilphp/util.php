@@ -1680,22 +1680,39 @@ class util
      *                                      characters once in the string.
      * @return  string
      */
-    public static function random_string($length = 16, $human_friendly = true, $include_symbols = false, $no_duplicate_chars = false)
+    public static function random_string($length = 16, $human_friendly = true, $include_symbols = false, $no_duplicate_chars = false, $only_letters = false, $only_numbers = false)
     {
-        $nice_chars = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefhjkmnprstuvwxyz23456789';
-        $all_an     = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890';
-        $symbols    = '!@#$%^&*()~_-=+{}[]|:;<>,.?/"\'\\`';
-        $string     = '';
+        $nice_letters = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefhjkmnprstuvwxyz';
+        $nice_numbers = '23456789';
+        $nice_an      = $nice_letters . $nice_numbers;
+        $all_letters  = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+        $all_numbers  = '1234567890';
+        $all_an       = $all_letters . $all_numbers;
+        $symbols      = '!@#$%^&*()~_-=+{}[]|:;<>,.?/"\'\\`';
+        $string       = '';
 
         // Determine the pool of available characters based on the given parameters
         if ($human_friendly) {
-            $pool = $nice_chars;
-        } else {
-            $pool = $all_an;
+            $pool_prefix = 'nice';
+        }
+        else {
+            $pool_prefix = 'all';
+        }
 
-            if ($include_symbols) {
-                $pool .= $symbols;
-            }
+        if ($only_letters) {
+            $pool_name = $pool_prefix . '_letters';
+        }
+        elseif ($only_numbers) {
+            $pool_name = $pool_prefix . '_numbers';
+        }
+        else {
+            $pool_name = $pool_prefix . '_an';
+        }
+
+        $pool = ${$pool_name};
+
+        if ($include_symbols && !$only_numbers && !$only_letters) {
+            $pool .= $symbols;
         }
 
         if (!$no_duplicate_chars) {
