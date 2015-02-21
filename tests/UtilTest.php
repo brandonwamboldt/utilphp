@@ -646,6 +646,18 @@ class UtilityPHPTest extends PHPUnit_Framework_TestCase
         } catch (Exception $e) {
             $this->assertTrue(true);
         }
+
+        // Only letters
+        $str = util::random_string( 30, true, false, false, true );
+        $this->assertTrue( (bool) preg_match( '/^([ABCDEFGHJKLMNPQRSTUVWXYZabcdefhjkmnprstuvwxyz]{30})$/', $str ) );
+
+        // Only numbers
+        $str = util::random_string( 30, true, false, false, false, true );
+        $this->assertTrue( (bool) preg_match( '/^([0123456789]{30})$/', $str ) );
+
+        // Force lowercase
+        $str = util::random_string( 30, true, false, false, true, false, true );
+        $this->assertTrue( (bool) preg_match( '/^([abcdefhjkmnprstuvwxyz]{30})$/', $str ) );
     }
 
     public function test_match_string()

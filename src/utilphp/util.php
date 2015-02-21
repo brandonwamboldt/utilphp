@@ -1680,33 +1680,33 @@ class util
      *                                      characters once in the string.
      * @return  string
      */
-    public static function random_string($length = 16, $human_friendly = true, $include_symbols = false, $no_duplicate_chars = false, $only_letters = false, $only_numbers = false)
+    public static function random_string($length = 16, $human_friendly = true, $include_symbols = false, $no_duplicate_chars = false, $only_letters = false, $only_numbers = false, $force_lowercase = false)
     {
-        $nice_letters = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefhjkmnprstuvwxyz';
-        $nice_numbers = '23456789';
-        $nice_an      = $nice_letters . $nice_numbers;
-        $all_letters  = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
-        $all_numbers  = '1234567890';
-        $all_an       = $all_letters . $all_numbers;
-        $symbols      = '!@#$%^&*()~_-=+{}[]|:;<>,.?/"\'\\`';
-        $string       = '';
+        $nice_letters       = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefhjkmnprstuvwxyz';
+        $nice_letters_lcase = 'abcdefhjkmnprstuvwxyz';
+        $nice_numbers       = '23456789';
+        $nice_an            = $nice_letters . $nice_numbers;
+        $nice_an_lcase      = $nice_letters_lcase . $nice_numbers;
+        $all_letters        = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+        $all_letters_lcase  = 'abcdefghijklmnopqrstuvwxyz';
+        $all_numbers        = '1234567890';
+        $all_an             = $all_letters . $all_numbers;
+        $all_an_lcase       = $all_letters_lcase . $all_numbers;
+        $symbols            = '!@#$%^&*()~_-=+{}[]|:;<>,.?/"\'\\`';
+        $string             = '';
 
         // Determine the pool of available characters based on the given parameters
-        if ($human_friendly) {
-            $pool_prefix = 'nice';
-        }
-        else {
-            $pool_prefix = 'all';
-        }
+        $pool_prefix = $human_friendly ? 'nice' : 'all';
+        $pool_suffix = $force_lowercase ? '_lcase' : '';
 
         if ($only_letters) {
-            $pool_name = $pool_prefix . '_letters';
+            $pool_name = $pool_prefix . '_letters' . $pool_suffix;
         }
         elseif ($only_numbers) {
-            $pool_name = $pool_prefix . '_numbers';
+            $pool_name = $pool_prefix . '_numbers' . $pool_suffix;
         }
         else {
-            $pool_name = $pool_prefix . '_an';
+            $pool_name = $pool_prefix . '_an' . $pool_suffix;
         }
 
         $pool = ${$pool_name};
