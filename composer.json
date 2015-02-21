@@ -1,15 +1,14 @@
 {
-    "name": "brandonwamboldt/utilphp",
+    "name": "wassafr/utilphp",
     "type": "library",
-    "version": "1.1.0",
-    "description": "util.php is a collection of useful functions and snippets that you need or could use every day, designed to avoid conflicts with existing projects",
+    "version": "1.1.1",
+    "description": "Form from brandonwamboldt/utilphp",
     "keywords": ["php", "utility", "collection", "helpers"],
-    "homepage": "https://github.com/brandonwamboldt/utilphp",
     "license": "MIT",
     "authors": [
         {
-            "name": "Brandon Wamboldt",
-            "email": "brandon.wamboldt@gmail.com"
+            "name": "John WALTER",
+            "email": "jw@wassa.fr"
         }
     ],
     "autoload": {
