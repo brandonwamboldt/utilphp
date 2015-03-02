@@ -1281,6 +1281,28 @@ class util
         return $string;
     }
 
+	/**
+	 *	Function to validate URL
+	 * 	Validates the URL according to RFC 2396
+	 * 	http://php.net/manual/en/function.filter-var.php
+	 * 
+	 * 	@param string $url
+	 * 	@return boolean
+	 */
+	 
+	public static function validate_url($url)
+	{
+		if (filter_var($url, FILTER_VALIDATE_URL) !== false) 
+		{
+			return true;
+		}
+		
+		else 
+		{
+			return false;
+		}
+	}
+	
     /**
      * Pads a given string with zeroes on the left.
      *

@@ -673,6 +673,12 @@ class UtilityPHPTest extends PHPUnit_Framework_TestCase
         $this->assertTrue( util::validate_email( 'john.smith@gmail.co.uk' ) );
     }
 
+	public function test_validate_url()
+	{
+		$this->assertTrue(util::validate_url('http://www.wikipedia.org'));
+		$this->assertTrue(util::validate_url('http://www.php.net'));
+	}
+
     public function test_safe_truncate()
     {
         $this->assertEquals( 'The quick brown fox...', util::safe_truncate( 'The quick brown fox jumps over the lazy dog', 24 ) );
