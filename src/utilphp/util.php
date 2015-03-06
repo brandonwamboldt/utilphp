@@ -1580,11 +1580,35 @@ class util
      * @param string $thousands_sep
      * @return int|float
      */
+     
     public static function calculate_percentage($numerator, $denominator, $decimals = 2, $dec_point = '.', $thousands_sep = ',')
     {
         return number_format(($numerator / $denominator) * 100, $decimals, $dec_point, $thousands_sep);
     }
-
+	
+	/**
+	 *	Calculates mean of an array
+	 * 
+	 * 	@param array $array
+	 * 	@param int $decimals
+	 * 	@param string $dec_point
+	 * 	@param string $thousands_sep
+	 * 	@return int|float
+	 */
+	
+	public static function calculate_mean($array, $decimals = 2, $dec_point = '.', $thousands_sep = ',')
+	{
+		$sum = 0;
+		
+		for ($index = 0; $index < count($array); $index++) 
+		{
+			$sum = $sum + $array[$index];
+		}
+		
+		$mean = number_format($sum / count($array), $decimals, $dec_point, $thousands_sep);
+		return $mean;
+	}
+	
     /**
      * Transmit UTF-8 content headers if the headers haven't already been sent.
      *
