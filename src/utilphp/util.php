@@ -323,6 +323,43 @@ class util
     }
 
     /**
+     * Returns boolean if a function is an associative array
+     *
+     * @param  array   $array        An array to test
+     *
+     * @return boolean
+     */
+    public static function is_assoc_array($array)
+    {
+        if (!is_array($array)) { return false; }
+        // $array = array() is not associative
+        if (sizeof($array) === 0) { return false; }
+
+        return array_keys($array) !== range(0, count($array) - 1);
+    }
+
+    /**
+     * Returns boolean if a function is flat/sequential numeric array
+     *
+     * @param  array   $array        An array to test
+     *
+     * @return boolean
+     */
+    public static function is_numeric_array($array)
+    {
+        if (!is_array($array)) { return false; }
+
+        $current = 0;
+        foreach (array_keys($array) as $key) {
+            if ($key !== $current) { return false; }
+
+            $current++;
+        }
+
+        return true;
+    }
+
+    /**
      * Display a variable's contents using nice HTML formatting and will
      * properly display the value of booleans as true or false
      *
