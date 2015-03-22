@@ -79,38 +79,38 @@ class UtilityPHPTest extends PHPUnit_Framework_TestCase
     public function test_array_merge_deep()
     {
         // Simple append
-        $dest = ['a','b','c'];
-        $src = ['d','e','f'];
-        $result = ['a','b','c','d','e','f'];
+        $dest = array('a','b','c');
+        $src = array('d','e','f');
+        $result = array('a','b','c','d','e','f');
         $this->assertEquals($result,util::array_merge_deep($dest,$src));
 
         // Nested append
-        $dest = ['a','b','2d'=>['c']];
-        $src = ['2d'=>['d','e','f']];
-        $result = ['a','b','2d'=>['c','d','e','f']];
+        $dest = array('a','b','2d'=>array('c'));
+        $src = array('2d'=>array('d','e','f'));
+        $result = array('a','b','2d'=>array('c','d','e','f'));
         $this->assertEquals($result,util::array_merge_deep($dest,$src));
 
         // Nested int key overwrite
-        $dest = [
+        $dest = array(
             'a',
-            'b'=>[
-                'c'=>['d','e'],
+            'b'=>array(
+                'c'=>array('d','e'),
                 'h'=>0
-            ]
-        ];
-        $src = [
-            'b'=>[
-                'c'=>['f','g'],
-                'h'=>['i','j']
-            ]
-        ];
-        $result = [
+            )
+        );
+        $src = array(
+            'b'=>array(
+                'c'=>array('f','g'),
+                'h'=>array('i','j')
+            )
+        );
+        $result = array(
             'a',
-            'b'=>[
-                'c'=>['f','g'],
-                'h'=>['i','j']
-            ]
-        ];
+            'b'=>array(
+                'c'=>array('f','g'),
+                'h'=>array('i','j')
+            )
+        );
         $this->assertEquals($result,util::array_merge_deep($dest,$src,false));
 
     }
