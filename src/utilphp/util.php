@@ -2359,6 +2359,32 @@ class util
         return $array;
     }
 
+    /**
+     * Merges two arrays recursively and returns the result.
+     *
+     * @param   array   $dest               Destination array
+     * @param   array   $src                Source array
+     * @param   boolean $appendIntegerKeys  Whether to append elements of $src
+     *                                      to $dest if the key is an integer.
+     *                                      This is the default behavior.
+     *                                      Otherwise elements from $src will
+     *                                      overwrite the ones in $dest.
+     * @return  array
+     */
+    public static function array_merge_deep(array $dest, array $src, $appendIntegerKeys = true)
+    {
+        foreach ($src as $key => $value) {
+            if (is_int($key) and $appendIntegerKeys) {
+                $dest[] = $value;
+            } elseif (isset($dest[$key]) and is_array($dest[$key]) and is_array($value)) {
+                $dest[$key] = static::array_merge_deep($dest[$key],$value,$appendIntegerKeys);
+            } else {
+                $dest[$key] = $value;
+            }
+        }
+        return $dest;
+    }
+
     public static function array_clean(array $array)
     {
         return array_filter($array);
