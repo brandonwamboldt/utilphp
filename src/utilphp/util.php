@@ -2577,4 +2577,33 @@ class util
         natsort($contents);
         return $contents;
     }
+
+    public static function ordUTF8($character) {
+        $first_byte = ord($character [0]);
+
+        if (($first_byte & 0x80) == 0) {
+            // Single-byte form: 0xxxxxxxx.
+            return $first_byte;
+        }
+        if (($first_byte & 0xe0) == 0xc0) {
+            // Two-byte form: 110xxxxx 10xxxxxx.
+            return (($first_byte & 0x1f) << 6) + (ord($character [1]) & 0x3f);
+        }
+        if (($first_byte & 0xf0) == 0xe0) {
+            // Three-byte form: 1110xxxx 10xxxxxx 10xxxxxx.
+            return (($first_byte & 0x0f) << 12) + ((ord($character [1]) & 0x3f) << 6) + (ord($character [2]) & 0x3f);
+        }
+        if (($first_byte & 0xf8) == 0xf0) {
+            // Four-byte form: 11110xxx 10xxxxxx 10xxxxxx 10xxxxxx.
+            return (($first_byte & 0x07) << 18) + ((ord($character [1]) & 0x3f) << 12) + ((ord($character [2]) & 0x3f) << 6) + (ord($character [3]) & 0x3f);
+        }
+
+        // Other forms are not legal.
+        return -1;
+    }
+
+    public static function chrUTF8($u)
+    {
+        return mb_convert_encoding('&#' . intval($u) . ';', 'UTF-8', 'HTML-ENTITIES');
+    }
 }
