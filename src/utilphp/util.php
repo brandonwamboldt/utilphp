@@ -2,6 +2,10 @@
 
 namespace utilphp;
 
+define('NL_NIX', "\n");
+define('NL_WIN', "\r\n");
+define('NL_MAC', "\r");
+
 /**
  * util.php
  *
@@ -2578,6 +2582,12 @@ class util
         return $contents;
     }
 
+    /**
+     * UTF-8 compliant version of ord()
+     *
+     * @param string $character
+     * @return int
+     */
     public static function ordUTF8($character) {
         $first_byte = ord($character [0]);
 
@@ -2602,8 +2612,49 @@ class util
         return -1;
     }
 
+    /**
+     * UTF-8 compliant version of chr()
+     *
+     * @param int $u
+     * @return string
+     */
     public static function chrUTF8($u)
     {
         return mb_convert_encoding('&#' . intval($u) . ';', 'UTF-8', 'HTML-ENTITIES');
+    }
+
+    /**
+     * Detect file encoding and EOL type
+     *
+     * @param string $filename
+     * @param bool $detectFileEncoding
+     * @param bool $detectFileEOL
+     * @return string
+     */
+    public static function detectFileEncodingAndEOL($filename, $detectFileEncoding = true, $detectFileEOL = true)
+    {
+        $return = [];
+
+        if (($file = fopen($filename, 'r')) !== false) {
+            $str = fgets($file);
+
+            if ($detectFileEncoding) {
+                $return['encoding'] = mb_detect_encoding($str, mb_detect_order());
+            }
+
+            if ($detectFileEOL) {
+                if (strpos($str, NL_WIN) !== false) {
+                    $return['eol'] = 'NL_WIN';
+                } elseif(strpos($str, NL_MAC) !== false) {
+                    $return['eol'] = 'NL_MAC';
+                } elseif(strpos($str, NL_NIX) !== false) {
+                    $return['eol'] = 'NL_NIX';
+                }
+            }
+
+            return $return;
+        }
+
+        return false;
     }
 }
