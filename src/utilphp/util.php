@@ -817,9 +817,18 @@ class util
      *
      * @return boolean
      */
-    public static function is_https()
+    public static function is_https($trust_proxy_headers = false)
     {
-        return isset($_SERVER['HTTPS']) && !empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off';
+        // Check standard HTTPS header
+        if (isset($_SERVER['HTTPS']) && !empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off') {
+           return isset($_SERVER['HTTPS']) && !empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off';
+        }
+
+        // Check proxy headers if allowed
+        return $trust_proxy_headers && isset($_SERVER['X-FORWARDED-PROTO']) && $_SERVER['X-FORWARDED-PROTO'] == 'https';
+
+        // Default to not SSL
+        return false;
     }
 
     /**
