@@ -1040,7 +1040,7 @@ class util
      * Check if a string ends with the given string.
      *
      * @param  string $string
-     * @param  string $starts_with
+     * @param  string $ends_with
      * @return boolean
      */
     public static function ends_with($string, $ends_with)
