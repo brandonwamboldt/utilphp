@@ -369,6 +369,32 @@ class UtilityPHPTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(array('hello', 'world', 'this', 'is', 'a', 'test', 'word'), util::integerarray_remove_duplicates($array));
 	}
 	
+    public function test_is_numeric_array()
+    {
+        $this->assertTrue( util::is_numeric_array(array()) );
+        $this->assertTrue( util::is_numeric_array(array(5,6,7)) );
+        $this->assertTrue( util::is_numeric_array(array(0 => 3, 1 => 3, 2 => 3)) );
+        $this->assertTrue( util::is_numeric_array(array('foo','bar','baz')) );
+
+        $this->assertFalse( util::is_numeric_array('foo') );
+        $this->assertFalse( util::is_numeric_array(array('foo' => 'bar')) );
+        $this->assertFalse( util::is_numeric_array(1,2,3) );
+        $this->assertFalse( util::is_numeric_array(array("foo" => array('nested'=>'array'))) );
+        $this->assertFalse( util::is_numeric_array(array(0 => 3, 2 => 3, 3 => 3)) );
+    }
+
+    public function test_is_assoc_array()
+    {
+        $this->assertTrue( util::is_assoc_array(array('foo'=>'bar','color'=>'yellow')) );
+        $this->assertTrue( util::is_assoc_array(array("foo" => array('nested'=>'array'))) );
+        $this->assertTrue( util::is_assoc_array(array(1 => "baz",'two' => 'bar')) );
+
+        $this->assertFalse( util::is_assoc_array(array(1,2,3)) );
+        $this->assertFalse( util::is_assoc_array("foo") );
+        $this->assertFalse( util::is_assoc_array(array(array('nested'=>'array'))) );
+        $this->assertFalse( util::is_assoc_array(array()) );
+    }
+
     public function test_array_pluck()
     {
         $array = array(
