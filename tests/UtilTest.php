@@ -76,6 +76,45 @@ class UtilityPHPTest extends PHPUnit_Framework_TestCase
         $this->assertEquals( 'defaultval', util::array_get( $_GET['doesnotexist'], 'defaultval' ) );
     }
 
+    public function test_array_merge_deep()
+    {
+        // Simple append
+        $dest = array('a','b','c');
+        $src = array('d','e','f');
+        $result = array('a','b','c','d','e','f');
+        $this->assertEquals($result,util::array_merge_deep($dest,$src));
+
+        // Nested append
+        $dest = array('a','b','2d'=>array('c'));
+        $src = array('2d'=>array('d','e','f'));
+        $result = array('a','b','2d'=>array('c','d','e','f'));
+        $this->assertEquals($result,util::array_merge_deep($dest,$src));
+
+        // Nested int key overwrite
+        $dest = array(
+            'a',
+            'b'=>array(
+                'c'=>array('d','e'),
+                'h'=>0
+            )
+        );
+        $src = array(
+            'b'=>array(
+                'c'=>array('f','g'),
+                'h'=>array('i','j')
+            )
+        );
+        $result = array(
+            'a',
+            'b'=>array(
+                'c'=>array('f','g'),
+                'h'=>array('i','j')
+            )
+        );
+        $this->assertEquals($result,util::array_merge_deep($dest,$src,false));
+
+    }
+
     public function test_slugify()
     {
         $this->assertEquals( 'a-simple-title', util::slugify( 'A simple title' ) );
