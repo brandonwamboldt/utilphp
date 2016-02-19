@@ -285,7 +285,7 @@ class util
 
         self::$regex = '/[' . self::$chars . ']/u';
     }
-    
+
     /**
      * Remove the duplicates from an array.
      *
@@ -337,9 +337,14 @@ class util
      */
     public static function is_assoc_array($array)
     {
-        if (!is_array($array)) { return false; }
+        if (!is_array($array)) {
+            return false;
+        }
+
         // $array = array() is not associative
-        if (sizeof($array) === 0) { return false; }
+        if (sizeof($array) === 0) {
+            return false;
+        }
 
         return array_keys($array) !== range(0, count($array) - 1);
     }
@@ -770,9 +775,8 @@ class util
         // Is it the serialized NULL value?
         if ($data === 'N;') {
             return true;
-        }
-        // Is it a serialized boolean?
-        elseif ($data === 'b:0;' || $data === 'b:1;') {
+        } elseif ($data === 'b:0;' || $data === 'b:1;') {
+            // Is it a serialized boolean?
             return true;
         }
 
@@ -800,7 +804,7 @@ class util
      */
     public static function fix_broken_serialization($brokenSerializedData)
     {
-        $fixdSerializedData = preg_replace_callback('!s:(\d+):"(.*?)";!', function($matches) {
+        $fixdSerializedData = preg_replace_callback('!s:(\d+):"(.*?)";!', function ($matches) {
             $snip = $matches[2];
             return 's:' . strlen($snip) . ':"' . $snip . '";';
         }, $brokenSerializedData);
@@ -815,7 +819,7 @@ class util
      */
     public static function is_https()
     {
-        return isset($_SERVER['HTTPS']) && !empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off';
+        return isset($_SERVER['HTTPS']) && !empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off';
     }
 
     /**
@@ -964,9 +968,9 @@ class util
             if (isset($parts['path']) && ($flags & self::HTTP_URL_JOIN_PATH)) {
                 if (isset($url['path']) && substr($parts['path'], 0, 1) !== '/') {
                     $url['path'] = rtrim(
-                            str_replace(basename($url['path']), '', $url['path']),
-                            '/'
-                        ) . '/' . ltrim($parts['path'], '/');
+                        str_replace(basename($url['path']), '', $url['path']),
+                        '/'
+                    ) . '/' . ltrim($parts['path'], '/');
                 } else {
                     $url['path'] = $parts['path'];
                 }
@@ -1458,7 +1462,7 @@ class util
 
     protected static function numberToWordConvertGroup($index)
     {
-        switch($index) {
+        switch ($index) {
             case 11:
                 return ' decillion';
             case 10:
@@ -2273,7 +2277,7 @@ class util
     {
         $flattened = array();
 
-        array_walk_recursive($array, function($value, $key) use (&$flattened, $preserve_keys) {
+        array_walk_recursive($array, function ($value, $key) use (&$flattened, $preserve_keys) {
             if ($preserve_keys && !is_int($key)) {
                 $flattened[$key] = $value;
             } else {
@@ -2420,7 +2424,7 @@ class util
             if (is_int($key) and $appendIntegerKeys) {
                 $dest[] = $value;
             } elseif (isset($dest[$key]) and is_array($dest[$key]) and is_array($value)) {
-                $dest[$key] = static::array_merge_deep($dest[$key],$value,$appendIntegerKeys);
+                $dest[$key] = static::array_merge_deep($dest[$key], $value, $appendIntegerKeys);
             } else {
                 $dest[$key] = $value;
             }
@@ -2631,8 +2635,11 @@ class util
      */
     public static function get_user_directory()
     {
-        if (isset($_SERVER['HOMEDRIVE'])) return $_SERVER['HOMEDRIVE'] . $_SERVER['HOMEPATH'];
-        else return $_SERVER['HOME'];
+        if (isset($_SERVER['HOMEDRIVE'])) {
+            return $_SERVER['HOMEDRIVE'] . $_SERVER['HOMEPATH'];
+        }
+
+        return $_SERVER['HOME'];
     }
 
     /**
