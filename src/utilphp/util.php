@@ -813,21 +813,22 @@ class util
     }
 
     /**
-     * Checks to see if the page is being server over SSL or not
+     * Checks to see if the page is being served over SSL or not
      *
      * @return boolean
      */
     public static function is_https($trust_proxy_headers = false)
     {
-        // Check standard HTTPS header
-        if (isset($_SERVER['HTTPS']) && !empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off') {
-           return isset($_SERVER['HTTPS']) && !empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off';
+        if (!empty($_SERVER['HTTPS']) && strtolower($_SERVER['HTTPS']) !== 'off') {
+            // Check the standard HTTPS headers
+            return true;
+        } elseif ($trust_proxy_headers && isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https') {
+            // Check proxy headers if allowed
+            return true;
+        } elseif (!empty($_SERVER['HTTP_FRONT_END_HTTPS']) && strtolower($_SERVER['HTTP_FRONT_END_HTTPS']) !== 'off') {
+            return true;
         }
 
-        // Check proxy headers if allowed
-        return $trust_proxy_headers && isset($_SERVER['X-FORWARDED-PROTO']) && $_SERVER['X-FORWARDED-PROTO'] == 'https';
-
-        // Default to not SSL
         return false;
     }
 
