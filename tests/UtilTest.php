@@ -433,6 +433,16 @@ class UtilityPHPTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($expected, util::array_pluck($array, 'name', false, false));
     }
 
+    public function test_array_pull()
+    {
+        $array = array('id' => 1000, 'username' => 'allen','password' => '123456', 'email' => 'admin@admin.com', 'created_at' => 1461317101);
+
+        $this->assertEquals(array('realname' => null), util::array_pull($array, 'realname'));
+        $this->assertEquals(array('username' => 'allen'), util::array_pull($array, 'username'));
+        $this->assertEquals(array('id' => 1000, 'username' => 'allen'), util::array_pull($array, array('id', 'username')));
+        $this->assertEquals(array(1000, 'allen'), util::array_pull($array, array('id', 'username'), false));
+    }
+
     public function test_htmlentities()
     {
         $this->assertEquals( 'One &amp; Two', util::htmlentities( 'One & Two' ) );

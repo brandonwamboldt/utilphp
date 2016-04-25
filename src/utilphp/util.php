@@ -2287,6 +2287,35 @@ class util
     }
 
     /**
+     * pull array value from specified fields
+     * @param array $array An array
+     * @param string|array $fields The field to get values from
+     * @param boolean $$preserve_keys Whether or not to preserve the array keys
+     * @return mixed
+     */
+    public static function array_pull(array $array, $fields, $preserve_keys = true)
+    {
+        $new_array = array();
+        if(is_string($fields)){
+            if($preserve_keys){
+                $new_array[$fields] =  isset($array[$fields]) ? $array[$fields] : null;
+            }else{
+                $new_array[] = isset($array[$fields]) ? $array[$fields] : null;
+            }
+        }else if(is_array($fields)){
+            foreach($fields as $field){
+                if($preserve_keys){
+                    $new_array[$field] = isset($array[$field]) ? $array[$field] : null;
+                }else{
+                    $new_array[] = isset($array[$field]) ? $array[$field] : null;
+                }
+            }
+        }
+        
+        return $new_array;
+    }
+
+    /**
      * Searches for a given value in an array of arrays, objects and scalar
      * values. You can optionally specify a field of the nested arrays and
      * objects to search in.
