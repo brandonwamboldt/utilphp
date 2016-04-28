@@ -398,7 +398,7 @@ class UtilityPHPTest extends PHPUnit_Framework_TestCase
         $this->assertFalse( util::str_to_bool( 'test' , false) );
 
     }
-	
+
 	public function fast_array_unique()
 	{
         $array = array(10, 100, 1231, 10, 600, 20, 40, 1231, 20, 6, 1);
@@ -407,7 +407,7 @@ class UtilityPHPTest extends PHPUnit_Framework_TestCase
         $array = array('hello', 'world', 'this', 'is', 'a', 'test', 'hello', 'is', 'a', 'word');
         $this->assertEquals(array('hello', 'world', 'this', 'is', 'a', 'test', 'word'), util::integerarray_remove_duplicates($array));
 	}
-	
+
     public function test_is_numeric_array()
     {
         $this->assertTrue( util::is_numeric_array(array()) );
@@ -1000,6 +1000,13 @@ class UtilityPHPTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($expect, Util::linkify($input));
 
         $this->assertEquals($expect, util::linkify($expect), 'linkify() tried to double linkify an href.');
+    }
+
+    public function test_mask()
+    {
+        $this->assertEquals(Util::mask('###.###.###-##', '12345678910'), '123.456.789-10');
+        $this->assertEquals(Util::mask('...#...#...-..', '12345678910', '.'), '123#456#789-10');
+        $this->assertEquals(Util::mask('...#...#...-..', '###########', '.'), '###########-##');
     }
 
     public function test_start_with()
