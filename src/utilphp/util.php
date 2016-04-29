@@ -1081,6 +1081,39 @@ class util
     }
 
     /**
+     * Formats a string according to a given mask.
+     *
+     * @param string $string String to be formatted (e.g. 12345678910)
+     * @param string $mask Mask format (e.g. ###.###.###-##)
+     * @param string $placeholder Placeholder used in the mask.
+     *
+     * @return string Masked string (e.g. 123.456.789-10) or original string if masking fails
+     *
+     */
+    public static function mask($string, $mask, $placeholder = '#')
+    {
+        $stringLength = strlen($string);
+
+        $maskLength = strlen($mask);
+
+        for ($i = 0, $cursorMask = 0; $i < $maskLength; $i++) {
+            $charMask = substr($mask, $i, 1);
+            $charString = substr($string, $cursorMask, 1);
+
+            if ($charMask === $placeholder) {
+                $mask = substr_replace($mask, $charString, $i, 1);
+                $cursorMask++;
+            }
+        }
+        
+        if ($stringLength !== $cursorMask) {
+            return $string;
+        }
+
+        return $mask;
+    }
+
+    /**
      * Check if a string starts with the given string.
      *
      * @param  string $string
