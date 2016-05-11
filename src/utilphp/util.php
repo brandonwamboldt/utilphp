@@ -2315,6 +2315,37 @@ class util
         return $new_array;
     }
 
+
+    /**
+     * pack given values into an array with specified keys
+     * 
+     * example:
+     * 
+     * $names = array('Allen', 'Jack', 'Lucy');
+     * $ages = array(20, 22, 24);
+     * $sexes = array('M', 'M', 'F');
+     * 
+     * array_pack(array('name' => $names, 'age' => $ages, 'sex' => $sexes));
+     * //array(array('name' => 'Allen', 'age' => 20, 'sex' => 'M'), array('name' => 'Jack','age' => 22, 'sex' => 'M'), array('name' => 'Lucy','age' => 24, 'sex' => 'F'))
+     * 
+     * @param array $array input array
+     * @return array $packed the packed array
+     */
+    public static function array_pack($array)
+    {
+        $keys = array_keys($array);
+        $values = array_values($array);
+
+        $packed = array();
+        foreach ($values as $index => $value) {
+            foreach ($value as $i => $v) {
+                $packed[$i][$keys[$index]] = $v;
+            }
+        }
+
+        return $packed;
+    }
+
     /**
      * Searches for a given value in an array of arrays, objects and scalar
      * values. You can optionally specify a field of the nested arrays and

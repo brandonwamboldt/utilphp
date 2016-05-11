@@ -449,6 +449,16 @@ class UtilityPHPTest extends PHPUnit_Framework_TestCase
         $this->assertEquals( 'One &amp; Two', util::htmlentities( 'One &amp; Two', TRUE ) );
     }
 
+    public function test_array_pack()
+    {
+        $names = array('Allen', 'Jack', 'Lucy');
+        $ages = array(20, 22, 24);
+        $sexes = array('M', 'M', 'F');
+
+        $expected = array(array('name' => 'Allen', 'age' => 20, 'sex' => 'M'), array('name' => 'Jack', 'age' => 22, 'sex' => 'M'), array('name' => 'Lucy', 'age' => 24, 'sex' => 'F'));
+        $this->assertEquals($expected, util::array_pack(array('name' => $names, 'age' => $ages, 'sex' => $sexes)));
+    }
+
     public function test_htmlspecialchars()
     {
         $this->assertEquals( 'One &amp; Two', util::htmlspecialchars( 'One & Two' ) );
