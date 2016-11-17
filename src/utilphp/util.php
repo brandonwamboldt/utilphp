@@ -610,6 +610,33 @@ class util
 
         return $slug;
     }
+    
+    /**
+     * Check if an absolute URL path is valid.
+     *
+     * @param (string) $url
+     * @return (boolean)
+     * @author  Mark Townsend <mtownsend5512@gmail.com>
+     */
+     public static function url_exists($url)
+     {
+        $ch = curl_init($url);
+        curl_setopt($ch, CURLOPT_NOBODY, true);
+        curl_exec($ch);
+        $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+
+        if ( $http_code == 200 )
+        {
+            $status = true;
+        }
+        else
+        {
+            $status = false;
+        }
+        curl_close($ch);
+
+        return $status;
+    }
 
     /**
      * Checks to see if a string is utf8 encoded.
