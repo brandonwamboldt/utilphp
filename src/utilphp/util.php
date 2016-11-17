@@ -2130,6 +2130,30 @@ class util
 
         return self::linkifyRegex($matches[1]);
     }
+    
+    /**
+     * Take a phone number and format it to be used in or as a link.
+     * You can retrieve a complete anchor tag link back by
+     * passing true for the second argument.
+     *
+     * @param (string) $phone | (boolean) $completeLink | (string) $linkText | (string) $linkClass
+     * @return (string)
+     * @author Mark Townsend <mtownsend5512@gmail.com>
+     */
+    public static function phone_to_link($phone, $completeLink = false, $linkText = '', $linkClass = '')
+    {
+        $cleanedPhoneNumber = preg_replace("/[^0-9]/", '', $phone);
+
+        if ( !$completeLink )
+        {
+            return $cleanedPhoneNumber;
+        }
+        else
+        {
+            $anchorContent = empty($linkText) ? $phone : $linkText;
+            return '<a class="' . $linkClass . '" target="_blank" href="tel:' . $cleanedPhoneNumber . '">' . $anchorContent . '</a>';
+        }
+    }
 
     /**
      * Return the current URL.
