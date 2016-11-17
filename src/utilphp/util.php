@@ -610,6 +610,33 @@ class util
 
         return $slug;
     }
+    
+    /**
+     * Check if an absolute URL path is valid.
+     *
+     * @param (string) $url
+     * @return (boolean)
+     * @author  Mark Townsend <mtownsend5512@gmail.com>
+     */
+     public static function url_exists($url)
+     {
+        $ch = curl_init($url);
+        curl_setopt($ch, CURLOPT_NOBODY, true);
+        curl_exec($ch);
+        $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+
+        if ( $http_code == 200 )
+        {
+            $status = true;
+        }
+        else
+        {
+            $status = false;
+        }
+        curl_close($ch);
+
+        return $status;
+    }
 
     /**
      * Checks to see if a string is utf8 encoded.
@@ -811,6 +838,93 @@ class util
 
         return $fixdSerializedData;
     }
+    
+        /**
+     * Determine if a json string is valid.
+     * Returns TRUE if the argument is a valid JSON string.
+     * Returns FALSE if the argument is NOT a valid JSON string.
+     * Pass true for $dump to dump the contents to the screen and kill script execution.
+     * The opposite of invalid_json()
+     *
+     * @param (string) $json | (boolean) $dump
+     * @return (boolean)
+     * @author Mark Townsend <mtownsend5512@gmail.com>
+     *
+     */
+    public static function valid_json($json = NULL, $dump = false)
+    {
+        // Argument must be a string
+        if ( is_string($json) )
+        {
+            // If true is passed for the second argument, kill the script and dump the contents of the supplied JSON string
+            if ( $dump == true )
+            {
+                self::var_dump($json);
+                die();
+            }
+
+            $validation = json_decode($json, true);
+
+            // The JSON is declared error free and is not null
+            if ( json_last_error() == 'JSON_ERROR_NONE' || $validation != NULL )
+            {
+                return true;
+            }
+            // The JSON is not error free or could be null, it's invalid
+            else
+            {
+                return false;
+            }
+        }
+        else
+        {
+            return false;
+        }
+    }
+    
+    /**
+     * Determine if a json string is invalid.
+     * Returns TRUE if the argument is NOT a valid JSON string.
+     * Returns FALSE if the argument IS a valid JSON string.
+     * Pass true for $dump to dump the contents to the screen and kill script execution.
+     * The opposite of valid_json()
+     *
+     * @param (string) $json | (boolean) $dump
+     * @return (boolean)
+     * @author Mark Townsend <mtownsend5512@gmail.com>
+     *
+     */
+    public static function invalid_json($json = NULL, $dump = false)
+    {
+        // Argument must be a string
+        if ( is_string($json) )
+        {
+            // If true is passed for the second argument, kill the script and dump the contents of the supplied JSON string
+            if ( $dump == true )
+            {
+                self::var_dump($json);
+                die();
+            }
+
+            $validation = json_decode($json, true);
+
+            // If there is a json error or the string is null after being decoded, it's invalid
+            if ( json_last_error() != 'JSON_ERROR_NONE' || $validation === NULL )
+            {
+                return true;
+            }
+            // No JSON error or null value, it's valid
+            else
+            {
+                return false;
+            }
+        }
+        else
+        {
+            return true;
+        }
+    }
+
 
     /**
      * Checks to see if the page is being server over SSL or not
@@ -1103,17 +1217,67 @@ class util
     {
         return substr($string, -strlen($ends_with)) === $ends_with;
     }
+    
+    /**
+     * Take a string and return it with proper casing.
+     *
+     * @param (string) $string
+     * @return (string)
+     * @author Mark Townsend <mtownsend5512@gmail.com>
+     */
+    public static function str_proper($string)
+    {
+        if ( !is_string($string) )
+        {
+            return NULL;
+        }
+        $forbiddenCharacters = [ '-', '_', '  ', ];
+
+        return ucwords(strtolower(str_replace($forbiddenCharacters, ' ', $string)));
+    }
 
     /**
-     * Check if a string contains another string.
+     * Evaluate whether a string (needle) is found in another string (haystack) and return true or false.
      *
-     * @param  string $haystack
-     * @param  string $needle
-     * @return boolean
+     * @param (string) $haystack | (string) $needle | (boolean) $case_sensitive
+     * @return (boolean) $result
+     * @author Mark Townsend <mtownsend5512@gmail.com>
+     *
      */
-    public static function str_contains($haystack, $needle)
+    public static function str_contains($haystack, $needle, $case_sensitive = false)
     {
-        return strpos($haystack, $needle) !== false;
+        if ( !is_string($haystack) )
+        {
+            return NULL;
+        }
+        
+        $case_sensitive = (boolean) $case_sensitive;
+
+        // We do not want case sensitive searching
+        if ($case_sensitive == false)
+        {
+            if ( stripos($haystack, $needle) !== false )
+            {
+                $result = true;
+            }
+            else
+            {
+                $result = false;
+            }
+        }
+        // We want case sensitive searching
+        else
+        {
+            if ( strpos($haystack, $needle) !== false )
+            {
+                $result = true;
+            }
+            else
+            {
+                $result = false;
+            }
+        }
+        return $result;
     }
 
     /**
@@ -1993,6 +2157,30 @@ class util
 
         return self::linkifyRegex($matches[1]);
     }
+    
+    /**
+     * Take a phone number and format it to be used in or as a link.
+     * You can retrieve a complete anchor tag link back by
+     * passing true for the second argument.
+     *
+     * @param (string) $phone | (boolean) $completeLink | (string) $linkText | (string) $linkClass
+     * @return (string)
+     * @author Mark Townsend <mtownsend5512@gmail.com>
+     */
+    public static function phone_to_link($phone, $completeLink = false, $linkText = '', $linkClass = '')
+    {
+        $cleanedPhoneNumber = preg_replace("/[^0-9]/", '', $phone);
+
+        if ( !$completeLink )
+        {
+            return $cleanedPhoneNumber;
+        }
+        else
+        {
+            $anchorContent = empty($linkText) ? $phone : $linkText;
+            return '<a class="' . $linkClass . '" target="_blank" href="tel:' . $cleanedPhoneNumber . '">' . $anchorContent . '</a>';
+        }
+    }
 
     /**
      * Return the current URL.
@@ -2445,6 +2633,63 @@ class util
     {
         return array_filter($array);
     }
+    
+        /**
+     * Parse an array of items and separate them by commas with 'and' prefixing the last item.
+     * Set $oxfordComma to false to remove the last comma before the 'and'.
+     *
+     * @param (array) $array
+     * @return (string)
+     * @author Mark Townsend <mtownsend5512@gmail.com>
+     */
+    public static function array_to_words($array, $oxfordComma = true)
+    {
+        if ( !is_array($array) )
+        {
+            return NULL;
+        }
+
+        $string = '';
+        
+        if ( count($array) > 1 )
+        {
+            $arrayCount = count($array);
+            $loop = 0;
+
+            foreach ( $array as $item )
+            {
+                $loop++;
+                if ( $loop == $arrayCount )
+                {
+                    $string .= " and $item";
+                }
+                elseif ( $loop == ($arrayCount - 1) && !$oxfordComma )
+                {
+                    $string .= " $item";
+                }
+                else
+                {
+                    $string .= " $item,";
+                }
+            }
+        }
+        elseif ( $arrayCount <= 0 )
+        {
+            return $string;
+        }
+        else
+        {
+            $string .= $array[0];
+        }
+
+        $string = ltrim($string, ' ');
+        $string = rtrim($string, ' ');
+        $cleanup = [ ',,', '  ' ];
+        $string = str_replace($cleanup, '', $string);
+
+        return $string;
+    }
+
 
     /**
      * Wrapper to prevent errors if the user doesn't have the mbstring
