@@ -811,6 +811,93 @@ class util
 
         return $fixdSerializedData;
     }
+    
+        /**
+     * Determine if a json string is valid.
+     * Returns TRUE if the argument is a valid JSON string.
+     * Returns FALSE if the argument is NOT a valid JSON string.
+     * Pass true for $dump to dump the contents to the screen and kill script execution.
+     * The opposite of invalid_json()
+     *
+     * @param (string) $json | (boolean) $dump
+     * @return (boolean)
+     * @author Mark Townsend <mtownsend5512@gmail.com>
+     *
+     */
+    public static function valid_json($json = NULL, $dump = false)
+    {
+        // Argument must be a string
+        if ( is_string($json) )
+        {
+            // If true is passed for the second argument, kill the script and dump the contents of the supplied JSON string
+            if ( $dump == true )
+            {
+                self::var_dump($json);
+                die();
+            }
+
+            $validation = json_decode($json, true);
+
+            // The JSON is declared error free and is not null
+            if ( json_last_error() == 'JSON_ERROR_NONE' || $validation != NULL )
+            {
+                return true;
+            }
+            // The JSON is not error free or could be null, it's invalid
+            else
+            {
+                return false;
+            }
+        }
+        else
+        {
+            return false;
+        }
+    }
+    
+    /**
+     * Determine if a json string is invalid.
+     * Returns TRUE if the argument is NOT a valid JSON string.
+     * Returns FALSE if the argument IS a valid JSON string.
+     * Pass true for $dump to dump the contents to the screen and kill script execution.
+     * The opposite of valid_json()
+     *
+     * @param (string) $json | (boolean) $dump
+     * @return (boolean)
+     * @author Mark Townsend <mtownsend5512@gmail.com>
+     *
+     */
+    public static function invalid_json($json = NULL, $dump = false)
+    {
+        // Argument must be a string
+        if ( is_string($json) )
+        {
+            // If true is passed for the second argument, kill the script and dump the contents of the supplied JSON string
+            if ( $dump == true )
+            {
+                self::var_dump($json);
+                die();
+            }
+
+            $validation = json_decode($json, true);
+
+            // If there is a json error or the string is null after being decoded, it's invalid
+            if ( json_last_error() != 'JSON_ERROR_NONE' || $validation === NULL )
+            {
+                return true;
+            }
+            // No JSON error or null value, it's valid
+            else
+            {
+                return false;
+            }
+        }
+        else
+        {
+            return true;
+        }
+    }
+
 
     /**
      * Checks to see if the page is being server over SSL or not
