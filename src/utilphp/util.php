@@ -1103,6 +1103,24 @@ class util
     {
         return substr($string, -strlen($ends_with)) === $ends_with;
     }
+    
+    /**
+     * Take a string and return it with proper casing.
+     *
+     * @param (string) $string
+     * @return (string)
+     * @author Mark Townsend <mtownsend5512@gmail.com>
+     */
+    public static function str_proper($string)
+    {
+        if ( !is_string($string) )
+        {
+            return NULL;
+        }
+        $forbiddenCharacters = [ '-', '_', '  ', ];
+
+        return ucwords(strtolower(str_replace($forbiddenCharacters, ' ', $string)));
+    }
 
     /**
      * Evaluate whether a string (needle) is found in another string (haystack) and return true or false.
