@@ -1105,15 +1105,47 @@ class util
     }
 
     /**
-     * Check if a string contains another string.
+     * Evaluate whether a string (needle) is found in another string (haystack) and return true or false.
      *
-     * @param  string $haystack
-     * @param  string $needle
-     * @return boolean
+     * @param (string) $haystack | (string) $needle | (boolean) $case_sensitive
+     * @return (boolean) $result
+     * @author Mark Townsend <mtownsend5512@gmail.com>
+     *
      */
-    public static function str_contains($haystack, $needle)
+    public static function str_contains($haystack, $needle, $case_sensitive = false)
     {
-        return strpos($haystack, $needle) !== false;
+        if ( !is_string($haystack) )
+        {
+            return NULL;
+        }
+        
+        $case_sensitive = (boolean) $case_sensitive;
+
+        // We do not want case sensitive searching
+        if ($case_sensitive == false)
+        {
+            if ( stripos($haystack, $needle) !== false )
+            {
+                $result = true;
+            }
+            else
+            {
+                $result = false;
+            }
+        }
+        // We want case sensitive searching
+        else
+        {
+            if ( strpos($haystack, $needle) !== false )
+            {
+                $result = true;
+            }
+            else
+            {
+                $result = false;
+            }
+        }
+        return $result;
     }
 
     /**
