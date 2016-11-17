@@ -2495,6 +2495,63 @@ class util
     {
         return array_filter($array);
     }
+    
+        /**
+     * Parse an array of items and separate them by commas with 'and' prefixing the last item.
+     * Set $oxfordComma to false to remove the last comma before the 'and'.
+     *
+     * @param (array) $array
+     * @return (string)
+     * @author Mark Townsend <mtownsend5512@gmail.com>
+     */
+    public static function array_to_words($array, $oxfordComma = true)
+    {
+        if ( !is_array($array) )
+        {
+            return NULL;
+        }
+
+        $string = '';
+        
+        if ( count($array) > 1 )
+        {
+            $arrayCount = count($array);
+            $loop = 0;
+
+            foreach ( $array as $item )
+            {
+                $loop++;
+                if ( $loop == $arrayCount )
+                {
+                    $string .= " and $item";
+                }
+                elseif ( $loop == ($arrayCount - 1) && !$oxfordComma )
+                {
+                    $string .= " $item";
+                }
+                else
+                {
+                    $string .= " $item,";
+                }
+            }
+        }
+        elseif ( $arrayCount <= 0 )
+        {
+            return $string;
+        }
+        else
+        {
+            $string .= $array[0];
+        }
+
+        $string = ltrim($string, ' ');
+        $string = rtrim($string, ' ');
+        $cleanup = [ ',,', '  ' ];
+        $string = str_replace($cleanup, '', $string);
+
+        return $string;
+    }
+
 
     /**
      * Wrapper to prevent errors if the user doesn't have the mbstring
