@@ -398,6 +398,22 @@ class UtilityPHPTest extends PHPUnit_Framework_TestCase
         $this->assertFalse( util::str_to_bool( 'test' , false) );
 
     }
+    
+    public function test_mask()
+    {
+        $this->assertEquals(Util::mask('12345678910', '###.###.###-##'), '123.456.789-10');
+        $this->assertEquals(Util::mask('123456789', '###.###.###-##'), '123456789');
+        $this->assertEquals(Util::mask('12345678910234342234432', '###.###.###-##'), '12345678910234342234432');
+        $this->assertEquals(Util::mask('12345678910', '...#...#...-..', '.'), '123#456#789-10');
+        $this->assertEquals(Util::mask('1', '(###) ###-####'), '1');
+        $this->assertEquals(Util::mask('tttt', 'ttttttttttttttttttttttt', 't'), 'tttt');
+        $this->assertEquals(Util::mask('tttt', 'tttt', 't'), 'tttt');
+        $this->assertEquals(Util::mask('test', 't-t-t-t', 't'), 't-e-s-t');
+        $this->assertEquals(Util::mask('', '#$#@$#$#@@#$$#@#$@'), '');
+        $this->assertEquals(Util::mask('1234567890', '(###) ###-####'), '(123) 456-7890');
+    }    
+    
+    
 	
 	public function fast_array_unique()
 	{
