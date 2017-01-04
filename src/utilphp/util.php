@@ -2,6 +2,10 @@
 
 namespace utilphp;
 
+define('NL_NIX', "\n");
+define('NL_WIN', "\r\n");
+define('NL_MAC', "\r");
+
 /**
  * util.php
  *
@@ -1757,22 +1761,39 @@ class util
      *                                      characters once in the string.
      * @return  string
      */
-    public static function random_string($length = 16, $human_friendly = true, $include_symbols = false, $no_duplicate_chars = false)
+    public static function random_string($length = 16, $human_friendly = true, $include_symbols = false, $no_duplicate_chars = false, $only_letters = false, $only_numbers = false, $force_lowercase = false)
     {
-        $nice_chars = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefhjkmnprstuvwxyz23456789';
-        $all_an     = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890';
-        $symbols    = '!@#$%^&*()~_-=+{}[]|:;<>,.?/"\'\\`';
-        $string     = '';
+        $nice_letters       = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefhjkmnprstuvwxyz';
+        $nice_letters_lcase = 'abcdefhjkmnprstuvwxyz';
+        $nice_numbers       = '23456789';
+        $nice_an            = $nice_letters . $nice_numbers;
+        $nice_an_lcase      = $nice_letters_lcase . $nice_numbers;
+        $all_letters        = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+        $all_letters_lcase  = 'abcdefghijklmnopqrstuvwxyz';
+        $all_numbers        = '1234567890';
+        $all_an             = $all_letters . $all_numbers;
+        $all_an_lcase       = $all_letters_lcase . $all_numbers;
+        $symbols            = '!@#$%^&*()~_-=+{}[]|:;<>,.?/"\'\\`';
+        $string             = '';
 
         // Determine the pool of available characters based on the given parameters
-        if ($human_friendly) {
-            $pool = $nice_chars;
-        } else {
-            $pool = $all_an;
+        $pool_prefix = $human_friendly ? 'nice' : 'all';
+        $pool_suffix = $force_lowercase ? '_lcase' : '';
 
-            if ($include_symbols) {
-                $pool .= $symbols;
-            }
+        if ($only_letters) {
+            $pool_name = $pool_prefix . '_letters' . $pool_suffix;
+        }
+        elseif ($only_numbers) {
+            $pool_name = $pool_prefix . '_numbers' . $pool_suffix;
+        }
+        else {
+            $pool_name = $pool_prefix . '_an' . $pool_suffix;
+        }
+
+        $pool = ${$pool_name};
+
+        if ($include_symbols && !$only_numbers && !$only_letters) {
+            $pool .= $symbols;
         }
 
         if (!$no_duplicate_chars) {
@@ -2665,5 +2686,81 @@ class util
         }
         natsort($contents);
         return $contents;
+    }
+
+    /**
+     * UTF-8 compliant version of ord()
+     *
+     * @param string $character
+     * @return int
+     */
+    public static function ordUTF8($character) {
+        $first_byte = ord($character [0]);
+
+        if (($first_byte & 0x80) == 0) {
+            // Single-byte form: 0xxxxxxxx.
+            return $first_byte;
+        }
+        if (($first_byte & 0xe0) == 0xc0) {
+            // Two-byte form: 110xxxxx 10xxxxxx.
+            return (($first_byte & 0x1f) << 6) + (ord($character [1]) & 0x3f);
+        }
+        if (($first_byte & 0xf0) == 0xe0) {
+            // Three-byte form: 1110xxxx 10xxxxxx 10xxxxxx.
+            return (($first_byte & 0x0f) << 12) + ((ord($character [1]) & 0x3f) << 6) + (ord($character [2]) & 0x3f);
+        }
+        if (($first_byte & 0xf8) == 0xf0) {
+            // Four-byte form: 11110xxx 10xxxxxx 10xxxxxx 10xxxxxx.
+            return (($first_byte & 0x07) << 18) + ((ord($character [1]) & 0x3f) << 12) + ((ord($character [2]) & 0x3f) << 6) + (ord($character [3]) & 0x3f);
+        }
+
+        // Other forms are not legal.
+        return -1;
+    }
+
+    /**
+     * UTF-8 compliant version of chr()
+     *
+     * @param int $u
+     * @return string
+     */
+    public static function chrUTF8($u)
+    {
+        return mb_convert_encoding('&#' . intval($u) . ';', 'UTF-8', 'HTML-ENTITIES');
+    }
+
+    /**
+     * Detect file encoding and EOL type
+     *
+     * @param string $filename
+     * @param bool $detectFileEncoding
+     * @param bool $detectFileEOL
+     * @return string
+     */
+    public static function detectFileEncodingAndEOL($filename, $detectFileEncoding = true, $detectFileEOL = true)
+    {
+        $return = [];
+
+        if (($file = fopen($filename, 'r')) !== false) {
+            $str = fgets($file);
+
+            if ($detectFileEncoding) {
+                $return['encoding'] = mb_detect_encoding($str, mb_detect_order());
+            }
+
+            if ($detectFileEOL) {
+                if (strpos($str, NL_WIN) !== false) {
+                    $return['eol'] = 'NL_WIN';
+                } elseif(strpos($str, NL_MAC) !== false) {
+                    $return['eol'] = 'NL_MAC';
+                } elseif(strpos($str, NL_NIX) !== false) {
+                    $return['eol'] = 'NL_NIX';
+                }
+            }
+
+            return $return;
+        }
+
+        return false;
     }
 }
