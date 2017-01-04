@@ -250,6 +250,14 @@ class util
      */
     private static $language = '';
 
+
+    /**
+     * Warning memory limit in percentage
+     *
+     *  @var int
+     */
+    public static $warning_memory_limit = 90;
+
     /**
      * Initializes the character map.
      *
@@ -2665,5 +2673,28 @@ class util
         }
         natsort($contents);
         return $contents;
+    }
+
+    /**
+     * Checks if the memory usage exceeded a specific threshold.
+     * 
+     * @param int $warning_memory_limit The warning memory limit (in percentage)
+     * @param int $php_memory_limit Php memory limit
+     * @return bool
+     */
+    public static function memory_usage_warning($warning_memory_limit = null, $php_memory_limit = null)
+    {
+        if (is_null($warning_memory_limit)) {
+            $warning_memory_limit = self::$warning_memory_limit;
+        }
+
+        if (is_null($php_memory_limit)) {
+            $php_memory_limit = PHP_INT_MAX;
+        }
+
+        $threshold = intval(($warning_memory_limit * $php_memory_limit) / 100);
+        $used_memory = memory_get_usage(true);
+
+        return $used_memory >= $threshold;
     }
 }
