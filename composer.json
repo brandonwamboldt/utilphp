@@ -13,7 +13,7 @@
         }
     ],
     "autoload": {
-        "psr-0": { "utilphp\\": "src/" }
+        "psr-4": { "utilphp\\": "src/utilphp" }
     },
     "require-dev": {
         "satooshi/php-coveralls": "~1.0.1"
