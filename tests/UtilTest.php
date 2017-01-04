@@ -682,6 +682,11 @@ class UtilityPHPTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('50,0000', util::calculate_percentage(50,100,4,','));
     }
 
+	public function test_calculate_mean()
+	{
+		$this->assertEquals(30.00, util::calculate_mean(array(10, 20, 30, 40, 50)));
+	}
+
     public function test_random_string()
     {
         // Make sure the generated string contains only human friendly characters and is 30 characters long
