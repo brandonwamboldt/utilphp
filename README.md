@@ -120,4 +120,4 @@ UtilPHP is licensed under the MIT license.
 
 ## Resources
 
-* [Documentation](http://brandonwamboldt.github.com/utilphp/)
+* [Documentation](http://brandonwamboldt.github.io/utilphp/)
